@@ -135,6 +135,8 @@ export default function CodeEditor({ files }: { files: any }) {
             height: "90vh",
           }}
         >
+
+        <div className="flex flex-col">
           <svg
             onClick={() => setShowFile((prev) => !prev)}
             xmlns="http://www.w3.org/2000/svg"
@@ -155,6 +157,29 @@ export default function CodeEditor({ files }: { files: any }) {
             />
           </svg>
 
+
+          <svg
+            onClick={() => setShowFile((prev) => !prev)}
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            strokeWidth={1.5}
+            stroke="currentColor"
+            height={24}
+            width={24}
+            style={{
+              cursor: "pointer",
+            }}
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"
+            />
+          </svg>
+
+          </div>
+
           {showFile ? (
             <SandpackFileExplorer style={{ height: "100%" }} />
           ) : null}
@@ -167,6 +192,7 @@ export default function CodeEditor({ files }: { files: any }) {
               flexBasis: 0,
               overflow: "hidden",
             }}
+            
           />
 
           <div
