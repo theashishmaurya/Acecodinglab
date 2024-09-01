@@ -207,7 +207,7 @@ const CustomPreview = (props : ICustomPreview) => {
   )
 }
 
-export default function CodeEditor({ files }: { files: any }) {
+ function Editor() {
   const [consoleVisibility, setConsoleVisibility] = React.useState(true);
   const [counter, setCouter] = useState(0);
   const dragEventTargetRef = React.useRef<any>(null);
@@ -312,19 +312,7 @@ export default function CodeEditor({ files }: { files: any }) {
 
   return (
     <>
-      <SandpackProvider
-        template="react"
-        theme="dark"
-        files={files}
-        
-        customSetup={{
-          //Jest and react-testing-library
-          dependencies: {
-            "@testing-library/jest-dom": "5.11.4",
-            "@testing-library/react": "11.2.7",
-          },
-        }}
-      >
+      
         <SandpackLayout
         
           style={{
@@ -384,7 +372,6 @@ export default function CodeEditor({ files }: { files: any }) {
             
           </RightColumn>
         </SandpackLayout>
-      </SandpackProvider>
       <div className="flex justify-end items-end w-full my-4">
         <div className="mx-2">
           <button
@@ -415,3 +402,25 @@ const ConsoleCounterButton: React.FC<{
     </RoundedButton>
   );
 };
+
+
+export default function CodeEditor ({files}:any){
+  return (
+    <SandpackProvider
+        template="react"
+        theme="dark"
+        files={files}
+        
+        customSetup={{
+          //Jest and react-testing-library
+          dependencies: {
+            "@testing-library/jest-dom": "5.11.4",
+            "@testing-library/react": "11.2.7",
+          },
+        }}
+      >
+        <Editor />
+      </SandpackProvider>
+  )
+
+}
