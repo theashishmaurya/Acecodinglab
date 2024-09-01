@@ -6,6 +6,7 @@ export default async function Home({ params }: { params: { slug: string } }) {
 
   try {
     content = await readFromFolder(params.slug);
+    console.log(content,"content here")
   } catch (e) {
     console.log(e);
     // Error Page for showing error message when the folder is not found

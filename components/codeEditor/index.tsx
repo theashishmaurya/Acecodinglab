@@ -11,21 +11,171 @@ import {
   SandpackProvider,
   SandpackStack,
   SandpackTests,
+  useSandpack,
 } from "@codesandbox/sandpack-react";
-import React, { useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import classNames from "classnames";
+import { isMDFile } from "@/lib/isMDFile";
+import { MDXRemote, MDXRemoteSerializeResult } from "next-mdx-remote";
+import { serialize } from 'next-mdx-remote/serialize';
+
+
+
+interface CustomBottomPanel {
+
+consoleVisibility:boolean,
+verticalSize:number
+testVisibility:boolean
+
+}
+
+const CustomBottomPanel = (props:CustomBottomPanel)=>{
+  const {consoleVisibility, verticalSize , testVisibility } = props
+  const {sandpack} = useSandpack()
+  const {activeFile} = sandpack
+  const [isBottomPanelVisible,setIsBottomPanelVisible] = useState<boolean>(true)
+
+
+  useEffect(()=>{
+
+    if(isMDFile(activeFile)){
+      setIsBottomPanelVisible(false)
+    }else {
+      setIsBottomPanelVisible(true)
+    }
+
+  },[activeFile])
+  return (
+    <>
+    {isBottomPanelVisible && <div
+              className="console-wrapper w-full overflow-hidden"
+              style={{
+                flexGrow: consoleVisibility ? 100 - verticalSize : 0,
+                flexShrink: consoleVisibility ? 100 - verticalSize : 0,
+                flexBasis: 0,
+                width: "100%",
+                maxHeight: consoleVisibility
+                  ? `calc(${100 - verticalSize}% - 1px)`
+                  : 0,
+              }}
+            >
+              {!testVisibility && (
+                <SandpackConsole
+                  className={classNames("overflow-y", [
+                    // Displaty the console when the consoleVisibility is true
+                    consoleVisibility ? "block" : "hidden",
+                  ])}
+                  // onLogsChange={(logs) => { // causing rerender
+                  //   setCouter(logs.length);
+                  // }}
+                  showHeader={false}
+                />
+              )}
+              {testVisibility ? (
+                <SandpackTests className="h-full min-h-full block" />
+              ) : null}
+            </div>}
+    </>
+  
+
+  )
+
+}
+
+
+interface ICustomPreview {
+  actionsChildren :JSX.Element,
+  style?: React.CSSProperties 
+}
+
+interface MDFileState {
+  isMdFile: boolean;
+  content: string;
+  mdxSource: MDXRemoteSerializeResult | null;
+}
+
+
+const CustomPreview = (props : ICustomPreview) => {
+
+  const {actionsChildren,style} = props
+
+  const { sandpack } = useSandpack();
+  const { files , activeFile  , runSandpack  } = sandpack;
+  const [mdFile, setMdFile] = useState<MDFileState>({
+    isMdFile: false,
+    content: '',
+    mdxSource: null,
+  });
+  const prevIsMdFile = useRef<boolean>(false)
+
+  useEffect(() => {
+    const updateMdFile = async () => {
+      if (isMDFile(activeFile)) {
+        const mdFileContent = files[activeFile].code;
+        const mdxSource = await serialize(mdFileContent);
+        setMdFile({
+          isMdFile: true,
+          content: mdFileContent,
+          mdxSource,
+        });
+        prevIsMdFile.current = true
+        
+      } else  {
+        setMdFile({
+          isMdFile: false,
+          content: '',
+          mdxSource: null,
+        });
+        if(prevIsMdFile.current){
+        runSandpack()
+        }
+
+        prevIsMdFile.current = false
+      }
+    };
+
+    updateMdFile();
+  }, [activeFile, files, runSandpack]);
+
+
+  console.log(files,activeFile, mdFile)
+
+  return (
+
+
+    <>
+      {mdFile.isMdFile ? (
+        <div className="markdown-preview" style={style}>
+          {mdFile.content && <MDXRemote compiledSource={mdFile.mdxSource?.compiledSource || ''} scope={undefined} frontmatter={undefined} />}
+        </div>
+      ) : (
+        <SandpackPreview
+          actionsChildren={actionsChildren}
+          style={style}
+          showNavigator={true}
+          showOpenInCodeSandbox={true}
+          showRefreshButton={true}
+          showSandpackErrorOverlay={true}
+          
+        />
+      )}
+    </>
+  )
+}
 
 export default function CodeEditor({ files }: { files: any }) {
   const [consoleVisibility, setConsoleVisibility] = React.useState(true);
   const [counter, setCouter] = useState(0);
-
   const dragEventTargetRef = React.useRef<any>(null);
   const [horizontalSize, setHorizontalSize] = React.useState(50); // 50% of the screen
   const [verticalSize, setVerticalSize] = React.useState(70);
-  const [showFile, setShowFile] = React.useState(false);
+  const [showFile, setShowFile] = React.useState(true);
   const [testVisibility, setTestVisibility] = React.useState(false);
+  const [bottomPanelVisible, setBottomPanelVisible] = useState(true)
   const RightColumn = SandpackStack;
+
   const MenuColumn = SandpackStack;
+
 
   const rightColumnStyle = {
     flexGrow: 100 - horizontalSize,
@@ -122,6 +272,7 @@ export default function CodeEditor({ files }: { files: any }) {
         template="react"
         theme="dark"
         files={files}
+        
         customSetup={{
           //Jest and react-testing-library
           dependencies: {
@@ -131,57 +282,13 @@ export default function CodeEditor({ files }: { files: any }) {
         }}
       >
         <SandpackLayout
+        
           style={{
             height: "90vh",
           }}
         >
-
-        <div className="flex flex-col">
-          <svg
-            onClick={() => setShowFile((prev) => !prev)}
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            strokeWidth={1.5}
-            stroke="currentColor"
-            height={24}
-            width={24}
-            style={{
-              cursor: "pointer",
-            }}
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"
-            />
-          </svg>
-
-
-          <svg
-            onClick={() => setShowFile((prev) => !prev)}
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            strokeWidth={1.5}
-            stroke="currentColor"
-            height={24}
-            width={24}
-            style={{
-              cursor: "pointer",
-            }}
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"
-            />
-          </svg>
-
-          </div>
-
           {showFile ? (
-            <SandpackFileExplorer style={{ height: "100%" }} />
+            <SandpackFileExplorer style={{ height: "100%" }}   />
           ) : null}
 
           <SandpackCodeEditor
@@ -208,14 +315,10 @@ export default function CodeEditor({ files }: { files: any }) {
             }}
           />
           <RightColumn {...rightColumnProps}>
-            <SandpackPreview
-              actionsChildren={actionsChildren}
-              style={topRowStyle}
-              showNavigator={true}
-              showOpenInCodeSandbox={false}
-              showRefreshButton={true}
-              showSandpackErrorOverlay={true}
-            />
+          <CustomPreview 
+          style = {topRowStyle}
+          actionsChildren={actionsChildren}
+          />
             <div
               className={classNames("resize-handler", [
                 // dragHandler({ direction: "vertical" }),
@@ -232,34 +335,9 @@ export default function CodeEditor({ files }: { files: any }) {
               }}
             />
 
-            <div
-              className="console-wrapper w-full overflow-hidden"
-              style={{
-                flexGrow: consoleVisibility ? 100 - verticalSize : 0,
-                flexShrink: consoleVisibility ? 100 - verticalSize : 0,
-                flexBasis: 0,
-                width: "100%",
-                maxHeight: consoleVisibility
-                  ? `calc(${100 - verticalSize}% - 1px)`
-                  : 0,
-              }}
-            >
-              {!testVisibility && (
-                <SandpackConsole
-                  className={classNames("overflow-y", [
-                    // Displaty the console when the consoleVisibility is true
-                    consoleVisibility ? "block" : "hidden",
-                  ])}
-                  // onLogsChange={(logs) => { // causing rerender
-                  //   setCouter(logs.length);
-                  // }}
-                  showHeader={false}
-                />
-              )}
-              {testVisibility ? (
-                <SandpackTests className="h-full min-h-full block" />
-              ) : null}
-            </div>
+            <CustomBottomPanel consoleVisibility={consoleVisibility} verticalSize={verticalSize} testVisibility={testVisibility} />
+            
+            
           </RightColumn>
         </SandpackLayout>
       </SandpackProvider>
