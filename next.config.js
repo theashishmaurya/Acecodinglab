@@ -3,6 +3,9 @@ const nextConfig = {
   webpack: (config) => {
     return config;
   },
+  images: {
+    domains: ['images.unsplash.com','assets.aceternity.com'],
+  },
 };
 const withMDX = require("@next/mdx")();
 

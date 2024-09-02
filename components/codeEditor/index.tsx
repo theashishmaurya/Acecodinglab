@@ -24,6 +24,8 @@ import rehypeHighlight from 'rehype-highlight';
 import 'highlight.js/styles/github-dark.css'; 
 
 import { MDXComponents } from 'mdx/types';
+import { Button } from "../ui/button";
+import CountDown from "../ui/countdown";
 
 
 
@@ -372,15 +374,35 @@ const CustomPreview = (props : ICustomPreview) => {
             
           </RightColumn>
         </SandpackLayout>
-      <div className="flex justify-end items-end w-full my-4">
+      <div className="flex justify-between items-end w-full my-4">
+        <div
+        className="mx-2"
+        >
+          <CountDown
+          hr={0}
+          min={0}
+          second={10}
+          onCounterEnd={()=>{console.log("counter Ended")}}
+          autoStart={false}
+          />
+          </div>
+        <div className="flex justify-end items-end">
         <div className="mx-2">
-          <button
+          <Button
             // Dark theme button
-            className="bg-gray-800 text-white px-6 py-1"
             onClick={() => setTestVisibility((prev) => !prev)}
           >
             Test
-          </button>
+          </Button>
+        </div>
+        <div className="mx-2">
+          <Button
+            // Dark theme button
+            // onClick={() => setTestVisibility((prev) => !prev)}
+          >
+            Submit
+          </Button>
+          </div>
         </div>
       </div>
     </>
@@ -410,7 +432,6 @@ export default function CodeEditor ({files}:any){
         template="react"
         theme="dark"
         files={files}
-        
         customSetup={{
           //Jest and react-testing-library
           dependencies: {
