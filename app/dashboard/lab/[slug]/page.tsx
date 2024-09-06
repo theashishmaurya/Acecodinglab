@@ -1,7 +1,7 @@
 import CodeEditor from "@/components/codeEditor";
 import { readFromFolder } from "@/utils/readFromFolder";
 
-export default async function Home({ params }: { params: { slug: string } }) {
+export default async function Page({ params }: { params: { slug: string } }) {
   let content = {};
 
   try {
