@@ -1,6 +1,6 @@
 'use server'
 
-import { createClient } from '@/lib/supabase/supabaseServer'
+import  createClient from '@/lib/supabase/supabaseServer'
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
 
@@ -9,14 +9,12 @@ import { redirect } from 'next/navigation'
 
 
 export async function signUp(formData: FormData) {
-    console.log(formData,"Form Data")
     const supabase = createClient()
 
     const email = formData.get('email') as string
     const password = formData.get('password') as string
     const fullName = formData.get('fullName') as string
     const role = formData.get('role') as string
-    console.log(email,password,fullName,role,"Email and password")
   
     // Sign up the user with Supabase Auth
     const { data, error } = await supabase.auth.signUp({
@@ -35,7 +33,6 @@ export async function signUp(formData: FormData) {
       redirect ('/error')
     }
 
-    console.log(data,"Data here s")
   
     if (data.user) {
       // Insert the user into your custom users table
@@ -49,11 +46,10 @@ export async function signUp(formData: FormData) {
         })
   
       if (insertError) {
-        console.log(insertError)
         // If there was an error inserting into the custom table, 
         // you might want to delete the auth user and return an error
         const { error } =  await supabase.auth.admin.deleteUser(data.user.id)
-        console.log(error)
+        console.error(error)
         
         return { error: 'Failed to create user profile. Please try again.' }
       }

@@ -1,6 +1,6 @@
 'use server'
 
-import { createClient } from '@/lib/supabase/supabaseServer'
+import  createClient  from '@/lib/supabase/supabaseServer'
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
 
@@ -13,7 +13,6 @@ export async function login(formData: FormData) {
     const password = formData.get('password') as string
    
 
-    console.log("triggered")
   
     // Sign up the user with Supabase Auth
     const { data, error } = await supabase.auth.signInWithPassword({

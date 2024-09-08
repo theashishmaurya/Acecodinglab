@@ -1,0 +1,66 @@
+body {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    color: #ffffff;
+    background-color: #121212;
+    margin: 0;
+    padding: 20px;
+}
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 30px;
+    background-color: #1e1e1e;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(255, 255, 255, 0.1);
+}
+h1 {
+    color: #ffffff;
+    text-align: center;
+    margin-bottom: 20px;
+}
+.tagline {
+    font-size: 1.2em;
+    text-align: center;
+    color: #b0b0b0;
+    margin-bottom: 30px;
+}
+.features {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    margin-bottom: 30px;
+}
+.feature {
+    flex-basis: 30%;
+    text-align: center;
+    margin-bottom: 20px;
+}
+.emoji {
+    font-size: 2em;
+    margin-bottom: 10px;
+}
+.cta-button {
+    display: block;
+    width: 200px;
+    margin: 0 auto;
+    padding: 10px;
+    background-color: #ffffff;
+    color: #000000;
+    text-align: center;
+    text-decoration: none;
+    border-radius: 5px;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+}
+.cta-button:hover {
+    background-color: #e0e0e0;
+}
+@media (max-width: 600px) {
+    .features {
+        flex-direction: column;
+    }
+    .feature {
+        flex-basis: 100%;
+    }
+}

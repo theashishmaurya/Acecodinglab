@@ -11,6 +11,7 @@ import {
   SandpackProvider,
   SandpackStack,
   SandpackTests,
+  useActiveCode,
   useSandpack,
 } from "@codesandbox/sandpack-react";
 import React, { useEffect, useMemo, useRef, useState } from "react";
@@ -26,6 +27,11 @@ import 'highlight.js/styles/github-dark.css';
 import { MDXComponents } from 'mdx/types';
 import { Button } from "../ui/button";
 import CountDown from "../ui/countdown";
+import { practiceSessionsAPI } from "@/db/practiceSession/practiceSession.client";
+import { useParams } from "next/navigation";
+import { useDebouncedCallback } from 'use-debounce';
+import { Spec } from "@codesandbox/sandpack-react/components/Tests/Specs";
+
 
 
 
@@ -67,11 +73,12 @@ interface CustomBottomPanel {
 consoleVisibility:boolean,
 verticalSize:number
 testVisibility:boolean
+onTestComplete:(specs:Record<string, Spec>)=>void
 
 }
 
 const CustomBottomPanel = (props:CustomBottomPanel)=>{
-  const {consoleVisibility, verticalSize , testVisibility } = props
+  const {consoleVisibility, verticalSize , testVisibility,onTestComplete } = props
   const {sandpack} = useSandpack()
   const {activeFile} = sandpack
   const [isBottomPanelVisible,setIsBottomPanelVisible] = useState<boolean>(true)
@@ -113,7 +120,9 @@ const CustomBottomPanel = (props:CustomBottomPanel)=>{
                 />
               )}
               {testVisibility ? (
-                <SandpackTests className="h-full min-h-full block" />
+                <SandpackTests className="h-full min-h-full block"
+                 onComplete={onTestComplete}
+                 />
               ) : null}
             </div>}
     </>
@@ -184,11 +193,8 @@ const CustomPreview = (props : ICustomPreview) => {
   }, [activeFile, files, runSandpack]);
 
 
-  console.log(files,activeFile, mdFile)
 
   return (
-
-
     <>
       {mdFile.isMdFile ? (
         <div className="markdown-preview p-4 overflow-auto" style={style}>
@@ -218,8 +224,35 @@ const CustomPreview = (props : ICustomPreview) => {
   const [showFile, setShowFile] = React.useState(true);
   const [testVisibility, setTestVisibility] = React.useState(false);
   const [bottomPanelVisible, setBottomPanelVisible] = useState(true)
+  const [testResults, setTestResults] = useState<Record<string, Spec>>({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const { sandpack } = useSandpack();
+  const params = useParams();
+  const slug = params.slug as string;
+
+  const debouncedUpdateCode = useDebouncedCallback(
+    ( code: string ) => {
+      practiceSessionsAPI.updateSessionCode(slug, code)
+        .catch(error => {
+          console.error('Failed to update session code:', error);
+          // You might want to show an error message to the user here
+        });
+    },
+    3000 // Debounce for 3 second
+  );
+
+  useEffect(() => {
+    if (!sandpack.files) return;
+
+    console.log(sandpack.files);
+    debouncedUpdateCode(JSON.stringify(sandpack.files));
+  }, [sandpack.files, debouncedUpdateCode]);
+
+
+
   const RightColumn = SandpackStack;
 
+ 
   const MenuColumn = SandpackStack;
 
 
@@ -279,7 +312,6 @@ const CustomPreview = (props : ICustomPreview) => {
     if (isHorizontal) {
       setHorizontalSize(boundaries);
     } else {
-      console.log(boundaries);
       setVerticalSize(boundaries);
     }
 
@@ -312,13 +344,54 @@ const CustomPreview = (props : ICustomPreview) => {
     };
   }, []);
 
+  const handleSubmit = () => {
+    setIsSubmitting(true);
+    setTestVisibility(true);
+    // The actual submission will be triggered after tests complete in handleTestComplete
+  };
+
+  const handleTestComplete = (specs:Record<string, Spec>) => {
+    setTestResults(specs);
+    console.log(specs, "Specs");
+    
+    if (isSubmitting) {
+      const allTestsPassed = Object.values(specs).every(file => 
+        Object.values(file.tests).every(test => test.status === "pass")
+      );
+
+      if (allTestsPassed) {
+        submitToBackend();
+        console.log(specs,"Submitted to backend")
+      } else {
+        setIsSubmitting(false);
+        // Optionally, show a message that not all tests passed
+      }
+    }
+  };
+
+  const submitToBackend = () => {
+    // Actual submission logic here
+    practiceSessionsAPI.completeSession(slug)
+      .then(() => {
+        console.log("Submission successful");
+        // Handle successful submission (e.g., show a success message)
+      })
+      .catch(error => {
+        console.error('Failed to submit session:', error);
+        // Handle submission error (e.g., show an error message)
+      })
+      .finally(() => {
+        setIsSubmitting(false);
+      });
+  };
+
   return (
     <>
       
         <SandpackLayout
         
           style={{
-            height: "90vh",
+            height: "86vh",
           }}
         >
           {showFile ? (
@@ -333,6 +406,7 @@ const CustomPreview = (props : ICustomPreview) => {
               flexBasis: 0,
               overflow: "hidden",
             }}
+            
             
           />
 
@@ -369,7 +443,7 @@ const CustomPreview = (props : ICustomPreview) => {
               }}
             />
 
-            <CustomBottomPanel consoleVisibility={consoleVisibility} verticalSize={verticalSize} testVisibility={testVisibility} />
+            <CustomBottomPanel consoleVisibility={consoleVisibility} verticalSize={verticalSize} testVisibility={testVisibility} onTestComplete={handleTestComplete} />
             
             
           </RightColumn>
@@ -378,30 +452,32 @@ const CustomPreview = (props : ICustomPreview) => {
         <div
         className="mx-2"
         >
-          <CountDown
+          {/* <CountDown
           hr={0}
           min={0}
           second={10}
           onCounterEnd={()=>{console.log("counter Ended")}}
           autoStart={false}
-          />
+          /> */}
           </div>
         <div className="flex justify-end items-end">
         <div className="mx-2">
           <Button
             // Dark theme button
-            onClick={() => setTestVisibility((prev) => !prev)}
+            onClick={() => setTestVisibility(true)}
+            size={"sm"}
           >
             Test
           </Button>
         </div>
         <div className="mx-2">
-          <Button
-            // Dark theme button
-            // onClick={() => setTestVisibility((prev) => !prev)}
-          >
-            Submit
-          </Button>
+        <Button
+              size="sm"
+              onClick={handleSubmit}
+              disabled={isSubmitting}
+            >
+              {isSubmitting ? 'Submitting...' : 'Submit'}
+            </Button>
           </div>
         </div>
       </div>
@@ -432,6 +508,9 @@ export default function CodeEditor ({files}:any){
         template="react"
         theme="dark"
         files={files}
+        options={{
+          autorun:true
+        }}
         customSetup={{
           //Jest and react-testing-library
           dependencies: {

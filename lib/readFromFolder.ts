@@ -42,7 +42,7 @@ const getTemplate = async (slug: string) => {
         content[file] = data;
       } catch (err) {
         // Handle error if needed
-        console.log(err, "Error while reading file");
+        console.error(err, "Error while reading file");
       }
     }
 
@@ -54,7 +54,23 @@ const getTemplate = async (slug: string) => {
   }
 };
 
-const getMetaInfo = () => {};
+const getMetaInfo = async(slug:string) => {
+  const path = join(DIR, slug, "metainfo.json");
+
+  try {
+  const data = await ReadFile(path);
+  return data
+  }catch(Err){
+    console.error(Err)
+    return new Error("Error while reading Meta files");
+  }
+
+
+
+
+
+
+};
 
 const solution = () => {};
 
@@ -62,6 +78,7 @@ const solution = () => {};
  * @description Read all files from a question folder
  */
 export const readFromFolder = async (slug: string) => {
+  console.log(slug,"slug")
   //Read all files from a question folder and see if the folder exists
   try {
     const files = await ReadFolder(DIR);
@@ -79,3 +96,17 @@ export const readFromFolder = async (slug: string) => {
     throw err; // Rethrow the error to handle it in the caller's catch block.
   }
 };
+
+
+export const getListOfQuestion = async ()=>{
+
+  const files = await ReadFolder(DIR);
+
+ const data = files.map(async(slug)=>{
+    const metaInfo = await getMetaInfo(slug)
+    return metaInfo
+  })
+
+  return Promise.all(data)
+
+}

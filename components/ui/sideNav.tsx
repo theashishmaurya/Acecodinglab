@@ -1,142 +1,79 @@
+"use client"
+import React from 'react';
+import Link from "next/link";
 import {
-    Book,
-    Bot,
-    Code2,
-    LifeBuoy,
-    Settings2,
-    SquareTerminal,
-    SquareUser,
-    Triangle,
-  } from "lucide-react"
+  Book,
+  Bot,
+  Code2,
+  LifeBuoy,
+  Settings2,
+  SquareTerminal,
+  SquareUser,
+  Triangle,
+  LucideIcon
+} from "lucide-react";
+import { Button } from "@/components/ui/button";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+import { usePathname } from 'next/navigation';
 
-  import { Button } from "@/components/ui/button" 
-  import {
-    Tooltip,
-    TooltipContent,
-    TooltipTrigger,
-  } from "@/components/ui/tooltip"
-  
-  export const description =
-    "An AI playground with a sidebar navigation and a main content area. The playground has a header with a settings drawer and a share button. The sidebar has navigation links and a user menu. The main content area shows a form to configure the model and messages."
-  
-  export function SideNavBar() {
-    return (
-        <aside className="inset-y fixed  left-0 z-20 flex h-full flex-col border-r">
-          <div className="border-b p-2">
-            <Button variant="outline" size="icon" aria-label="Home">
-              <Triangle className="size-5 fill-foreground" />
-            </Button>
-          </div>
-          <nav className="grid gap-1 p-2">
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  className="rounded-lg bg-muted"
-                  aria-label="Playground"
-                >
-                  <SquareTerminal className="size-5" />
-                </Button>
-              </TooltipTrigger>
-              <TooltipContent side="right" sideOffset={5}>
-                Playground
-              </TooltipContent>
-            </Tooltip>
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  className="rounded-lg"
-                  aria-label="Models"
-                >
-                  <Bot className="size-5" />
-                </Button>
-              </TooltipTrigger>
-              <TooltipContent side="right" sideOffset={5}>
-                Models
-              </TooltipContent>
-            </Tooltip>
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  className="rounded-lg"
-                  aria-label="API"
-                >
-                  <Code2 className="size-5" />
-                </Button>
-              </TooltipTrigger>
-              <TooltipContent side="right" sideOffset={5}>
-                API
-              </TooltipContent>
-            </Tooltip>
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  className="rounded-lg"
-                  aria-label="Documentation"
-                >
-                  <Book className="size-5" />
-                </Button>
-              </TooltipTrigger>
-              <TooltipContent side="right" sideOffset={5}>
-                Documentation
-              </TooltipContent>
-            </Tooltip>
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  className="rounded-lg"
-                  aria-label="Settings"
-                >
-                  <Settings2 className="size-5" />
-                </Button>
-              </TooltipTrigger>
-              <TooltipContent side="right" sideOffset={5}>
-                Settings
-              </TooltipContent>
-            </Tooltip>
-          </nav>
-          <nav className="mt-auto grid gap-1 p-2">
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  className="mt-auto rounded-lg"
-                  aria-label="Help"
-                >
-                  <LifeBuoy className="size-5" />
-                </Button>
-              </TooltipTrigger>
-              <TooltipContent side="right" sideOffset={5}>
-                Help
-              </TooltipContent>
-            </Tooltip>
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  className="mt-auto rounded-lg"
-                  aria-label="Account"
-                >
-                  <SquareUser className="size-5" />
-                </Button>
-              </TooltipTrigger>
-              <TooltipContent side="right" sideOffset={5}>
-                Account
-              </TooltipContent>
-            </Tooltip>
-          </nav>
-        </aside>
-    )
-  }
-  
+interface NavItemProps {
+  href: string;
+  icon: LucideIcon;
+  label: string;
+}
+
+const NavItem = ({ href, icon: Icon, label }: NavItemProps) => {
+  const pathname = usePathname();
+  const isActive = pathname.includes(href);
+
+  return (
+    <Tooltip>
+      <TooltipTrigger asChild>
+        <Link href={href}>
+          <Button
+            variant="ghost"
+            size="icon"
+            className={`rounded-lg ${isActive ? 'bg-muted' : ''}`}
+            aria-label={label}
+          >
+            <Icon className="size-5" />
+          </Button>
+        </Link>
+      </TooltipTrigger>
+      <TooltipContent side="right" sideOffset={5}>
+        {label}
+      </TooltipContent>
+    </Tooltip>
+  );
+};
+
+export const SideNavBar = () => {
+  return (
+    <aside className="inset-y fixed left-0 z-20 flex h-full flex-col border-r">
+      <div className="border-b p-2">
+        <Link href="/dashboard">
+          <Button variant="outline" size="icon" aria-label="Home">
+            <Triangle className="size-5 fill-foreground" />
+          </Button>
+        </Link>
+      </div>
+      <nav className="grid gap-1 p-2">
+        <NavItem href="/dashboard/practice" icon={Book} label="Question Bank" />
+        <NavItem href="/lab" icon={SquareTerminal} label="CodeLabs" />
+        {/* <NavItem href="/dashboard/models" icon={Bot} label="Models" /> */}
+        {/* <NavItem href="/dashboard/codelab" icon={Code2} label="CodeLabs" /> */}
+      </nav>
+      <nav className="mt-auto grid gap-1 p-2">
+        <NavItem href="/dashboard/settings" icon={Settings2} label="Settings" />
+        <NavItem href="/dashboard/help" icon={LifeBuoy} label="Help" />
+        <NavItem href="/dashboard/account" icon={SquareUser} label="Account" />
+      </nav>
+    </aside>
+  );
+};
+
+export default SideNavBar;
