@@ -1,6 +1,12 @@
 import SideNavBar from "@/components/ui/sideNav";
 import { TooltipProvider } from "@radix-ui/react-tooltip";
 
+
+export const metadata = {
+    title: "JSCodeLabs",
+    description: "Your go-to platform for mastering frontend coding and system design, with real-world practice and interview simulations that lead to success.",
+};
+
 export default function RootLayout({
     children,
   }: {

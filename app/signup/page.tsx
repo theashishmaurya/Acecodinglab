@@ -6,6 +6,10 @@ import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { signUp } from './action'
 
+export const metadata = {
+  title: "SignUp",
+  description: "SignUp to JSCodeLabs",
+};
 
 function Page() {
   return (
@@ -59,9 +63,9 @@ function Page() {
             <Button type="submit" className="w-full" formAction={signUp}>
               Sign Up
             </Button>
-            <Button variant="outline" className="w-full">
+            {/* <Button variant="outline" className="w-full">
               Sign Up with Google
-            </Button>
+            </Button> */}
           </div>
           <div className="mt-4 text-center text-sm">
             Already have an account?{" "}

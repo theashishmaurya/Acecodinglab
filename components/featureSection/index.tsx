@@ -11,17 +11,17 @@ import { Youtube } from "lucide-react";
 export function FeaturesSection() {
   const features = [
     {
-      title: "Track issues effectively",
+      title: "Practice Frontend Coding Questions with Ease",
       description:
-        "Track and manage your project issues with ease using our intuitive interface.",
+        "Access a curated collection of frontend coding challenges, designed to enhance your problem-solving abilities and help you prepare for any interview.",
       skeleton: <SkeletonOne />,
       className:
         "col-span-1 lg:col-span-4 border-b lg:border-r dark:border-neutral-800",
     },
     {
-      title: "Capture pictures with AI",
+      title: "Automated Code Evaluation",
       description:
-        "Capture stunning photos effortlessly using our advanced AI technology.",
+        "Receive immediate, automated feedback on code quality, performance, and efficiency to improve with every practice session.",
       skeleton: <SkeletonTwo />,
       className: "border-b col-span-1 lg:col-span-2 dark:border-neutral-800",
     },
@@ -93,8 +93,10 @@ Ready to code smarter, faster, and better? Sign up now and take the first step t
         </h4>
 
         <p className="text-sm lg:text-base  max-w-2xl  my-4 mx-auto text-neutral-500 text-center font-normal dark:text-neutral-300">
-        Are you ready to ace your next technical interview and supercharge your coding skills? Look no further! Our cutting-edge platform offers a realistic coding environment that simulates real-world scenarios, complete with instant feedback        </p>
+        Are you ready to ace your next frontend technical interview? Our platform offers realistic coding challenges that mimic real-world scenarios, with instant feedback to sharpen your skills.
+        </p>
       </div>
+
 
       <div className="relative ">
         <div className="grid grid-cols-1 lg:grid-cols-6 mt-12 xl:border rounded-md dark:border-neutral-800">

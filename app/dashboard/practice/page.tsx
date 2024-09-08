@@ -32,7 +32,7 @@ import {
     TabsList,
     TabsTrigger,
   } from "@/components/ui/tabs"
-import QuestionTable from "@/components/practiceTable"
+import QuestionTable, { IQuestions } from "@/components/practiceTable"
 import { getListOfQuestion, readFromFolder } from "@/lib/readFromFolder"
 import Link from "next/link"
 
@@ -42,7 +42,7 @@ export default async function Page ({ searchParams }:any) {
   const activeTab = searchParams.tab || 'all';
 
 
-  let questions = [];
+  let questions:IQuestions[] = [];
 
   try {
     const data = await getListOfQuestion(); //from File system
@@ -108,7 +108,7 @@ export default async function Page ({ searchParams }:any) {
             <CardHeader>
               <CardTitle>Questions</CardTitle>
               <CardDescription>
-                Click to get started
+                Click on a question to get started
               </CardDescription>
             </CardHeader>
             <CardContent>
