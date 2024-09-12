@@ -19,6 +19,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { usePathname } from 'next/navigation';
+import { Card } from './card';
 
 interface NavItemProps {
   href: string;
@@ -53,17 +54,17 @@ const NavItem = ({ href, icon: Icon, label }: NavItemProps) => {
 
 export const SideNavBar = () => {
   return (
-    <aside className="inset-y fixed left-0 z-20 flex h-full flex-col border-r">
+    <Card className="inset-y fixed left-0 z-20 flex h-full flex-col border-r">
       <div className="border-b p-2">
         <Link href="/dashboard">
-          <Button variant="outline" size="icon" aria-label="Home">
+          <Button variant="ghost" size="icon" aria-label="Home">
             <Triangle className="size-5 fill-foreground" />
           </Button>
         </Link>
       </div>
       <nav className="grid gap-1 p-2">
         <NavItem href="/dashboard/practice" icon={Book} label="Question Bank" />
-        <NavItem href="/lab" icon={SquareTerminal} label="CodeLabs" />
+        <NavItem href="/lab" icon={SquareTerminal} label="CodeLabs"  />
         {/* <NavItem href="/dashboard/models" icon={Bot} label="Models" /> */}
         {/* <NavItem href="/dashboard/codelab" icon={Code2} label="CodeLabs" /> */}
       </nav>
@@ -72,7 +73,7 @@ export const SideNavBar = () => {
         <NavItem href="/dashboard/help" icon={LifeBuoy} label="Help" />
         <NavItem href="/dashboard/account" icon={SquareUser} label="Account" />
       </nav>
-    </aside>
+    </Card>
   );
 };
 

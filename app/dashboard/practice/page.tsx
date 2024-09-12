@@ -1,7 +1,5 @@
 import {
-    File,
     ListFilter,
-    PlusCircle,
   } from "lucide-react"
 
   
@@ -29,12 +27,10 @@ import {
   import {
     Tabs,
     TabsContent,
-    TabsList,
-    TabsTrigger,
+   
   } from "@/components/ui/tabs"
 import QuestionTable, { IQuestions } from "@/components/practiceTable"
 import { getListOfQuestion, readFromFolder } from "@/lib/readFromFolder"
-import Link from "next/link"
 
 
 export default async function Page ({ searchParams }:any) {

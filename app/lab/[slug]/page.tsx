@@ -3,25 +3,37 @@
 import React, { useState, useEffect } from 'react';
 import CodeEditor from "@/components/codeEditor";
 import { practiceSessionsAPI } from '@/db/practiceSession/practiceSession.client';
+import { getHelloWorld } from './action';
 
 export default function Page({ params }: { params: { slug: string } }) {
   const [content, setContent] = useState<any>({});
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [isSample,setIsSample] = useState(false)
 
   useEffect(() => {
-    async function fetchSessionData() {
+    const fetchSessionData = async () => {
+      setIsLoading(true);
+      setError(null);
+
       try {
-        setIsLoading(true);
-        const sessionData = await practiceSessionsAPI.getSession(params.slug);
-        setContent(JSON.parse(sessionData.current_code));
-      } catch (e) {
-        console.error(e);
-        setError('Failed to load session data');
+        if (params.slug === "sample") {
+          const sampleContent = await getHelloWorld();
+          setContent(sampleContent);
+          setIsSample(true);
+        } else {
+          const sessionData = await practiceSessionsAPI.getSession(params.slug);
+          setContent(JSON.parse(sessionData.current_code));
+          setIsSample(false);
+        }
+      } catch (error) {
+        console.error('Error fetching session data:', error);
+        setError('Failed to load session data. Please try again later.');
       } finally {
         setIsLoading(false);
       }
-    }
+    };
+
     fetchSessionData();
   }, [params.slug]);
 
@@ -35,7 +47,7 @@ export default function Page({ params }: { params: { slug: string } }) {
 
   return (
     <div>
-      <CodeEditor files={content} />
+      <CodeEditor files={content} isSample={isSample}  />
     </div>
   );
 }

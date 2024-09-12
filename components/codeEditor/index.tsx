@@ -6,6 +6,7 @@ import {
   SandpackCodeEditor,
   SandpackConsole,
   SandpackFileExplorer,
+  SandpackFiles,
   SandpackLayout,
   SandpackPreview,
   SandpackProvider,
@@ -215,7 +216,7 @@ const CustomPreview = (props : ICustomPreview) => {
   )
 }
 
- function Editor() {
+ function Editor({isSample}:{isSample:boolean}) {
   const [consoleVisibility, setConsoleVisibility] = React.useState(true);
   const [counter, setCouter] = useState(0);
   const dragEventTargetRef = React.useRef<any>(null);
@@ -244,9 +245,10 @@ const CustomPreview = (props : ICustomPreview) => {
   useEffect(() => {
     if (!sandpack.files) return;
 
-    console.log(sandpack.files);
-    debouncedUpdateCode(JSON.stringify(sandpack.files));
-  }, [sandpack.files, debouncedUpdateCode]);
+    if(!isSample){
+      debouncedUpdateCode(JSON.stringify(sandpack.files));
+    }
+  }, [sandpack.files, debouncedUpdateCode, isSample]);
 
 
 
@@ -502,7 +504,14 @@ const ConsoleCounterButton: React.FC<{
 };
 
 
-export default function CodeEditor ({files}:any){
+interface CodeEditorProps {
+  files:SandpackFiles,
+  isSample:boolean
+
+}
+
+
+export default function CodeEditor ({files,isSample}:CodeEditorProps){
   return (
     <SandpackProvider
         template="react"
@@ -519,7 +528,7 @@ export default function CodeEditor ({files}:any){
           },
         }}
       >
-        <Editor />
+        <Editor  isSample={isSample}/>
       </SandpackProvider>
   )
 

@@ -34,10 +34,10 @@ export default function RootLayout({
 }) {
 
   return (
-    <div className="grid h-screen w-full sm:py-4 ">
+    <div className="grid h-screen w-full ">
       <TooltipProvider >
         <SideNavBar />
-        <div className="flex flex-col flex-1 overflow-hidden  sm:px-24">
+        <div className="flex flex-col flex-1 overflow-hidden  sm:px-24 sm:py-4 ">
            <DashboardHeader />     
             <main className="flex-1 overflow-auto p-4">
             {children}

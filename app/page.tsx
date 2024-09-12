@@ -1,12 +1,19 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { Button } from "@/components/ui/button"
 
 import { FeaturesSection } from '@/components/featureSection'
 import { HowItWorks } from '@/components/howItWorks'
 import { ThreeDHeroCard } from '@/components/heroCard/heroCard'
+import createClient from '@/lib/supabase/supabaseServer'
 
-export default function Page() {
+export default async function Page() {
+
+
+  const supabase = createClient()
+  const user = await supabase.auth.getUser()
+
+
   return (
     <div className="min-h-screen bg-background text-foreground">
       {/* Navigation */}
@@ -16,7 +23,11 @@ export default function Page() {
           <Link href="#features" className="hover:text-primary">Features</Link>
           <Link href="#about" className="hover:text-primary">About</Link>
           <Link href="#pricing" className="hover:text-primary">Pricing</Link>
+          {user ? (
+          <Link href="/dashboard/practice"><Button variant="default">Dashboard</Button></Link>
+        ) : (
           <Link href="/signup"><Button variant="default">Sign Up</Button></Link>
+        )}        
         </div>
       </nav>
 
