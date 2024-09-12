@@ -55,7 +55,7 @@ const NavItem = ({ href, icon: Icon, label }: NavItemProps) => {
 export const SideNavBar = () => {
   return (
     <Card className="inset-y fixed left-0 z-20 flex h-full flex-col border-r">
-      <div className="border-b p-2">
+      <div className="border-b p-2 ">
         <Link href="/dashboard">
           <Button variant="ghost" size="icon" aria-label="Home">
             <Triangle className="size-5 fill-foreground" />
