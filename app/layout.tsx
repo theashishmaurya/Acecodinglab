@@ -1,6 +1,8 @@
 import { SandPackCSS } from "@/components/codeEditor/sandpack-styles";
 import "./globals.css";
 import { Inter as FontSans } from "next/font/google"
+import { Analytics } from "@vercel/analytics/react"
+
 
 
 
@@ -33,7 +35,9 @@ export default function RootLayout({
           "min-h-screen bg-background font-sans antialiased",
           fontSans.variable
         )}
-      >{children}</body>
+      >{children}
+      <Analytics/>
+      </body>
     </html>
   );
 }
