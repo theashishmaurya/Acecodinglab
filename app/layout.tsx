@@ -2,6 +2,7 @@ import { SandPackCSS } from "@/components/codeEditor/sandpack-styles";
 import "./globals.css";
 import { Inter as FontSans } from "next/font/google"
 import { Analytics } from "@vercel/analytics/react"
+import { SpeedInsights } from "@vercel/speed-insights/next"
 
 
 
@@ -37,6 +38,7 @@ export default function RootLayout({
         )}
       >{children}
       <Analytics/>
+      < SpeedInsights/>
       </body>
     </html>
   );
