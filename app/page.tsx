@@ -23,7 +23,7 @@ export default async function Page() {
           <Link href="#features" className="hover:text-primary">Features</Link>
           <Link href="#about" className="hover:text-primary">About</Link>
           <Link href="#pricing" className="hover:text-primary">Pricing</Link>
-          {user ? (
+          {user.data.user ? (
           <Link href="/dashboard/practice"><Button variant="default">Dashboard</Button></Link>
         ) : (
           <Link href="/signup"><Button variant="default">Sign Up</Button></Link>
