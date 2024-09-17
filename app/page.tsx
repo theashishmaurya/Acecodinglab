@@ -18,7 +18,7 @@ export default async function Page() {
     <div className="min-h-screen bg-background text-foreground">
       {/* Navigation */}
       <nav className="container mx-auto flex items-center justify-between p-4">
-        <Link href="/" className="text-2xl font-bold">JSCodeLabs</Link>
+        <Link href="/" className="text-2xl font-bold">AceCodingLab</Link>
         <div className="flex items-center space-x-4">
           <Link href="#features" className="hover:text-primary">Features</Link>
           <Link href="#about" className="hover:text-primary">About</Link>
@@ -139,9 +139,9 @@ export default async function Page() {
         <h2 className="text-3xl font-bold text-center mb-12">About Us</h2>
         <div className="max-w-3xl mx-auto text-center">
           <p className="mb-6">
-          JSCodeLabs was created by experienced frontend developers and hiring managers to help candidates master the practical side of frontend interviews through practice, assessment, and continuous improvement.          </p>
+          AceCodingLab was created by experienced frontend developers and hiring managers to help candidates master the practical side of frontend interviews through practice, assessment, and continuous improvement.          </p>
           <p>
-          At JSCodeLabs, our mission is to empower frontend developers by providing a comprehensive, real-world coding platform that bridges the gap between theory and practice. We aim to streamline the interview process for both candidates and employers, fostering skill development, confidence, and success in technical interviews. By offering cutting-edge tools, automated assessments, and personalized feedback, we are committed to transforming how frontend talent is assessed and hired globally.
+          At AceCodingLab, our mission is to empower frontend developers by providing a comprehensive, real-world coding platform that bridges the gap between theory and practice. We aim to streamline the interview process for both candidates and employers, fostering skill development, confidence, and success in technical interviews. By offering cutting-edge tools, automated assessments, and personalized feedback, we are committed to transforming how frontend talent is assessed and hired globally.
           </p>
         </div>
       </section>
@@ -159,7 +159,7 @@ export default async function Page() {
       <footer className="bg-background text-foreground py-8">
         <div className="container mx-auto flex flex-col md:flex-row justify-between items-center">
           <div className="mb-4 md:mb-0">
-            <p>&copy; 2024 JSCodeLabs. All rights reserved.</p>
+            <p>&copy; 2024 AceCodingLab. All rights reserved.</p>
           </div>
           <div className="flex space-x-4">
             <Link href="#" className="hover:text-primary">Terms of Service</Link>

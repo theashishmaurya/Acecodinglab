@@ -16,7 +16,7 @@ const fontSans = FontSans({
 
 
 export const metadata = {
-  title: "JSCodeLabs",
+  title: "AceCodingLab",
   description: "Your go-to platform for mastering frontend coding and system design, with real-world practice and interview simulations that lead to success.",
 };
 

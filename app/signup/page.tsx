@@ -8,7 +8,7 @@ import { signUp } from './action'
 
 export const metadata = {
   title: "SignUp",
-  description: "SignUp to JSCodeLabs",
+  description: "SignUp to AceCodingLab",
 };
 
 function Page() {
