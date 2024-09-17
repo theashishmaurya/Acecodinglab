@@ -25,6 +25,8 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
+  const isProduction = process.env.NEXT_PUBLIC_VERCEL_ENV === 'production';
+
   return (
        <html lang="en" suppressHydrationWarning className="dark">
       <head />
@@ -37,8 +39,12 @@ export default function RootLayout({
           fontSans.variable
         )}
       >{children}
-      <Analytics/>
-      < SpeedInsights/>
+      {isProduction && (
+          <>
+            <Analytics />
+            <SpeedInsights />
+          </>
+        )}
       </body>
     </html>
   );
