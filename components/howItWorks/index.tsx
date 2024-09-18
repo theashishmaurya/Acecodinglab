@@ -44,7 +44,7 @@ const content = [
 ];
 export function HowItWorks() {
   return (
-    <div className="p-10">
+    <div className="">
       <StickyScroll content={content} />
     </div>
   );
