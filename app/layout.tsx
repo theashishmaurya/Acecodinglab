@@ -8,17 +8,14 @@ import { SpeedInsights } from "@vercel/speed-insights/next"
 
 
 import { cn } from "@/lib/utils"
+import { metadata } from "./meta";
  
 const fontSans = FontSans({
   subsets: ["latin"],
   variable: "--font-sans",
 })
 
-
-export const metadata = {
-  title: "AceCodingLab",
-  description: "Your go-to platform for mastering frontend coding and system design, with real-world practice and interview simulations that lead to success.",
-};
+export {metadata}
 
 export default function RootLayout({
   children,
