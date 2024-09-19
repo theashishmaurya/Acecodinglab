@@ -14,7 +14,7 @@ const DynamicBreadcrumb = () => {
     const label = segment.charAt(0).toUpperCase() + segment.slice(1);
 
     return (
-      <BreadcrumbItem key={href}>
+      <BreadcrumbItem key={href} suppressHydrationWarning>
         {!isLast ? (
           <>
             <BreadcrumbLink asChild>

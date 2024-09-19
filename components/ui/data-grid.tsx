@@ -1,5 +1,5 @@
 "use client"
-import {useState} from "react"
+import {useEffect, useState} from "react"
 import {
   ColumnDef,
   ColumnFiltersState,
@@ -34,14 +34,23 @@ import {
 type DataTableProps = {
   data: Record<string, any>[]
   columns: ColumnDef<any>[]
+  onCheckChange?: (rows: Record<string, any>[])=>void
 }
 
 export function DataTable(props:DataTableProps) {
-    const {data,columns}  = props
+    const {data,columns,onCheckChange}  = props
     const [sorting, setSorting] = useState<SortingState>([])
     const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
     const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({})
     const [rowSelection, setRowSelection] = useState({})
+
+  useEffect(()=>{
+    const selectedRows = Object.entries(rowSelection).map(([key,value])=>{
+      return data[+key]
+    })
+    onCheckChange?.(selectedRows)
+  },[rowSelection, data])
+
   
     const table = useReactTable({
       data,
@@ -101,7 +110,7 @@ export function DataTable(props:DataTableProps) {
           </DropdownMenu>
         </div>
         <div className="rounded-md border">
-          <Table>
+          <Table className="h-4/5">
             <TableHeader>
               {table.getHeaderGroups().map((headerGroup) => (
                 <TableRow key={headerGroup.id}>

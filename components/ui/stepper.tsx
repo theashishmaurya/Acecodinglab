@@ -39,10 +39,10 @@ export default function Stepper({ steps = [], orientation = 'horizontal' ,onFini
   return (
     <div className={cn(
       "w-full pl-10 pr-4 py-4",
-      orientation === 'vertical' ? 'flex flex-col space-y-4' : 'flex flex-col'
+      orientation === 'vertical' ? 'flex flex-col space-y-4 h-full' : 'flex flex-col'
     )}>
       <div className={cn(
-        "flex gap-10 items-center"
+        "flex gap-10 items-start h-full"
       )}>
       <div className={cn(
         "flex mb-8 flex-1",
@@ -71,8 +71,9 @@ export default function Stepper({ steps = [], orientation = 'horizontal' ,onFini
           </div>
         ))}
       </div>
-
+      <div className='min-h-full'>
       <Separator orientation='vertical' className='h-60 w-1'/>
+      </div>
       <div className="w-full">
         <div className="text-muted-foreground">{steps[currentStep]?.content}</div>
       </div>

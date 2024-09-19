@@ -4,6 +4,8 @@ import { ColumnDef } from "@tanstack/react-table"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Button } from "../ui/button"
 import { ArrowUpDown } from "lucide-react"
+import { useEffect, useState } from "react"
+import { getListOfQuestions } from "./getQuestions.action"
   
   const data = [
     {
@@ -43,7 +45,7 @@ import { ArrowUpDown } from "lucide-react"
     },
   ]
 
-  export type Payment = {
+  export type QuestionTable = {
     id: string
     name: string
     difficulty: "Beginner" | "Intermediate" | "Advanced"
@@ -51,7 +53,7 @@ import { ArrowUpDown } from "lucide-react"
     author:string
   }
   
-  export const columns: ColumnDef<Payment>[] = [
+  const columns: ColumnDef<QuestionTable>[] = [
     {
       id: "select",
       header: ({ table }) => (
@@ -60,14 +62,19 @@ import { ArrowUpDown } from "lucide-react"
             table.getIsAllPageRowsSelected() ||
             (table.getIsSomePageRowsSelected() && "indeterminate")
           }
-          onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
+          onCheckedChange={(value) => {
+          table.toggleAllPageRowsSelected(!!value)
+          }}
           aria-label="Select all"
         />
       ),
       cell: ({ row }) => (
         <Checkbox
           checked={row.getIsSelected()}
-          onCheckedChange={(value) => row.toggleSelected(!!value)}
+          onCheckedChange={(value) => {
+            row.toggleSelected(!!value)
+          }
+          }
           aria-label="Select row"
         />
       ),
@@ -110,11 +117,28 @@ import { ArrowUpDown } from "lucide-react"
     },
     
   ]
+  
    
   export default function QuestionTable() {
+    const [data,setData] = useState<QuestionTable[]>([])
+    const [checkedRows,setOnCheckedRows]= useState<QuestionTable[]>([])
+
+    
+
+    useEffect(()=>{
+      getListOfQuestions().then((data)=>{
+        setData(data as QuestionTable[])
+      })
+    },[])
+
+    const handleRowChange = (data:unknown[])=>{
+      console.log(data)
+      setOnCheckedRows(data as QuestionTable[])
+    }
+
     return (
-      <div className="container mx-auto py-10">
-        <DataTable data={data} columns={columns} />
+      <div className="container mx-auto flex items-start">
+        <DataTable data={data} columns={columns} onCheckChange={handleRowChange}  />
       </div>
     )
   }
