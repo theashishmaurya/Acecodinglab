@@ -38,7 +38,10 @@ import {
   PopoverTrigger,
 } from '@/components/ui/popover';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import { useCreateInterview } from './context/createInterview.context';
+import {
+  timezones,
+  useCreateInterview,
+} from './context/createInterview.context';
 
 export default function DarkCalendarTimeSelector() {
   const {
@@ -95,18 +98,6 @@ export default function DarkCalendarTimeSelector() {
     setSelectedTime(time);
   };
 
-  const timezones = [
-    'UTC',
-    'America/New_York',
-    'America/Los_Angeles',
-    'Europe/London',
-    'Europe/Paris',
-    'Asia/Tokyo',
-    'Asia/Dubai',
-    'Australia/Sydney',
-    'Asia/Kolkata',
-  ];
-
   return (
     <Card className="flex p-6 rounded-lg w-full">
       <div className="flex-none w-64 pr-6 border-r border-gray-700">
@@ -118,15 +109,18 @@ export default function DarkCalendarTimeSelector() {
         <div className="space-y-4">
           <div className="flex items-center">
             <Clock className="w-5 h-5 mr-2" />
-            <Select value={duration} onValueChange={setDuration}>
+            <Select
+              value={`${duration}`}
+              onValueChange={value => setDuration(+value)}
+            >
               <SelectTrigger className="w-full bg-transparent border-gray-700">
                 <SelectValue placeholder="Select duration" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="15m">15 minutes</SelectItem>
-                <SelectItem value="30m">30 minutes</SelectItem>
-                <SelectItem value="45m">45 minutes</SelectItem>
-                <SelectItem value="60m">60 minutes</SelectItem>
+                <SelectItem value="15">15 minutes</SelectItem>
+                <SelectItem value="30">30 minutes</SelectItem>
+                <SelectItem value="45">45 minutes</SelectItem>
+                <SelectItem value="60">60 minutes</SelectItem>
               </SelectContent>
             </Select>
           </div>

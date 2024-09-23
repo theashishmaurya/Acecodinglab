@@ -1,3 +1,4 @@
+'use server';
 import createClient from '@/lib/supabase/supabaseServer';
 import { PostgrestError } from '@supabase/supabase-js';
 
@@ -11,54 +12,45 @@ export interface IInterviewTask {
 }
 
 export interface ICreateInterviewSession {
-  intervieweeEmail: string;
-  infoUrl?: string;
-  interviewerIntro?: string;
-  notes?: string;
-  selectedDate: string;
-  currentMonth: string;
-  timeFormat: string;
-  duration: string;
-  sendEmail: boolean;
-  selectedTimezone: string;
-  selectedTime: string;
-  checkedRows: any[]; // You might want to define a more specific type for this
-  filePreview?: string;
-  proctored: boolean;
-  tasks: IInterviewTask[];
+  p_description: string;
+  p_end_date: string;
+  p_invited_users?: string[];
+  p_is_public: boolean;
+  p_max_participants: string;
+  p_start_date: string;
+  p_tasks: object;
+  p_title: string;
+  p_duration: number;
 }
 
 export async function createInterviewSession(
   interviewSession: ICreateInterviewSession,
 ): Promise<{ success: boolean; error?: string; sessionId?: string }> {
   try {
-    // Prepare the data for the RPC call
+    const {
+      data: { user },
+      error: userError,
+    } = await supabase.auth.getUser();
+
+    if (userError) throw userError;
+    if (!user) throw new Error('User not authenticated');
+
     const rpcData = {
-      p_scheduled_start_time: `${interviewSession.selectedDate}T${interviewSession.selectedTime}:00${getTimezoneOffset(interviewSession.selectedTimezone)}`,
-      p_session_duration: parseDuration(interviewSession.duration),
-      p_status: 'scheduled',
-      p_proctored: interviewSession.proctored,
-      p_participant_email: interviewSession.intervieweeEmail,
-      p_participant_full_name: '', // You might want to add this to your form
-      p_participant_link: interviewSession.infoUrl,
-      p_participant_notes: interviewSession.notes,
-      p_participant_resume_url: interviewSession.filePreview,
-      p_tasks: interviewSession.tasks,
-      p_interviewer_intro: interviewSession.interviewerIntro,
-      p_time_format: interviewSession.timeFormat,
-      p_send_email: interviewSession.sendEmail,
-      p_timezone: interviewSession.selectedTimezone,
-      p_checked_rows: JSON.stringify(interviewSession.checkedRows),
-      p_current_month: interviewSession.currentMonth,
+      p_title: interviewSession.p_title,
+      p_description: interviewSession.p_description,
+      p_created_by: user.id,
+      p_start_date: interviewSession.p_start_date,
+      p_end_date: interviewSession.p_end_date,
+      p_max_participants: interviewSession.p_max_participants,
+      p_is_public: interviewSession.p_is_public,
+      p_tasks: interviewSession.p_tasks,
+      p_invited_users: interviewSession.p_invited_users || [],
+      p_duration: interviewSession.p_duration,
     };
 
     console.log(rpcData, 'RPC Data');
 
-    // Call the RPC function
-    const { data, error } = await supabase.rpc(
-      'create_interview_session',
-      rpcData,
-    );
+    const { data, error } = await supabase.rpc('create_interview_session', {});
 
     if (error) throw error;
 
@@ -71,21 +63,4 @@ export async function createInterviewSession(
     };
   }
 }
-
 // Helper functions
-
-function getTimezoneOffset(timezone: string): string {
-  const date = new Date();
-  const offsetMinutes = -date.getTimezoneOffset();
-  const offsetHours = Math.floor(Math.abs(offsetMinutes) / 60);
-  const offsetMinutesPart = Math.abs(offsetMinutes) % 60;
-  const sign = offsetMinutes >= 0 ? '+' : '-';
-  return `${sign}${offsetHours.toString().padStart(2, '0')}:${offsetMinutesPart.toString().padStart(2, '0')}`;
-}
-
-function parseDuration(duration: string): number {
-  const match = duration.match(/^(\d+)(m|h)$/);
-  if (!match) throw new Error('Invalid duration format');
-  const [, value, unit] = match;
-  return unit === 'h' ? parseInt(value) * 60 : parseInt(value);
-}

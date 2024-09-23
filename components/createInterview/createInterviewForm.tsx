@@ -1,21 +1,27 @@
-"use client"
+'use client';
 import React, { useRef, useState } from 'react';
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
-import { UploadIcon, PencilIcon, TrashIcon, FileIcon } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { CardContent } from "@/components/ui/card";
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Textarea } from '@/components/ui/textarea';
+import { UploadIcon, PencilIcon, TrashIcon, FileIcon } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { CardContent } from '@/components/ui/card';
 import { useCreateInterview } from './context/createInterview.context';
 
 const CreateInterviewForm = () => {
   const {
-    intervieweeEmail, setIntervieweeEmail,
-    infoUrl, setInfoUrl,
-    interviewerIntro, setInterviewerIntro,
-    notes, setNotes,
-    file, setFile,
-    filePreview, setFilePreview
+    intervieweeEmail,
+    setIntervieweeEmail,
+    title,
+    setTitle,
+    interviewerIntro,
+    setInterviewerIntro,
+    notes,
+    setNotes,
+    file,
+    setFile,
+    filePreview,
+    setFilePreview,
   } = useCreateInterview();
 
   const [fileError, setFileError] = useState<string | null>(null);
@@ -23,9 +29,9 @@ const CreateInterviewForm = () => {
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFile = e.target.files?.[0];
-      if (selectedFile) {
-        handleFile(selectedFile);
-      }
+    if (selectedFile) {
+      handleFile(selectedFile);
+    }
   };
 
   const handleFile = (selectedFile: File) => {
@@ -42,7 +48,8 @@ const CreateInterviewForm = () => {
       setFileError(null);
     } else if (
       fileType === 'application/msword' ||
-      fileType === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' ||
+      fileType ===
+        'application/vnd.openxmlformats-officedocument.wordprocessingml.document' ||
       fileExtension === 'doc' ||
       fileExtension === 'docx'
     ) {
@@ -81,41 +88,43 @@ const CreateInterviewForm = () => {
       <div className="space-y-4 flex-1">
         <h3 className="text-lg font-semibold">Interview Details</h3>
         <div className="space-y-2">
-          <Label htmlFor="interviewee-email" >Interviewee Email Address (Required)</Label>
-          <Input 
-            id="interviewee-email" 
-            placeholder="mrnobody@gmail.com" 
+          <Label htmlFor="interviewee-email">
+            Interviewee Email Address (Required)
+          </Label>
+          <Input
+            id="interviewee-email"
+            placeholder="mrnobody@gmail.com"
             value={intervieweeEmail}
             required
-            onChange={(e) => setIntervieweeEmail(e.target.value)}
+            onChange={e => setIntervieweeEmail(e.target.value)}
           />
         </div>
         <div className="space-y-2">
-          <Label htmlFor="info-url">Interviewee Information URL (Required)</Label>
-          <Input 
+          <Label htmlFor="info-url">Interview Title (Required)</Label>
+          <Input
             required
-            id="info-url" 
-            placeholder="https://www.behance.net/farhanzahid2" 
-            value={infoUrl}
-            onChange={(e) => setInfoUrl(e.target.value)}
+            id="info-url"
+            placeholder="Please Enter the title"
+            value={title}
+            onChange={e => setTitle(e.target.value)}
           />
         </div>
-        <div className="space-y-2">
+        {/* <div className="space-y-2">
           <Label htmlFor="interviewer-intro">Interviewee Introduction</Label>
-          <Textarea 
-            id="interviewer-intro" 
-            placeholder="Enter introduction here" 
+          <Textarea
+            id="interviewer-intro"
+            placeholder="Enter introduction here"
             value={interviewerIntro}
-            onChange={(e) => setInterviewerIntro(e.target.value)}
+            onChange={e => setInterviewerIntro(e.target.value)}
           />
-        </div>
+        </div> */}
         <div className="space-y-2">
           <Label htmlFor="notes">Notes</Label>
-          <Textarea 
-            id="notes" 
-            placeholder="Enter notes here" 
+          <Textarea
+            id="notes"
+            placeholder="Enter notes here"
             value={notes}
-            onChange={(e) => setNotes(e.target.value)}
+            onChange={e => setNotes(e.target.value)}
           />
         </div>
       </div>
@@ -123,7 +132,11 @@ const CreateInterviewForm = () => {
         <div className="flex items-center justify-between">
           <h3 className="text-lg font-semibold">Upload Resume (Required)</h3>
           <div className="flex space-x-2">
-            <Button size="icon" variant="ghost" onClick={() => fileInputRef.current?.click()}>
+            <Button
+              size="icon"
+              variant="ghost"
+              onClick={() => fileInputRef.current?.click()}
+            >
               <PencilIcon className="h-4 w-4" />
             </Button>
             <Button size="icon" variant="ghost" onClick={handleDelete}>
@@ -131,7 +144,7 @@ const CreateInterviewForm = () => {
             </Button>
           </div>
         </div>
-        <div 
+        <div
           className="flex items-center justify-center rounded-lg border-2 border-dashed p-12"
           onDragOver={handleDragOver}
           onDrop={handleDrop}
@@ -140,7 +153,12 @@ const CreateInterviewForm = () => {
           {file ? (
             <div className="text-center">
               {filePreview ? (
-                <embed src={filePreview} type="application/pdf" width="100%" height="200px" />
+                <embed
+                  src={filePreview}
+                  type="application/pdf"
+                  width="100%"
+                  height="200px"
+                />
               ) : (
                 <FileIcon className="mx-auto h-12 w-12 text-blue-500" />
               )}
@@ -149,15 +167,17 @@ const CreateInterviewForm = () => {
           ) : (
             <div className="text-center">
               <UploadIcon className="mx-auto h-12 w-12 text-gray-400" />
-              <p className="mt-2 text-sm text-blue-500">Click to Upload or drag and drop</p>
+              <p className="mt-2 text-sm text-blue-500">
+                Click to Upload or drag and drop
+              </p>
               <p className="text-xs text-gray-500">PDF </p>
             </div>
           )}
         </div>
         {fileError && <p className="text-red-500 text-sm">{fileError}</p>}
-        <input 
+        <input
           required
-          type="file" 
+          type="file"
           ref={fileInputRef}
           className="hidden"
           accept=".pdf"

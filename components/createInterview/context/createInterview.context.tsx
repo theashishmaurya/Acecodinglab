@@ -5,12 +5,25 @@ import {
   createInterviewSession,
   ICreateInterviewSession,
 } from '@/db/interview/createInterview';
+import { createClient } from '@/lib/supabase/supabaseClient';
+
+export const timezones = [
+  'UTC',
+  'America/New_York',
+  'America/Los_Angeles',
+  'Europe/London',
+  'Europe/Paris',
+  'Asia/Tokyo',
+  'Asia/Dubai',
+  'Australia/Sydney',
+  'Asia/Kolkata',
+];
 
 interface CreateInterviewContextType {
   intervieweeEmail: string;
   setIntervieweeEmail: (email: string) => void;
-  infoUrl: string;
-  setInfoUrl: (url: string) => void;
+  title: string;
+  setTitle: (url: string) => void;
   interviewerIntro: string;
   setInterviewerIntro: (intro: string) => void;
   notes: string;
@@ -21,8 +34,8 @@ interface CreateInterviewContextType {
   setCurrentMonth: (date: Date) => void;
   timeFormat: '12h' | '24h';
   setTimeFormat: (format: '12h' | '24h') => void;
-  duration: string;
-  setDuration: (duration: string) => void;
+  duration: number;
+  setDuration: (duration: number) => void;
   sendEmail: boolean;
   setSendEmail: (send: boolean) => void;
   selectedTimezone: string;
@@ -38,6 +51,8 @@ interface CreateInterviewContextType {
   handleSubmit: () => void;
 }
 
+const supabase = createClient();
+
 const CreateInterviewContext = createContext<
   CreateInterviewContextType | undefined
 >(undefined);
@@ -46,7 +61,7 @@ export const CreateInterviewProvider: React.FC<{ children: ReactNode }> = ({
   children,
 }) => {
   const [intervieweeEmail, setIntervieweeEmail] = useState('');
-  const [infoUrl, setInfoUrl] = useState('');
+  const [title, setTitle] = useState('');
   const [interviewerIntro, setInterviewerIntro] = useState('');
   const [notes, setNotes] = useState('');
   // Date when the interview will be live from
@@ -54,7 +69,7 @@ export const CreateInterviewProvider: React.FC<{ children: ReactNode }> = ({
   const [currentMonth, setCurrentMonth] = useState(new Date());
   const [timeFormat, setTimeFormat] = useState<'12h' | '24h'>('24h');
   // Duration of the whole interview
-  const [duration, setDuration] = useState('30m');
+  const [duration, setDuration] = useState<number>(30);
   const [sendEmail, setSendEmail] = useState(true);
 
   //Time Zone
@@ -66,39 +81,98 @@ export const CreateInterviewProvider: React.FC<{ children: ReactNode }> = ({
   const [file, setFile] = useState<File | null>(null);
   const [filePreview, setFilePreview] = useState<string | null>(null);
 
+  const getTimezoneOffset = (timezone: string, date: Date): string => {
+    const formatter = new Intl.DateTimeFormat('en-US', {
+      timeZone: timezone,
+      timeZoneName: 'longOffset',
+      year: 'numeric',
+      month: 'numeric',
+      day: 'numeric',
+      hour: 'numeric',
+      minute: 'numeric',
+      second: 'numeric',
+    });
+
+    const parts = formatter.formatToParts(date);
+    let offset = parts.find(part => part.type === 'timeZoneName')?.value || '';
+    offset = offset.replace('GMT', '');
+
+    // Ensure the offset is in the correct format (±HH:mm)
+    if (offset.length === 3) {
+      offset = offset.slice(0, 1) + '0' + offset.slice(1) + ':00';
+    } else if (offset.length === 5 && !offset.includes(':')) {
+      offset = offset.slice(0, 3) + ':' + offset.slice(3);
+    }
+
+    return offset;
+  };
+
+  const createTimestamptz = (
+    date: Date,
+    time: string,
+    timezone: string,
+  ): string => {
+    const [hours, minutes] = time.split(':');
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+
+    const offset = getTimezoneOffset(timezone, date);
+
+    // Construct the timestamptz string
+    return `${year}-${month}-${day}T${hours}:${minutes}:00${offset}`;
+  };
+
+  const addDays = (date: Date, days: number): Date => {
+    const result = new Date(date);
+    result.setDate(result.getDate() + days);
+    return result;
+  };
+
   const handleSubmit = async () => {
     if (!selectedTime) {
       console.error('Selected time is required');
       return;
     }
 
-    const interviewData: ICreateInterviewSession = {
-      intervieweeEmail,
-      infoUrl,
-      interviewerIntro,
-      notes,
-      selectedDate: selectedDate.toISOString().split('T')[0], // Format as YYYY-MM-DD
-      currentMonth: currentMonth.toISOString(),
-      timeFormat,
-      duration,
-      sendEmail,
-      selectedTimezone,
+    const startDate = selectedDate;
+    const endDate = addDays(startDate, 30);
+
+    const startTimestamptz = createTimestamptz(
+      startDate,
       selectedTime,
-      filePreview: filePreview || undefined,
-      proctored: false, // Set this based on your requirements
-      tasks: tasks.map((task, index) => ({
-        ...task,
-        task_order: index + 1,
-      })),
+      selectedTimezone,
+    );
+    const endTimestamptz = createTimestamptz(
+      endDate,
+      selectedTime,
+      selectedTimezone,
+    );
+
+    const user = (await supabase.auth.getUser()).data.user;
+    const interviewData = {
+      p_description: notes,
+      p_end_date: endTimestamptz,
+      p_is_public: true,
+      p_max_participants: `${200}`,
+      p_start_date: startTimestamptz,
+      p_tasks: tasks.map(task => task.key),
+      p_title: title,
+      p_duration: duration,
+      p_invited_users: null,
+      p_created_by: user?.id,
     };
 
-    const result = await createInterviewSession(interviewData);
+    const { data, error } = await supabase.rpc(
+      'create_interview_session',
+      interviewData,
+    );
 
-    if (result.success) {
-      console.log('Interview session created successfully:', result.sessionId);
+    if (data) {
+      console.log('Interview session created successfully:', data);
       // Handle success (e.g., show a success message, redirect, etc.)
     } else {
-      console.error('Failed to create interview session:', result.error);
+      console.error('Failed to create interview session:', error);
       // Handle error (e.g., show an error message)
     }
   };
@@ -108,8 +182,8 @@ export const CreateInterviewProvider: React.FC<{ children: ReactNode }> = ({
       value={{
         intervieweeEmail,
         setIntervieweeEmail,
-        infoUrl,
-        setInfoUrl,
+        title,
+        setTitle,
         interviewerIntro,
         setInterviewerIntro,
         notes,
