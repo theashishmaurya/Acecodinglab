@@ -1,0 +1,39 @@
+import React, { useState } from 'react';
+
+# Accordion Component Challenge
+
+## Overview
+
+Your task is to implement an Accordion component in React. The Accordion should display a list of items, each with a title and some hidden content. Clicking on an item's title should toggle the visibility of its content.
+
+## Requirements
+
+1. Use the provided `questions` array from `./data` to render accordion items.
+2. Each accordion item should display its title.
+3. Clicking on an item's title should show/hide its content.
+4. Only one item's content should be visible at a time.
+5. Use React hooks for state management.
+6. The toggle button should show '+' when content is hidden and '-' when content is visible.
+
+
+
+## Expected Result
+
+When implemented correctly, your Accordion component should:
+
+1. Display a list of questions from the provided data.
+2. Show only the titles of the questions initially.
+3. When a title is clicked:
+   - If it was closed, it should open and display its content.
+   - If it was open, it should close and hide its content.
+4. Only one question's content should be visible at a time.
+5. The toggle button should show '+' when content is hidden and '-' when content is visible.
+
+
+## Hints
+
+- Consider using the `useState` hook to manage the state of each accordion item.
+- You might want to lift the state up to the parent component to ensure only one item is open at a time.
+- Remember to handle the toggle functionality for each accordion item independently.
+
+Good luck with your implementation!
