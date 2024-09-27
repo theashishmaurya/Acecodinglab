@@ -1,15 +1,16 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import CodeEditor from "@/components/codeEditor";
+import CodeEditor from '@/components/codeEditor';
 import { practiceSessionsAPI } from '@/db/practiceSession/practiceSession.client';
 import { getHelloWorld } from './action';
+import { CodeEditorMode } from '@/components/codeEditor/types';
 
 export default function Page({ params }: { params: { slug: string } }) {
   const [content, setContent] = useState<any>({});
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [isSample,setIsSample] = useState(false)
+  const [isSample, setIsSample] = useState(false);
 
   useEffect(() => {
     const fetchSessionData = async () => {
@@ -17,7 +18,7 @@ export default function Page({ params }: { params: { slug: string } }) {
       setError(null);
 
       try {
-        if (params.slug === "sample") {
+        if (params.slug === 'sample') {
           const sampleContent = await getHelloWorld();
           setContent(sampleContent);
           setIsSample(true);
@@ -47,7 +48,11 @@ export default function Page({ params }: { params: { slug: string } }) {
 
   return (
     <div>
-      <CodeEditor files={content} isSample={isSample}  />
+      <CodeEditor
+        files={content}
+        isSample={isSample}
+        mode={CodeEditorMode.PRACTICE}
+      />
     </div>
   );
 }
