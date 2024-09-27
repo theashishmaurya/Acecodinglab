@@ -6,9 +6,6 @@ import { ReactNode } from 'react';
 import CodeEditor from '@/components/codeEditor';
 import { CodeEditorMode } from '@/components/codeEditor/types';
 
-export const description =
-  'A products dashboard with a sidebar navigation and a main content area. The dashboard has a header with a search input and a user menu. The sidebar has a logo, navigation links, and a card with a call to action. The main content area shows an empty state with a call to action.';
-
 const navItems = [
   { number: '1', text: 'Matrix Multiplication', href: '#', active: false },
   { number: '2', text: 'React toastify', href: '#', active: false },
