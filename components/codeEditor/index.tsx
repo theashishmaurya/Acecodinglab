@@ -32,6 +32,7 @@ import { practiceSessionsAPI } from '@/db/practiceSession/practiceSession.client
 import { useParams } from 'next/navigation';
 import { useDebouncedCallback } from 'use-debounce';
 import { Spec } from '@codesandbox/sandpack-react/components/Tests/Specs';
+import { CodeEditorMode } from './types';
 
 type HeadingProps = React.DetailedHTMLProps<
   React.HTMLAttributes<HTMLHeadingElement>,
@@ -69,34 +70,34 @@ type PreProps = React.DetailedHTMLProps<
 // Custom components for MDX
 const components: MDXComponents = {
   h1: (props: HeadingProps) => (
-    <h1 className='text-3xl font-bold my-4' {...props} />
+    <h1 className="text-3xl font-bold my-4" {...props} />
   ),
   h2: (props: HeadingProps) => (
-    <h2 className='text-2xl font-bold my-3' {...props} />
+    <h2 className="text-2xl font-bold my-3" {...props} />
   ),
   h3: (props: HeadingProps) => (
-    <h3 className='text-xl font-bold my-2' {...props} />
+    <h3 className="text-xl font-bold my-2" {...props} />
   ),
   h4: (props: HeadingProps) => (
-    <h4 className='text-lg font-bold my-2' {...props} />
+    <h4 className="text-lg font-bold my-2" {...props} />
   ),
-  p: (props: ParagraphProps) => <p className='my-2' {...props} />,
+  p: (props: ParagraphProps) => <p className="my-2" {...props} />,
   ul: (props: ListProps) => (
-    <ul className='list-disc list-inside my-2' {...props} />
+    <ul className="list-disc list-inside my-2" {...props} />
   ),
   ol: (
     props: React.DetailedHTMLProps<
       React.OlHTMLAttributes<HTMLOListElement>,
       HTMLOListElement
-    >
-  ) => <ol className='list-decimal pl-4 my-2' {...props} />,
-  li: (props: ListItemProps) => <li className='my-1' {...props} />,
+    >,
+  ) => <ol className="list-decimal pl-4 my-2" {...props} />,
+  li: (props: ListItemProps) => <li className="my-1" {...props} />,
   a: (props: AnchorProps) => (
-    <a className='text-blue-500 hover:underline' {...props} />
+    <a className="text-blue-500 hover:underline" {...props} />
   ),
   blockquote: (props: BlockquoteProps) => (
     <blockquote
-      className='border-l-4 border-gray-300 pl-4 italic my-2'
+      className="border-l-4 border-gray-300 pl-4 italic my-2"
       {...props}
     />
   ),
@@ -105,12 +106,12 @@ const components: MDXComponents = {
     return match ? (
       <code className={`${className} block p-2 rounded`} {...props} />
     ) : (
-      <code className='bg-gray-700 rounded px-1' {...props} />
+      <code className="bg-gray-700 rounded px-1" {...props} />
     );
   },
   pre: (props: PreProps) => (
     <pre
-      className='bg-gray-800 text-white p-4 rounded my-4 overflow-x-auto'
+      className="bg-gray-800 text-white p-4 rounded my-4 overflow-x-auto"
       {...props}
     />
   ),
@@ -142,7 +143,7 @@ const CustomBottomPanel = (props: CustomBottomPanel) => {
     <>
       {isBottomPanelVisible && (
         <div
-          className='console-wrapper w-full overflow-hidden'
+          className="console-wrapper w-full overflow-hidden"
           style={{
             flexGrow: consoleVisibility ? 100 - verticalSize : 0,
             flexShrink: consoleVisibility ? 100 - verticalSize : 0,
@@ -151,7 +152,8 @@ const CustomBottomPanel = (props: CustomBottomPanel) => {
             maxHeight: consoleVisibility
               ? `calc(${100 - verticalSize}% - 1px)`
               : 0,
-          }}>
+          }}
+        >
           {!testVisibility && (
             <SandpackConsole
               className={classNames('overflow-y', [
@@ -166,7 +168,7 @@ const CustomBottomPanel = (props: CustomBottomPanel) => {
           )}
           {testVisibility ? (
             <SandpackTests
-              className='h-full min-h-full block'
+              className="h-full min-h-full block"
               onComplete={onTestComplete}
             />
           ) : null}
@@ -177,7 +179,6 @@ const CustomBottomPanel = (props: CustomBottomPanel) => {
 };
 
 interface ICustomPreview {
-  actionsChildren: JSX.Element;
   style?: React.CSSProperties;
 }
 
@@ -187,8 +188,8 @@ interface MDFileState {
   mdxSource: MDXRemoteSerializeResult | null;
 }
 
-const CustomPreview = (props: ICustomPreview) => {
-  const { actionsChildren, style } = props;
+const CustomEditor = (props: ICustomPreview) => {
+  const { style } = props;
 
   const { sandpack } = useSandpack();
   const { files, activeFile, runSandpack } = sandpack;
@@ -235,7 +236,7 @@ const CustomPreview = (props: ICustomPreview) => {
   return (
     <>
       {mdFile.isMdFile ? (
-        <div className='markdown-preview p-4 overflow-auto'>
+        <div className="markdown-preview p-4 overflow-auto" style={style}>
           {mdFile.content && (
             <MDXRemote
               compiledSource={mdFile.mdxSource?.compiledSource || ''}
@@ -246,14 +247,7 @@ const CustomPreview = (props: ICustomPreview) => {
           )}
         </div>
       ) : (
-        <SandpackPreview
-          actionsChildren={actionsChildren}
-          style={style}
-          showNavigator={true}
-          showOpenInCodeSandbox={true}
-          showRefreshButton={true}
-          showSandpackErrorOverlay={true}
-        />
+        <SandpackCodeEditor style={{ ...style, overflow: 'hidden' }} />
       )}
     </>
   );
@@ -276,12 +270,12 @@ function Editor({ isSample }: { isSample: boolean }) {
 
   const debouncedUpdateCode = useDebouncedCallback(
     (code: string) => {
-      practiceSessionsAPI.updateSessionCode(slug, code).catch((error) => {
+      practiceSessionsAPI.updateSessionCode(slug, code).catch(error => {
         console.error('Failed to update session code:', error);
         // You might want to show an error message to the user here
       });
     },
-    3000 // Debounce for 3 second
+    3000, // Debounce for 3 second
   );
 
   useEffect(() => {
@@ -325,7 +319,7 @@ function Editor({ isSample }: { isSample: boolean }) {
       onClick={(): void => {
         testVisibility
           ? setTestVisibility(false)
-          : setConsoleVisibility((prev) => !prev);
+          : setConsoleVisibility(prev => !prev);
       }}
     />
   );
@@ -355,7 +349,7 @@ function Editor({ isSample }: { isSample: boolean }) {
       setVerticalSize(boundaries);
     }
 
-    container.querySelectorAll(`.sp-stack`).forEach((item) => {
+    container.querySelectorAll(`.sp-stack`).forEach(item => {
       (item as HTMLDivElement).style.pointerEvents = 'none';
     });
   };
@@ -367,7 +361,7 @@ function Editor({ isSample }: { isSample: boolean }) {
 
     if (!container) return;
 
-    container.querySelectorAll(`.sp-stack`).forEach((item) => {
+    container.querySelectorAll(`.sp-stack`).forEach(item => {
       (item as HTMLDivElement).style.pointerEvents = '';
     });
 
@@ -395,8 +389,8 @@ function Editor({ isSample }: { isSample: boolean }) {
     console.log(specs, 'Specs');
 
     if (isSubmitting) {
-      const allTestsPassed = Object.values(specs).every((file) =>
-        Object.values(file.tests).every((test) => test.status === 'pass')
+      const allTestsPassed = Object.values(specs).every(file =>
+        Object.values(file.tests).every(test => test.status === 'pass'),
       );
 
       if (allTestsPassed) {
@@ -417,7 +411,7 @@ function Editor({ isSample }: { isSample: boolean }) {
         console.log('Submission successful');
         // Handle successful submission (e.g., show a success message)
       })
-      .catch((error) => {
+      .catch(error => {
         console.error('Failed to submit session:', error);
         // Handle submission error (e.g., show an error message)
       })
@@ -426,23 +420,23 @@ function Editor({ isSample }: { isSample: boolean }) {
       });
   };
 
+  const EditorStyle = {
+    height: '100%', // use the original editor height
+    flexGrow: horizontalSize,
+    flexShrink: horizontalSize,
+    flexBasis: 0,
+  };
+
   return (
     <>
       <SandpackLayout
         style={{
           height: '86vh',
-        }}>
+        }}
+      >
         {showFile ? <SandpackFileExplorer style={{ height: '100%' }} /> : null}
 
-        <SandpackCodeEditor
-          style={{
-            height: '100%', // use the original editor height
-            flexGrow: horizontalSize,
-            flexShrink: horizontalSize,
-            flexBasis: 0,
-            overflow: 'hidden',
-          }}
-        />
+        <CustomEditor style={EditorStyle} />
 
         <div
           className={classNames('resize-handler', [])}
@@ -451,21 +445,29 @@ function Editor({ isSample }: { isSample: boolean }) {
             width: 10,
             cursor: 'ew-resize',
           }}
-          data-direction='horizontal'
+          data-direction="horizontal"
           onMouseDown={(event): void => {
             dragEventTargetRef.current = event.target;
           }}
         />
         <RightColumn {...rightColumnProps}>
-          <CustomPreview
+          <SandpackPreview
+            actionsChildren={actionsChildren}
+            style={topRowStyle}
+            showNavigator={true}
+            showOpenInCodeSandbox={true}
+            showRefreshButton={true}
+            showSandpackErrorOverlay={true}
+          />
+          {/* <CustomPreview
             style={topRowStyle}
             actionsChildren={actionsChildren}
-          />
+          /> */}
           <div
             className={classNames('resize-handler', [
               // dragHandler({ direction: "vertical" }),
             ])}
-            data-direction='vertical'
+            data-direction="vertical"
             onMouseDown={(event): void => {
               dragEventTargetRef.current = event.target;
             }}
@@ -485,8 +487,8 @@ function Editor({ isSample }: { isSample: boolean }) {
           />
         </RightColumn>
       </SandpackLayout>
-      <div className='flex justify-between items-end w-full my-4'>
-        <div className='mx-2'>
+      <div className="flex justify-between items-end w-full my-4">
+        <div className="mx-2">
           {/* <CountDown
           hr={0}
           min={0}
@@ -495,17 +497,18 @@ function Editor({ isSample }: { isSample: boolean }) {
           autoStart={false}
           /> */}
         </div>
-        <div className='flex justify-end items-end'>
-          <div className='mx-2'>
+        <div className="flex justify-end items-end">
+          <div className="mx-2">
             <Button
               // Dark theme button
               onClick={() => setTestVisibility(true)}
-              size={'sm'}>
+              size={'sm'}
+            >
               Test
             </Button>
           </div>
-          <div className='mx-2'>
-            <Button size='sm' onClick={handleSubmit} disabled={isSubmitting}>
+          <div className="mx-2">
+            <Button size="sm" onClick={handleSubmit} disabled={isSubmitting}>
               {isSubmitting ? 'Submitting...' : 'Submit'}
             </Button>
           </div>
@@ -520,7 +523,7 @@ const ConsoleCounterButton: React.FC<{
   counter: number;
 }> = ({ onClick, counter }) => {
   return (
-    <RoundedButton className='relative min-w-[12px]' onClick={onClick}>
+    <RoundedButton className="relative min-w-[12px]" onClick={onClick}>
       <ConsoleIcon />
       {/* {counter > 0 && (
         <strong className=" min-w-12 h-12 px-2 rounded-full text-xs leading-4 absolute top-0  right-0 font-normal p-10">
@@ -533,14 +536,19 @@ const ConsoleCounterButton: React.FC<{
 
 interface CodeEditorProps {
   files: SandpackFiles;
+  mode: CodeEditorMode;
   isSample: boolean;
 }
 
-export default function CodeEditor({ files, isSample }: CodeEditorProps) {
+export default function CodeEditor({
+  files,
+  isSample,
+  mode = CodeEditorMode.PRACTICE,
+}: CodeEditorProps) {
   return (
     <SandpackProvider
-      template='react'
-      theme='dark'
+      template="react"
+      theme="dark"
       files={files}
       options={{
         autorun: true,
@@ -551,7 +559,8 @@ export default function CodeEditor({ files, isSample }: CodeEditorProps) {
           '@testing-library/jest-dom': '5.11.4',
           '@testing-library/react': '11.2.7',
         },
-      }}>
+      }}
+    >
       <Editor isSample={isSample} />
     </SandpackProvider>
   );
