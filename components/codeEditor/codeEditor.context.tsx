@@ -20,6 +20,10 @@ const supabase = createClient();
 interface CodeEditorContextType {
   language: string;
   setLanguage: React.Dispatch<React.SetStateAction<string>>;
+
+  tasks: InterviewTasks[];
+  setCurrentTask: React.Dispatch<React.SetStateAction<InterviewTasks | null>>;
+  currentTask: InterviewTasks | null;
 }
 
 // Create the context with a default value
@@ -38,7 +42,7 @@ interface InterviewTasks {
   code_snapshot: string;
   submitted_at: string;
   template_id: string;
-  templateName: string;
+  template_name: string;
   attempted: boolean;
 }
 // Create a provider component
@@ -49,16 +53,13 @@ export const CodeEditorProvider: React.FC<CodeEditorProviderProps> = ({
    * All the tasks we get from the backend, also we need to continously keep writting to the local state as user changes the code
    */
   const [tasks, setTasks] = useState<InterviewTasks[]>([]);
-  /**
-   * SelectedTask keeps the track of which task is selected
-   */
-  const [selectedTask, setSelectedTaks] = useState<number>(0);
 
   /**
-   * Current Session details here
+   * Current Task details here
    */
 
-  const [currentSession, setCurrentSession] = useState();
+  const [currentTask, setCurrentTask] = useState<InterviewTasks | null>(null);
+  const [language, setLanguage] = useState<string>('typescript');
 
   const { slug } = useParams();
 
@@ -67,30 +68,29 @@ export const CodeEditorProvider: React.FC<CodeEditorProviderProps> = ({
   }, [slug]);
 
   const getSessions = async (id: string) => {
-    const sessionDetails = await supabase
-      .from('interview_sessions')
-      .select('*')
-      .eq('id', id);
-    const { data, error } = await supabase
-      .from('interview_sessions')
-      .select('*')
-      .eq('id', id);
+    try {
+      const { data, error } = await supabase
+        .from('interview_sessions')
+        .select('*')
+        .eq('id', id);
 
-    if (error) {
-      console.error('Error fetching sessions:', error);
-      return null;
+      if (error) {
+        return error;
+      }
+
+      const { tasks } = data[0];
+      const getAllQuestions = await getListOfQuestions();
+
+      const tasksList = getAllQuestions.filter(question => {
+        return (tasks as string[]).includes(question.key);
+      });
+
+      await createInterviewAttempt(id, tasksList);
+
+      return data;
+    } catch (error) {
+      console.error(error, 'Something went wring with  getting session');
     }
-
-    const { tasks } = data[0];
-    const getAllQuestions = await getListOfQuestions();
-
-    const tasksList = getAllQuestions.filter(question => {
-      return (tasks as string[]).includes(question.key);
-    });
-
-    await createInterviewAttempt(id, tasksList);
-
-    return sessionDetails;
   };
 
   const createInterviewAttempt = async (
@@ -212,11 +212,13 @@ export const CodeEditorProvider: React.FC<CodeEditorProviderProps> = ({
   const handleStartInterview = () => {};
 
   const Submit = () => {};
-  const [language, setLanguage] = useState<string>('typescript');
 
   const value: CodeEditorContextType = {
     language,
     setLanguage,
+    tasks,
+    setCurrentTask,
+    currentTask,
   };
 
   return (
