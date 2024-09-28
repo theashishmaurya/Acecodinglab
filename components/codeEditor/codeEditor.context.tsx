@@ -9,6 +9,8 @@ import React, {
 import { CodeEditorMode } from './types';
 import { useParams } from 'next/navigation';
 import { createClient } from '@/lib/supabase/supabaseClient';
+import { getListOfQuestions } from '../createInterview/getQuestions.action';
+import { IQuestions } from '../practiceTable';
 
 // Supabase Initialization
 
@@ -30,6 +32,15 @@ interface CodeEditorProviderProps {
   children: ReactNode;
 }
 
+interface InterviewTasks {
+  id: string;
+  attempt_id: string;
+  code_snapshot: string;
+  submitted_at: string;
+  template_id: string;
+  templateName: string;
+  attempted: boolean;
+}
 // Create a provider component
 export const CodeEditorProvider: React.FC<CodeEditorProviderProps> = ({
   children,
@@ -37,7 +48,7 @@ export const CodeEditorProvider: React.FC<CodeEditorProviderProps> = ({
   /**
    * All the tasks we get from the backend, also we need to continously keep writting to the local state as user changes the code
    */
-  const [tasks, setTasks] = useState<string[]>([]);
+  const [tasks, setTasks] = useState<InterviewTasks[]>([]);
   /**
    * SelectedTask keeps the track of which task is selected
    */
@@ -71,19 +82,126 @@ export const CodeEditorProvider: React.FC<CodeEditorProviderProps> = ({
     }
 
     const { tasks } = data[0];
-    console.log(tasks);
+    const getAllQuestions = await getListOfQuestions();
+
+    const tasksList = getAllQuestions.filter(question => {
+      return (tasks as string[]).includes(question.key);
+    });
+
+    await createInterviewAttempt(id, tasksList);
+
     return sessionDetails;
   };
 
-  const createInterviewAttempt = () => {
+  const createInterviewAttempt = async (
+    sessionId: string,
+    taskList: IQuestions[],
+  ) => {
     /**
      * Check if a interview attempt for user exist for same interview session
      *
      * if not create new
      */
+
+    try {
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
+
+      const userAttempt = await getUserAttempt(
+        slug as string,
+        user?.id as string,
+      );
+
+      if (userAttempt && userAttempt?.length < 1) {
+        const createAttemptPayload = {
+          session_id: sessionId,
+          user_id: user?.id,
+        };
+        const { data: attempt_data, error } = await supabase
+          .from('interview_attempts')
+          .insert(createAttemptPayload)
+          .select('*');
+
+        if (error) {
+          throw error;
+        }
+
+        taskList.forEach(async task => {
+          const taskPayload = {
+            attempt_id: attempt_data[0].id,
+            code_snapshot: task.content,
+            template_id: task.key,
+            template_name: task.name,
+          };
+
+          const { data: taskData, error } = await supabase
+            .from('task_responses')
+            .insert(taskPayload)
+            .select('*');
+
+          if (error) {
+            throw error;
+          }
+
+          setTasks(prev => {
+            return [...prev, taskData[0]];
+          });
+        });
+      } else {
+        /** Get the task and populate ? */
+
+        const taskData = await getTasks(userAttempt[0].id);
+        setTasks(taskData);
+      }
+    } catch (err) {
+      console.error(
+        err,
+        `Something went wrong while creating Interview attemp for interviewSession:${sessionId}`,
+      );
+    }
   };
 
-  const getTasks = () => {};
+  /**
+   * Checks the attemp if exist or not , returns attemp or null
+   *
+   */
+
+  const getUserAttempt = async (sessionId: string, userId: string) => {
+    /**
+     * Checks on the basis of userId and session Id
+     */
+
+    const { data, error } = await supabase
+      .from('interview_attempts')
+      .select('*')
+      .eq('session_id', sessionId)
+      .eq('user_id', userId);
+
+    if (error) {
+      throw error;
+    }
+
+    return data;
+  };
+
+  /**
+   * Get all the task Response on the basis of attempId and
+   */
+  const getTasks = async (attemptId: string) => {
+    const { data, error } = await supabase
+      .from('task_responses')
+      .select('*')
+      .eq('attempt_id', attemptId);
+
+    console.log(data, 'Data here');
+
+    if (error) {
+      throw error;
+    }
+
+    return data;
+  };
 
   const [editorMode, setEditorMode] = useState<CodeEditorMode>(
     CodeEditorMode.PRACTICE,
