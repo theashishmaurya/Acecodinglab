@@ -3,14 +3,14 @@ import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 
 import { ReactNode } from 'react';
-import CodeEditor from '@/components/codeEditor';
-import { CodeEditorMode } from '@/components/codeEditor/types';
+
 import { CodeEditorProvider } from '@/components/codeEditor/codeEditor.context';
 import SideNav from '@/components/interviewLab/SideNav';
+import { CodeEditorMode } from '@/components/codeEditor/types';
 
 export default function Layout({ children }: { children: ReactNode }) {
   return (
-    <CodeEditorProvider>
+    <CodeEditorProvider mode={CodeEditorMode.INTERVIEW}>
       <div className="flex min-h-screen w-full">
         <div className="hidden md:flex flex-col border-r bg-muted/40 w-[80px] group hover:w-[220px] lg:hover:w-[280px] transition-all duration-300 ease-in-out">
           <div className="flex h-full max-h-screen flex-col gap-2">

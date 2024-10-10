@@ -33,6 +33,7 @@ import { useParams } from 'next/navigation';
 import { useDebouncedCallback } from 'use-debounce';
 import { Spec } from '@codesandbox/sandpack-react/components/Tests/Specs';
 import { CodeEditorMode } from './types';
+import { useCodeEditor } from './codeEditor.context';
 
 type HeadingProps = React.DetailedHTMLProps<
   React.HTMLAttributes<HTMLHeadingElement>,
@@ -265,26 +266,16 @@ function Editor({ isSample }: { isSample: boolean }) {
   const [testResults, setTestResults] = useState<Record<string, Spec>>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { sandpack } = useSandpack();
-  const params = useParams();
-  const slug = params.slug as string;
 
-  const debouncedUpdateCode = useDebouncedCallback(
-    (code: string) => {
-      practiceSessionsAPI.updateSessionCode(slug, code).catch(error => {
-        console.error('Failed to update session code:', error);
-        // You might want to show an error message to the user here
-      });
-    },
-    3000, // Debounce for 3 second
-  );
+  const { handleOnCodeChange } = useCodeEditor();
 
   useEffect(() => {
     if (!sandpack.files) return;
 
     if (!isSample) {
-      debouncedUpdateCode(JSON.stringify(sandpack.files));
+      handleOnCodeChange()(JSON.stringify(sandpack.files));
     }
-  }, [sandpack.files, debouncedUpdateCode, isSample]);
+  }, [sandpack.files, isSample, handleOnCodeChange]);
 
   const RightColumn = SandpackStack;
 
@@ -394,7 +385,7 @@ function Editor({ isSample }: { isSample: boolean }) {
       );
 
       if (allTestsPassed) {
-        submitToBackend();
+        // submitToBackend();
         console.log(specs, 'Submitted to backend');
       } else {
         setIsSubmitting(false);
@@ -403,22 +394,22 @@ function Editor({ isSample }: { isSample: boolean }) {
     }
   };
 
-  const submitToBackend = () => {
-    // Actual submission logic here
-    practiceSessionsAPI
-      .completeSession(slug)
-      .then(() => {
-        console.log('Submission successful');
-        // Handle successful submission (e.g., show a success message)
-      })
-      .catch(error => {
-        console.error('Failed to submit session:', error);
-        // Handle submission error (e.g., show an error message)
-      })
-      .finally(() => {
-        setIsSubmitting(false);
-      });
-  };
+  // const submitToBackend = () => {
+  //   // Actual submission logic here
+  //   practiceSessionsAPI
+  //     .completeSession(slug)
+  //     .then(() => {
+  //       console.log('Submission successful');
+  //       // Handle successful submission (e.g., show a success message)
+  //     })
+  //     .catch(error => {
+  //       console.error('Failed to submit session:', error);
+  //       // Handle submission error (e.g., show an error message)
+  //     })
+  //     .finally(() => {
+  //       setIsSubmitting(false);
+  //     });
+  // };
 
   const EditorStyle = {
     height: '100%', // use the original editor height

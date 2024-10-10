@@ -7,10 +7,12 @@ import React, {
   useEffect,
 } from 'react';
 import { CodeEditorMode } from './types';
-import { useParams } from 'next/navigation';
+import { useParams, useSearchParams } from 'next/navigation';
 import { createClient } from '@/lib/supabase/supabaseClient';
 import { getListOfQuestions } from '../createInterview/getQuestions.action';
 import { IQuestions } from '../practiceTable';
+import { DebouncedState, useDebouncedCallback } from 'use-debounce';
+import { practiceSessionsAPI } from '@/db/practiceSession/practiceSession.client';
 
 // Supabase Initialization
 
@@ -24,6 +26,8 @@ interface CodeEditorContextType {
   tasks: InterviewTasks[];
   setCurrentTask: React.Dispatch<React.SetStateAction<InterviewTasks | null>>;
   currentTask: InterviewTasks | null;
+
+  handleOnCodeChange: () => DebouncedState<(code: string) => void>;
 }
 
 // Create the context with a default value
@@ -34,6 +38,7 @@ const CodeEditorContext = createContext<CodeEditorContextType | undefined>(
 // Props type for the provider component
 interface CodeEditorProviderProps {
   children: ReactNode;
+  mode: CodeEditorMode;
 }
 
 interface InterviewTasks {
@@ -48,6 +53,7 @@ interface InterviewTasks {
 // Create a provider component
 export const CodeEditorProvider: React.FC<CodeEditorProviderProps> = ({
   children,
+  mode,
 }) => {
   /**
    * All the tasks we get from the backend, also we need to continously keep writting to the local state as user changes the code
@@ -62,6 +68,7 @@ export const CodeEditorProvider: React.FC<CodeEditorProviderProps> = ({
   const [language, setLanguage] = useState<string>('typescript');
 
   const { slug } = useParams();
+  const searchParams = useSearchParams();
 
   useEffect(() => {
     getSessions(slug as string);
@@ -194,8 +201,6 @@ export const CodeEditorProvider: React.FC<CodeEditorProviderProps> = ({
       .select('*')
       .eq('attempt_id', attemptId);
 
-    console.log(data, 'Data here');
-
     if (error) {
       throw error;
     }
@@ -207,7 +212,35 @@ export const CodeEditorProvider: React.FC<CodeEditorProviderProps> = ({
     CodeEditorMode.PRACTICE,
   );
 
-  const handleOnCodeChange = () => {};
+  console.log(mode);
+  const debouncedUpdateCode = useDebouncedCallback(
+    async (code: string) => {
+      if (mode === CodeEditorMode.PRACTICE) {
+        practiceSessionsAPI.updateSessionCode(slug[0], code).catch(error => {
+          console.error('Failed to update session code:', error);
+          // You might want to show an error message to the user here
+        });
+      } else {
+        console.log(slug, 'Slug from Interview');
+        console.log(searchParams.get('task_id'), 'task Id');
+        const { data, error } = await supabase
+          .from('task_responses')
+          .update({ code_snapshot: code })
+          .eq('id', searchParams.get('task_id'))
+          .select();
+
+        if (error) {
+          console.error(error, 'Something went wring while updating the code');
+        }
+
+        console.log(data, 'data After update');
+      }
+    },
+    3000, // Debounce for 3 second
+  );
+  const handleOnCodeChange = () => {
+    return debouncedUpdateCode;
+  };
 
   const handleStartInterview = () => {};
 
@@ -219,6 +252,7 @@ export const CodeEditorProvider: React.FC<CodeEditorProviderProps> = ({
     tasks,
     setCurrentTask,
     currentTask,
+    handleOnCodeChange,
   };
 
   return (
