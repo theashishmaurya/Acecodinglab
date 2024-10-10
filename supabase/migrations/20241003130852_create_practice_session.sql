@@ -1,3 +1,11 @@
+CREATE OR REPLACE FUNCTION update_updated_at_column()
+RETURNS TRIGGER AS $$
+BEGIN
+   NEW.updated_at = NOW();
+   RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
 create table
   public.practice_sessions (
     id uuid not null default extensions.uuid_generate_v4 (),
