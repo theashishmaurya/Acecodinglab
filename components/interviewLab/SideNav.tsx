@@ -16,9 +16,7 @@ const navItems = [
 
 const SideNav = () => {
   const { tasks, setCurrentTask, currentTask } = useCodeEditor();
-  const router = useRouter();
   const pathname = usePathname();
-  const searchParams = useSearchParams();
 
   return (
     <nav className="grid items-start px-2 text-md font-large lg:px-4">
@@ -26,7 +24,6 @@ const SideNav = () => {
         <Link
           onClick={() => {
             setCurrentTask(item);
-            console.log(pathname, 'pathName');
           }}
           key={index}
           href={`${pathname}?task_id=${item.id}`}
