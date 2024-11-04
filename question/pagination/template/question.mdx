@@ -1,0 +1,82 @@
+# E-commerce Product Pagination Challenge
+
+## Background
+You are building an e-commerce website that needs to display products with pagination. The products need to be fetched from an API and displayed in a grid layout with proper pagination controls.
+
+## API Details
+The API endpoint returns data in the following format:
+```javascript
+{
+  products: [
+    {
+      id: 1,
+      title: "iPhone 9",
+      description: "An apple mobile which is nothing like apple",
+      price: 549,
+      discountPercentage: 12.96,
+      rating: 4.69,
+      stock: 94,
+      brand: "Apple",
+      thumbnail: "thumbnail-url"
+      // ... other product details
+    },
+    // ... more products
+  ],
+  total: 100,     // Total number of products
+  skip: 0,        // Number of products skipped
+  limit: 10       // Number of products per page
+}
+```
+
+API Endpoint: `https://dummyjson.com/products?limit=${limit}&skip=${skip}`
+
+## Requirements
+
+### 1. Product Display
+- Fetch and display 10 products per page
+- Show loading state while products are being fetched
+- Handle and display error states
+- Each product must be displayed in a ProductCard component (provided)
+
+### 2. Pagination Controls
+Create a pagination component that includes:
+- Previous/Next navigation buttons
+- Display current page number
+- Show page numbers (display 5 page numbers at a time)
+- Show first and last page numbers always
+- Show ellipsis (...) when there are hidden page numbers
+- Highlight current active page
+- Disable previous button on first page
+- Disable next button on last page
+
+![Pagination Component Preview](https://aarnwlfhfqbipurwwkcz.supabase.co/storage/v1/object/public/Question-assets/pagination/pagination-preview.png)
+
+
+### 3. Required Test IDs
+Your implementation must include these data-testid attributes for testing:
+
+```jsx
+// Loading State
+data-testid="loading"
+
+// Error Message
+data-testid="error-message"
+
+// Product Cards
+data-testid={`product-${product.id}`}
+
+// Pagination Controls
+data-testid="prev-button"      // Previous page button
+data-testid="next-button"      // Next page button
+data-testid="current-page"     // Current page indicator
+data-testid="total-products"   // Total products count
+data-testid="last-page-button" // Last page button
+```
+
+## Note
+- A ProductCard component is provided for product display
+- Basic styling is provided
+- Focus on implementation logic and state management
+- Ensure all test IDs are properly implemented
+
+Good luck!

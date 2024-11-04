@@ -33,6 +33,7 @@ import { useParams } from 'next/navigation';
 import { useDebouncedCallback } from 'use-debounce';
 import { Spec } from '@codesandbox/sandpack-react/components/Tests/Specs';
 import { CodeEditorMode } from './types';
+import Image from 'next/image';
 
 type HeadingProps = React.DetailedHTMLProps<
   React.HTMLAttributes<HTMLHeadingElement>,
@@ -66,6 +67,10 @@ type PreProps = React.DetailedHTMLProps<
   React.HTMLAttributes<HTMLPreElement>,
   HTMLPreElement
 >;
+interface CustomImageProps extends React.ImgHTMLAttributes<HTMLImageElement> {
+  src: string;
+  alt: string;
+}
 
 // Custom components for MDX
 const components: MDXComponents = {
@@ -115,6 +120,69 @@ const components: MDXComponents = {
       {...props}
     />
   ),
+  // Image component with different handling based on source
+  img: ({ src, alt, ...props }: any) => {
+    console.log('Image has been triggered', src, props);
+
+    // Handle relative paths (local images)
+    if (
+      src?.startsWith('./') ||
+      src?.startsWith('../') ||
+      src?.startsWith('/')
+    ) {
+      return (
+        <div className="my-4 relative w-full h-[400px]">
+          <Image
+            src={src}
+            alt={alt || 'Image'}
+            className="object-contain"
+            layout="responsive"
+
+            // sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+          />
+        </div>
+      );
+    }
+
+    // Handle external images
+    if (src?.startsWith('http')) {
+      return (
+        <div className="my-4">
+          <Image
+            src={src}
+            alt={alt || 'Image'}
+            layout="responsive"
+            width={500}
+            height={500}
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+            {...props}
+          />
+        </div>
+      );
+    }
+
+    // Handle base64 or data URLs
+    if (src?.startsWith('data:')) {
+      return (
+        <div className="my-4">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src={src}
+            alt={alt || 'Image'}
+            className="max-w-full h-auto rounded-lg shadow-md"
+            {...props}
+          />
+        </div>
+      );
+    }
+
+    // Fallback for other cases
+    return (
+      <div className="my-4 flex items-center justify-center bg-gray-100 rounded-lg p-4">
+        <span className="text-gray-500">Image not available</span>
+      </div>
+    );
+  },
 };
 
 interface CustomBottomPanel {
