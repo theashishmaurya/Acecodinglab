@@ -28,6 +28,6 @@ export async function login(formData: FormData) {
   
   
       // Redirect to a "verify your email" page or directly to dashboard
-      redirect('/dashboard')  // or '/dashboard' if you don't require email verification
+      redirect('/dashboard/practice')  // or '/dashboard' if you don't require email verification
     } 
   
