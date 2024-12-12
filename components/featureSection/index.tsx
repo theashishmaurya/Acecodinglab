@@ -1,44 +1,44 @@
-"use client"
-import React from "react";
-import { cn } from "@/lib/utils";
-import Image from "next/image";
-import createGlobe from "cobe";
-import { useEffect, useRef } from "react";
-import { motion } from "framer-motion";
-import Link from "next/link";
-import { Youtube } from "lucide-react";
+'use client';
+import React from 'react';
+import { cn } from '@/lib/utils';
+import Image from 'next/image';
+import createGlobe from 'cobe';
+import { useEffect, useRef } from 'react';
+import { motion } from 'framer-motion';
+import Link from 'next/link';
+import { Youtube } from 'lucide-react';
 
 export function FeaturesSection() {
   const features = [
     {
-      title: "Practice Frontend Coding Questions with Ease",
+      title: 'Practice Frontend Coding Questions with Ease',
       description:
-        "Access a curated collection of frontend coding challenges, designed to enhance your problem-solving abilities and help you prepare for any interview.",
+        'Access a curated collection of frontend coding challenges, designed to enhance your problem-solving abilities and help you prepare for any interview.',
       skeleton: <SkeletonOne />,
       className:
-        "col-span-1 lg:col-span-4 border-b lg:border-r dark:border-neutral-800",
+        'col-span-1 lg:col-span-4 border-b lg:border-r dark:border-neutral-800',
     },
     {
-      title: "Automated Code Evaluation",
+      title: 'Automated Code Evaluation',
       description:
-        "Receive immediate, automated feedback on code quality, performance, and efficiency to improve with every practice session.",
+        'Receive immediate, automated feedback on code quality, performance, and efficiency to improve with every practice session.',
       skeleton: <SkeletonTwo />,
-      className: "border-b col-span-1 lg:col-span-2 dark:border-neutral-800",
+      className: 'border-b col-span-1 lg:col-span-2 dark:border-neutral-800',
     },
     {
-      title: "Watch our AI on YouTube",
+      title: 'Watch A Practice Session on Youtube',
       description:
-        "Whether its you or Tyler Durden, you can get to know about our product on YouTube",
+        'Whether its you or Tyler Durden, you can get to know about our product on YouTube',
       skeleton: <SkeletonThree />,
       className:
-        "col-span-1 lg:col-span-3 lg:border-r  dark:border-neutral-800",
+        'col-span-1 lg:col-span-3 lg:border-r  dark:border-neutral-800',
     },
     {
-      title: "Deploy in seconds",
+      title: 'Empowering Developers Globally',
       description:
-        "With our blazing fast, state of the art, cutting edge, we are so back cloud servies (read AWS) - you can deploy your model in seconds.",
+        'Each dot marks a developer advancing their frontend skills with AceCodingLab—your go-to platform for mastering coding interviews through curated challenges, instant feedback, and progress tracking.',
       skeleton: <SkeletonFour />,
-      className: "col-span-1 lg:col-span-3 border-b lg:border-none",
+      className: 'col-span-1 lg:col-span-3 border-b lg:border-none',
     },
   ];
 
@@ -89,18 +89,19 @@ Ready to code smarter, faster, and better? Sign up now and take the first step t
     <div className="relative z-20 py-10 lg:py-40 max-w-7xl mx-auto">
       <div className="px-8">
         <h4 className="text-3xl lg:text-5xl lg:leading-tight max-w-5xl mx-auto text-center tracking-tight font-medium text-black dark:text-white">
-        Level Up Your Coding Skills: Practice and Interview Like a Pro  
+          Level Up Your Coding Skills: Practice and Interview Like a Pro
         </h4>
 
         <p className="text-sm lg:text-base  max-w-2xl  my-4 mx-auto text-neutral-500 text-center font-normal dark:text-neutral-300">
-        Are you ready to ace your next frontend technical interview? Our platform offers realistic coding challenges that mimic real-world scenarios, with instant feedback to sharpen your skills.
+          Are you ready to ace your next frontend technical interview? Our
+          platform offers realistic coding challenges that mimic real-world
+          scenarios, with instant feedback to sharpen your skills.
         </p>
       </div>
 
-
       <div className="relative ">
         <div className="grid grid-cols-1 lg:grid-cols-6 mt-12 xl:border rounded-md dark:border-neutral-800">
-          {features.map((feature) => (
+          {features.map(feature => (
             <FeatureCard key={feature.title} className={feature.className}>
               <FeatureTitle>{feature.title}</FeatureTitle>
               <FeatureDescription>{feature.description}</FeatureDescription>
@@ -139,9 +140,9 @@ const FeatureDescription = ({ children }: { children?: React.ReactNode }) => {
   return (
     <p
       className={cn(
-        "text-sm md:text-base  max-w-4xl text-left mx-auto",
-        "text-neutral-500 text-center font-normal dark:text-neutral-300",
-        "text-left max-w-sm mx-0 md:text-sm my-2"
+        'text-sm md:text-base  max-w-4xl text-left mx-auto',
+        'text-neutral-500 text-center font-normal dark:text-neutral-300',
+        'text-left max-w-sm mx-0 md:text-sm my-2',
       )}
     >
       {children}
@@ -155,13 +156,13 @@ export const SkeletonOne = () => {
       <div className="w-full  p-5  mx-auto bg-white dark:bg-neutral-900 shadow-2xl group h-full">
         <div className="flex flex-1 w-full h-full flex-col space-y-2  ">
           {/* TODO */}
-          {/* <Image
-            src="/linear.webp"
+          <Image
+            src="/assets/heroArea.svg"
             alt="header"
             width={800}
             height={800}
             className="h-full w-full aspect-square object-cover object-left-top rounded-sm"
-          /> */}
+          />
         </div>
       </div>
 
@@ -174,7 +175,7 @@ export const SkeletonOne = () => {
 export const SkeletonThree = () => {
   return (
     <Link
-      href="https://www.youtube.com/watch?v=RPa3_AD1_Vs"
+      href="https://www.youtube.com/watch?v=al6VRGWSHVA"
       target="__blank"
       className="relative flex gap-10  h-full group/image"
     >
@@ -183,7 +184,7 @@ export const SkeletonThree = () => {
           {/* TODO */}
           <Youtube className="h-20 w-20 absolute z-10 inset-0 text-red-500 m-auto " />
           <Image
-            src="https://assets.aceternity.com/fireship.jpg"
+            src="/assets/youtube.png"
             alt="header"
             width={800}
             height={800}
@@ -197,11 +198,10 @@ export const SkeletonThree = () => {
 
 export const SkeletonTwo = () => {
   const images = [
-    "https://images.unsplash.com/photo-1517322048670-4fba75cbbb62?q=80&w=3000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-    "https://images.unsplash.com/photo-1573790387438-4da905039392?q=80&w=3425&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-    "https://images.unsplash.com/photo-1555400038-63f5ba517a47?q=80&w=3540&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-    "https://images.unsplash.com/photo-1554931670-4ebfabf6e7a9?q=80&w=3387&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-    "https://images.unsplash.com/photo-1546484475-7f7bd55792da?q=80&w=2581&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    '/assets/automated-test/2.png',
+    '/assets/automated-test/1.png',
+    '/assets/automated-test/4.png',
+    '/assets/automated-test/3.png',
   ];
 
   const imageVariants = {
@@ -223,7 +223,7 @@ export const SkeletonTwo = () => {
         {images.map((image, idx) => (
           <motion.div
             variants={imageVariants}
-            key={"images-first" + idx}
+            key={'images-first' + idx}
             style={{
               rotate: Math.random() * 20 - 10,
             }}
@@ -244,7 +244,7 @@ export const SkeletonTwo = () => {
       <div className="flex flex-row">
         {images.map((image, idx) => (
           <motion.div
-            key={"images-second" + idx}
+            key={'images-second' + idx}
             style={{
               rotate: Math.random() * 20 - 10,
             }}
@@ -300,13 +300,45 @@ export const Globe = ({ className }: { className?: string }) => {
       markerColor: [0.1, 0.8, 1],
       glowColor: [1, 1, 1],
       markers: [
-        // longitude latitude
-        { location: [37.7595, -122.4367], size: 0.03 },
-        { location: [40.7128, -74.006], size: 0.1 },
+        { location: [20.5937, 78.9629], size: 0.44 }, // India
+        { location: [37.0902, -95.7129], size: 0.16 }, // USA
+        { location: [36.2048, 138.2529], size: 0.04 }, // Japan
+        { location: [-14.235, -51.9253], size: 0.04 }, // Brazil
+        { location: [12.8797, 121.774], size: 0.04 }, // Philippines
+        { location: [46.6034, 1.8883], size: 0.03 }, // France
+        { location: [53.9006, 27.559], size: 0.02 }, // Belarus
+        { location: [56.1304, -106.3468], size: 0.02 }, // Canada
+        { location: [48.3794, 31.1656], size: 0.02 }, // Ukraine
+        { location: [49.8175, 15.473], size: 0.01 }, // Czech Republic
+        { location: [55.3781, -3.436], size: 0.01 }, // United Kingdom
+        { location: [31.0461, 34.8516], size: 0.01 }, // Israel
+        { location: [28.3949, 84.124], size: 0.01 }, // Nepal
+        { location: [51.9194, 19.1451], size: 0.01 }, // Poland
+        { location: [45.9432, 24.9668], size: 0.01 }, // Romania
+        { location: [61.524, 105.3188], size: 0.01 }, // Russia
+        { location: [41.1533, 20.1683], size: 0.01 }, // Albania
+        { location: [23.685, 90.3563], size: 0.01 }, // Bangladesh
+        { location: [-35.6751, -71.543], size: 0.01 }, // Chile
+        { location: [35.8617, 104.1954], size: 0.01 }, // China
+        { location: [4.5709, -74.2973], size: 0.01 }, // Colombia
+        { location: [51.1657, 10.4515], size: 0.01 }, // Germany
+        { location: [45.1, 15.2], size: 0.01 }, // Croatia
+        { location: [47.1625, 19.5033], size: 0.01 }, // Hungary
+        { location: [32.4279, 53.688], size: 0.01 }, // Iran
+        { location: [35.9078, 127.7669], size: 0.01 }, // South Korea
+        { location: [26.3351, 17.2283], size: 0.01 }, // Libya
+        { location: [31.7917, -7.0926], size: 0.01 }, // Morocco
+        { location: [47.4116, 28.3699], size: 0.01 }, // Moldova
+        { location: [9.081999, 8.6753], size: 0.01 }, // Nigeria
+        { location: [-40.9006, 174.886], size: 0.01 }, // New Zealand
+        { location: [30.3753, 69.3451], size: 0.01 }, // Pakistan
+        { location: [46.1512, 14.9955], size: 0.01 }, // Slovenia
+        { location: [33.8869, 9.5375], size: 0.01 }, // Tunisia
+        { location: [-32.5228, -55.7658], size: 0.01 }, // Uruguay
+        { location: [41.3775, 64.5853], size: 0.01 }, // Uzbekistan
+        { location: [14.0583, 108.2772], size: 0.01 }, // Vietnam
       ],
-      onRender: (state) => {
-        // Called on every animation frame.
-        // `state` will be an empty object, return updated params.
+      onRender: state => {
         state.phi = phi;
         phi += 0.01;
       },
@@ -320,7 +352,7 @@ export const Globe = ({ className }: { className?: string }) => {
   return (
     <canvas
       ref={canvasRef}
-      style={{ width: 600, height: 600, maxWidth: "100%", aspectRatio: 1 }}
+      style={{ width: 600, height: 600, maxWidth: '100%', aspectRatio: 1 }}
       className={className}
     />
   );

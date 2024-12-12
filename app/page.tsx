@@ -161,7 +161,7 @@ const Footer = () => (
         <p>&copy; 2024 AceCodingLab. All rights reserved.</p>
       </div>
       <div className="flex flex-wrap justify-center sm:justify-end space-x-4 text-sm sm:text-base">
-        <Link href="#" className="hover:text-primary mb-2 sm:mb-0">
+        <Link href="/terms" className="hover:text-primary mb-2 sm:mb-0">
           Terms of Service
         </Link>
         <Link href="#" className="hover:text-primary mb-2 sm:mb-0">
