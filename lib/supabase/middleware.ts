@@ -9,7 +9,8 @@ const allowedPaths = [
   '/public/**',     // Wildcard for all public assets
   '/auth/**',       // Wildcard for auth-related pages (like OAuth callbacks)
   '/error',
-  '/404'
+  '/404',
+  '/terms'
 ]
 
 // Function to check if a path matches any of the allowed paths
