@@ -1,0 +1,9 @@
+{
+  "name": "Multi-step Wizard",
+  "key": "multi-step-wizard",
+  "difficulty": "medium",
+  "tags": ["form", "validation", "stepper", "progress"],
+  "companies": ["LinkedIn", "Indeed", "Workday", "ServiceNow"],
+  "testCases": 10,
+  "score": 80
+}

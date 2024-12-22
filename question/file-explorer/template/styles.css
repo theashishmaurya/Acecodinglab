@@ -1,0 +1,112 @@
+.file-explorer {
+  width: 800px;
+  margin: 20px auto;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.explorer-header {
+  padding: 16px;
+  border-bottom: 1px solid #eee;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.explorer-header h2 {
+  margin: 0;
+  font-size: 20px;
+}
+
+.actions {
+  display: flex;
+  gap: 8px;
+}
+
+.actions button {
+  padding: 8px 16px;
+  border: 1px solid #ddd;
+  background: white;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.actions button:hover {
+  background: #f8f9fa;
+}
+
+.explorer-tree {
+  padding: 16px;
+  min-height: 400px;
+}
+
+.tree-item {
+  padding: 4px 8px;
+  margin: 2px 0;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  border-radius: 4px;
+}
+
+.tree-item:hover {
+  background: #f8f9fa;
+}
+
+.tree-item.selected {
+  background: #e3f2fd;
+}
+
+.tree-item-icon {
+  margin-right: 8px;
+  width: 20px;
+  text-align: center;
+}
+
+.tree-item-children {
+  margin-left: 24px;
+}
+
+.context-menu {
+  position: fixed;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 4px 0;
+  min-width: 150px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+}
+
+.context-menu-item {
+  padding: 8px 16px;
+  cursor: pointer;
+}
+
+.context-menu-item:hover {
+  background: #f8f9fa;
+}
+
+.folder-icon {
+  color: #ffd700;
+}
+
+.file-icon {
+  color: #90caf9;
+}
+
+.expand-icon {
+  margin-right: 4px;
+  width: 16px;
+  text-align: center;
+  cursor: pointer;
+}
+
+.rename-input {
+  padding: 4px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
+  width: 150px;
+}

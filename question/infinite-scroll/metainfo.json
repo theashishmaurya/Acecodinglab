@@ -1,0 +1,9 @@
+{
+  "name": "Infinite Scroll Feed",
+  "key": "infinite-scroll",
+  "difficulty": "advanced",
+  "tags": ["virtualization", "performance", "scroll", "api"],
+  "companies": ["Instagram", "Twitter", "LinkedIn"],
+  "testCases": 12,
+  "score": 100
+}

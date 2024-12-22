@@ -1,0 +1,9 @@
+{
+  "name": "Infinite Image Gallery",
+  "key": "infinite-image-gallery",
+  "difficulty": "medium",
+  "tags": ["infinite-scroll", "masonry", "images", "api"],
+  "companies": ["Pinterest", "Instagram", "Unsplash", "Flickr"],
+  "testCases": 10,
+  "score": 80
+}

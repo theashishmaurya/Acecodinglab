@@ -1,0 +1,9 @@
+{
+  "name": "Data Grid",
+  "key": "data-grid",
+  "difficulty": "advanced",
+  "tags": ["table", "sorting", "filtering", "pagination"],
+  "companies": ["Microsoft", "Salesforce", "Oracle", "SAP"],
+  "testCases": 12,
+  "score": 100
+}

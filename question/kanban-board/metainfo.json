@@ -1,0 +1,9 @@
+{
+  "name": "Kanban Board",
+  "key": "kanban-board",
+  "difficulty": "advanced",
+  "tags": ["dnd", "drag-drop", "task-management", "react-dnd"],
+  "companies": ["Trello", "Jira", "Monday.com", "Asana"],
+  "testCases": 15,
+  "score": 100
+}

@@ -1,0 +1,21 @@
+{
+  "name": "Rich Text Editor",
+  "key": "rich-text-editor",
+  "difficulty": "advanced",
+  "tags": ["editor", "text-formatting", "markdown", "contentEditable", "DOM"],
+  "companies": ["Notion", "Google", "Slack", "Microsoft", "Atlassian"],
+  "score": 100,
+  "timeInMinutes": 120,
+  "testCases": 10,
+  "problemStatement": "Implement a rich text editor with basic formatting options, keyboard shortcuts, and character counting functionality",
+  "examples": {
+    "input": "Plain text input",
+    "output": "Formatted text with bold, italic, underline, headings, and links"
+  },
+  "constraints": [
+    "Must use native browser Selection and Range APIs",
+    "Must support keyboard shortcuts",
+    "Must maintain clean HTML output",
+    "Must track character count accurately"
+  ]
+}

@@ -1,0 +1,9 @@
+{
+  "name": "Date Range Picker",
+  "key": "date-range-picker",
+  "difficulty": "medium",
+  "tags": ["calendar", "date", "picker", "range"],
+  "companies": ["Airbnb", "Booking.com", "Expedia", "Google"],
+  "testCases": 12,
+  "score": 90
+}

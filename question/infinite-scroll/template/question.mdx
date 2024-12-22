@@ -1,0 +1,54 @@
+# Infinite Scroll Feed
+
+## Problem Statement
+Create an infinite scroll feed component that efficiently loads and displays a large list of items. The component should implement virtual scrolling for performance optimization and handle loading/error states appropriately.
+
+## Requirements
+
+### Functional Requirements
+1. Load items in batches of 10
+2. Implement infinite scrolling using Intersection Observer
+3. Implement virtual scrolling (only render visible items)
+4. Show loading state while fetching data
+5. Handle and display error states
+6. Provide retry mechanism for failed requests
+
+### Technical Requirements
+1. Use the provided API endpoint:
+   ```
+   GET https://api.example.com/feed?page=${pageNumber}&limit=${ITEMS_PER_PAGE}
+   ```
+2. Response format:
+   ```json
+   {
+     "items": [
+       {
+         "id": number,
+         "title": string,
+         "content": string,
+         "timestamp": string
+       }
+     ],
+     "hasMore": boolean,
+     "nextPage": number
+   }
+   ```
+3. Implement proper cleanup of observers and event listeners
+4. Maintain scroll position during updates
+5. Optimize performance for large lists (1000+ items)
+
+### Testing Requirements
+- All items should have proper data-testid attributes
+- Test scroll behavior and loading of new items
+- Test loading states
+- Test error handling and retry mechanism
+- Test virtual scrolling implementation
+
+
+
+## Evaluation Criteria
+1. Code organization and clarity
+2. Performance optimization
+3. Error handling
+4. Testing coverage
+5. UI/UX considerations

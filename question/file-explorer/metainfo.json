@@ -1,0 +1,9 @@
+{
+  "name": "File Explorer",
+  "key": "file-explorer",
+  "difficulty": "advanced",
+  "tags": ["tree", "recursion", "file-system", "navigation"],
+  "companies": ["Dropbox", "Google", "Microsoft", "Apple"],
+  "testCases": 15,
+  "score": 100
+}
