@@ -5,7 +5,7 @@ import { redirect } from 'next/navigation'
 
 
 
-export async function login(formData: FormData) {
+export async function login(prevState:any , formData: FormData) {
     const supabase = createClient()
 
     const email = formData.get('email') as string
@@ -22,10 +22,8 @@ export async function login(formData: FormData) {
 
   
     if (error) {
-      redirect ('/error')
-    }
-  
-  
+      return {message :error.message}
+    }  
       // Redirect to a "verify your email" page or directly to dashboard
       redirect('/dashboard/practice')  // or '/dashboard' if you don't require email verification
     } 

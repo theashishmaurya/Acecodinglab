@@ -8,7 +8,7 @@ import { redirect } from 'next/navigation'
 
 
 
-export async function signUp(formData: FormData) {
+export async function signUp(prevState:any , formData: FormData) {
     const supabase = createClient()
 
     const email = formData.get('email') as string
@@ -30,7 +30,7 @@ export async function signUp(formData: FormData) {
   
     if (error) {
     console.error(error)
-      redirect ('/error')
+      return {message:error.message}
     }
 
   
@@ -52,7 +52,7 @@ export async function signUp(formData: FormData) {
         console.error(error)
         
         if (error) {
-          redirect ('/error')
+          return {message:error.message}
         }
       }
   
@@ -64,7 +64,5 @@ export async function signUp(formData: FormData) {
   
       // Redirect to a "verify your email" page or directly to dashboard
       redirect('/dashboard/practice')   // or '/dashboard' if you don't require email verification
-    } else {
-      redirect ('/error')
-    }
+    } 
   }
