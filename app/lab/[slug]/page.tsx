@@ -1,12 +1,13 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, use } from 'react';
 import CodeEditor from '@/components/codeEditor';
 import { practiceSessionsAPI } from '@/db/practiceSession/practiceSession.client';
 import { getHelloWorld } from './action';
 import { CodeEditorMode } from '@/components/codeEditor/types';
 
-export default function Page({ params }: { params: { slug: string } }) {
+export default function Page(props: { params: Promise<{ slug: string }> }) {
+  const params = use(props.params);
   const [content, setContent] = useState<any>({});
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
