@@ -1,17 +1,17 @@
-import Image from "next/image"
-import Link from "next/link"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
+import Image from 'next/image';
+import Link from 'next/link';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
 
-import { login } from './action'
+import { login } from './action';
+import { Loader2 } from 'lucide-react';
 
 export const metadata = {
-  title: "Login",
-  description: "LogIn to AceCodingLab",
+  title: 'Login',
+  description: 'LogIn to AceCodingLab',
 };
 function Page() {
-
   return (
     <div className="w-full lg:grid lg:min-h-[600px] lg:grid-cols-2 xl:min-h-[800px]">
       <div className="flex items-center justify-center py-12">
@@ -43,9 +43,10 @@ function Page() {
                   Forgot your password?
                 </Link>
               </div>
-              <Input id="password" type="password" required  name="password"/>
+              <Input id="password" type="password" required name="password" />
             </div>
             <Button type="submit" className="w-full" formAction={login}>
+              <Loader2 className="animate-spin" />
               Login
             </Button>
             {/* <Button variant="outline" className="w-full">
@@ -53,7 +54,7 @@ function Page() {
             </Button> */}
           </form>
           <div className="mt-4 text-center text-sm">
-            Don&apos;t have an account?{" "}
+            Don&apos;t have an account?{' '}
             <Link href="/signup" className="underline">
               Sign up
             </Link>
@@ -70,7 +71,7 @@ function Page() {
         />
       </div>
     </div>
-  )
+  );
 }
 
-export default Page
+export default Page;
