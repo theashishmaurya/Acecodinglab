@@ -1,21 +1,27 @@
-import Image from "next/image"
-import Link from "next/link"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { signUp } from './action'
+import Image from 'next/image';
+import Link from 'next/link';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
+import { signUp } from './action';
+import { SubmitButton } from '@/components/submitButton';
 
 export const metadata = {
-  title: "SignUp",
-  description: "SignUp to AceCodingLab",
+  title: 'SignUp',
+  description: 'SignUp to AceCodingLab',
 };
 
 function Page() {
   return (
     <div className="w-full lg:grid lg:min-h-[600px] lg:grid-cols-2 xl:min-h-[800px]">
       <div className="flex items-center justify-center py-12">
-      <form className="mx-auto grid w-[350px] gap-6">
+        <form className="mx-auto grid w-[350px] gap-6" action={signUp}>
           <div className="grid gap-2 text-center">
             <h1 className="text-3xl font-bold">Sign Up</h1>
             <p className="text-balance text-muted-foreground">
@@ -45,12 +51,11 @@ function Page() {
             </div>
             <div className="grid gap-2">
               <Label htmlFor="password">Password</Label>
-              <Input id="password" type="password" required   name="password"
-              />
+              <Input id="password" type="password" required name="password" />
             </div>
             <div className="grid gap-2">
-              <Label htmlFor="role">Role</Label>
-              <Select name="role">
+              {/* <Label htmlFor="role">Role</Label> */}
+              {/* <Select name="role">
                 <SelectTrigger id="role">
                   <SelectValue placeholder="Select a role" />
                 </SelectTrigger>
@@ -58,23 +63,22 @@ function Page() {
                   <SelectItem value="candidate">Candidate</SelectItem>
                   <SelectItem value="hr">HR Professional</SelectItem>
                 </SelectContent>
-              </Select>
+              </Select> */}
             </div>
-            <Button type="submit" className="w-full" formAction={signUp}>
+            <SubmitButton type="submit" className="w-full">
               Sign Up
-            </Button>
+            </SubmitButton>
             {/* <Button variant="outline" className="w-full">
               Sign Up with Google
             </Button> */}
           </div>
           <div className="mt-4 text-center text-sm">
-            Already have an account?{" "}
+            Already have an account?{' '}
             <Link href="/login" className="underline">
               Log in
             </Link>
           </div>
         </form>
-    
       </div>
       <div className="hidden bg-muted lg:block">
         <Image
@@ -86,7 +90,7 @@ function Page() {
         />
       </div>
     </div>
-  )
+  );
 }
 
-export default Page
+export default Page;

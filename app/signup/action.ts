@@ -14,7 +14,7 @@ export async function signUp(formData: FormData) {
     const email = formData.get('email') as string
     const password = formData.get('password') as string
     const fullName = formData.get('fullName') as string
-    const role = formData.get('role') as string
+    const role = "candidate"
   
     // Sign up the user with Supabase Auth
     const { data, error } = await supabase.auth.signUp({
@@ -51,7 +51,9 @@ export async function signUp(formData: FormData) {
         const { error } =  await supabase.auth.admin.deleteUser(data.user.id)
         console.error(error)
         
-        return { error: 'Failed to create user profile. Please try again.' }
+        if (error) {
+          redirect ('/error')
+        }
       }
   
       // You might want to trigger an email verification here
@@ -63,6 +65,6 @@ export async function signUp(formData: FormData) {
       // Redirect to a "verify your email" page or directly to dashboard
       redirect('/dashboard/practice')   // or '/dashboard' if you don't require email verification
     } else {
-      return { error: 'Failed to create user. Please try again.' }
+      redirect ('/error')
     }
   }

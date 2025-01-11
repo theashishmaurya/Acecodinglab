@@ -5,7 +5,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 
 import { login } from './action';
-import { Loader2 } from 'lucide-react';
+import { SubmitButton } from '@/components/submitButton';
 
 export const metadata = {
   title: 'Login',
@@ -22,7 +22,7 @@ function Page() {
               Enter your email below to login to your account
             </p>
           </div>
-          <form className="grid gap-4">
+          <form className="grid gap-4" action={login}>
             <div className="grid gap-2">
               <Label htmlFor="email">Email</Label>
               <Input
@@ -45,10 +45,7 @@ function Page() {
               </div>
               <Input id="password" type="password" required name="password" />
             </div>
-            <Button type="submit" className="w-full" formAction={login}>
-              <Loader2 className="animate-spin" />
-              Login
-            </Button>
+            <SubmitButton className="w-full">Login</SubmitButton>
             {/* <Button variant="outline" className="w-full">
               Login with Github
             </Button> */}
