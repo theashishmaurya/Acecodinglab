@@ -54,6 +54,7 @@
     "next": "14.2.8",
     "next-mdx-remote": "^5.0.0",
     "postcss": "8.4.26",
+    "posthog-js": "^1.205.0",
     "re-resizable": "^6.9.9",
     "react": "18.2.0",
     "react-dom": "18.2.0",
