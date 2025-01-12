@@ -29,7 +29,7 @@ const QuestionPanel = (props: QuestionPanelProps) => {
   }
   const { meta, question } = questionData;
   return (
-    <div className="h-[90vh] bg-background text-foreground overflow-auto">
+    <div className="h-full bg-background text-foreground overflow-auto">
       <Card className="rounded-none border-0 border-b">
         <div className="p-2 flex items-center justify-between">
           <Tabs defaultValue="description" className="flex-1">
@@ -57,7 +57,7 @@ const QuestionPanel = (props: QuestionPanelProps) => {
               </TabsTrigger> */}
             </TabsList>
           </Tabs>
-          <div className="flex gap-2">
+          {/* <div className="flex gap-2">
             <Button variant="ghost" size="icon">
               <Maximize2 className="h-4 w-4" />
             </Button>
@@ -68,7 +68,7 @@ const QuestionPanel = (props: QuestionPanelProps) => {
             >
               <ChevronLeft className="h-4 w-4" />
             </Button>
-          </div>
+          </div> */}
         </div>
       </Card>
 

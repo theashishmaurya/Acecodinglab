@@ -49,11 +49,10 @@ export default function CodeEditor({
         <CodeEditorNavbar />
       </div>
       <div className="flex h-full w-full">
+        <div className="w-[250px] h-full">
+          <SandpackFileExplorer />
+        </div>
         <ResizablePanelGroup direction="horizontal">
-          <ResizablePanel style={{ maxWidth: '300px', flexBasis: '300px' }}>
-            <SandpackFileExplorer />
-          </ResizablePanel>
-          <ResizableHandle />
           <ResizablePanel>
             <QuestionPanel questionData={questionData} />
           </ResizablePanel>
