@@ -143,7 +143,7 @@ const CTASection = () => (
         Ready to elevate your frontend skills?
       </h2>
       <p className="text-lg sm:text-xl mb-6 sm:mb-8">
-        Join FrontendPro today and take your career to the next level.
+        Join AceCodingLab today and take your career to the next level.
       </p>
       <Link href="/signup">
         <Button size="lg" variant="secondary">
