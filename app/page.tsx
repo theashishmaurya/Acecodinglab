@@ -89,7 +89,7 @@ const HeroSection = () => (
           with real-world practice and interview simulations that lead to
           success.
         </p>
-        <Link href="/dashboard/practice">
+        <Link href="/signup">
           <Button size="lg" className="mr-4 mb-2 sm:mb-0">
             Get Started
           </Button>
