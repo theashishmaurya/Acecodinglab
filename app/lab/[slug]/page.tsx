@@ -5,13 +5,19 @@ import CodeEditor from '@/components/codeEditor';
 import { practiceSessionsAPI } from '@/db/practiceSession/practiceSession.client';
 import { getHelloWorld } from './action';
 import { CodeEditorMode } from '@/components/codeEditor/types';
+import { readFromFolder } from '@/lib/readFromFolder';
 
+export type QuestionData = {
+  question: string;
+  meta: Record<string, string>;
+};
 export default function Page(props: { params: Promise<{ slug: string }> }) {
   const params = use(props.params);
   const [content, setContent] = useState<any>({});
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [isSample, setIsSample] = useState(false);
+  const [questionData, setQuestionData] = useState<QuestionData>();
 
   useEffect(() => {
     const fetchSessionData = async () => {
@@ -25,6 +31,11 @@ export default function Page(props: { params: Promise<{ slug: string }> }) {
           setIsSample(true);
         } else {
           const sessionData = await practiceSessionsAPI.getSession(params.slug);
+          const data = await readFromFolder(sessionData.question_id, true);
+          setQuestionData({
+            question: (data.template as Record<string, string>)['question.mdx'],
+            meta: data.metaInfo,
+          });
           setContent(JSON.parse(sessionData.current_code));
           setIsSample(false);
         }
@@ -52,6 +63,7 @@ export default function Page(props: { params: Promise<{ slug: string }> }) {
       <CodeEditor
         files={content}
         isSample={isSample}
+        questionData={questionData}
         mode={CodeEditorMode.PRACTICE}
       />
     </div>

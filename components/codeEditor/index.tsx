@@ -14,16 +14,19 @@ import {
 } from '@/components/ui/resizable';
 import Editor from './editor';
 import { SandpackFileExplorer } from 'sandpack-file-explorer';
+import { QuestionData } from '@/app/lab/[slug]/page';
 
 interface CodeEditorProps {
   files: SandpackFiles;
   mode: CodeEditorMode;
   isSample: boolean;
+  questionData?: QuestionData;
 }
 
 export default function CodeEditor({
   files,
   isSample,
+  questionData,
   mode = CodeEditorMode.PRACTICE,
 }: CodeEditorProps) {
   return (
@@ -42,20 +45,17 @@ export default function CodeEditor({
         },
       }}
     >
-      <div className="flex justify-center  h-full w-full">
+      <div className="flex justify-center h-[9vh] w-full">
         <CodeEditorNavbar />
       </div>
       <div className="flex h-full w-full">
         <ResizablePanelGroup direction="horizontal">
-          <ResizablePanel
-            className="w-[300px] flex-grow-0"
-            style={{ maxWidth: '300px', flexBasis: '300px' }}
-          >
+          <ResizablePanel style={{ maxWidth: '300px', flexBasis: '300px' }}>
             <SandpackFileExplorer />
           </ResizablePanel>
           <ResizableHandle />
           <ResizablePanel>
-            <QuestionPanel />
+            <QuestionPanel questionData={questionData} />
           </ResizablePanel>
           <ResizableHandle />
           <ResizablePanel>

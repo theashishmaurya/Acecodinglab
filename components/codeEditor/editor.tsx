@@ -490,10 +490,10 @@ function Editor({ isSample }: { isSample: boolean }) {
   };
 
   return (
-    <div className="flex flex-col w-full h-full">
+    <div className="flex flex-col w-full">
       <SandpackLayout
         style={{
-          height: '100%',
+          height: '90vh',
         }}
       >
         {/* {showFile ? <SandpackFileExplorer style={{ height: '100%' }} /> : null} */}

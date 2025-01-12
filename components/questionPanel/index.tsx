@@ -2,11 +2,10 @@
 
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
-import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
+import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Badge } from '@/components/ui/badge';
 import {
   Book,
-  BeakerIcon,
   Building2,
   MessageCircle,
   ThumbsUp,
@@ -16,13 +15,21 @@ import {
   Maximize2,
   ChevronLeft,
 } from 'lucide-react';
-import { useCodeEditor } from '../codeEditor/codeEditor.context';
+import { QuestionData } from '@/app/lab/[slug]/page';
+import MarkdownRenderer from '../markdownRenderer';
 
-interface QuestionPanelProps {}
+interface QuestionPanelProps {
+  questionData?: QuestionData;
+}
 
-const QuestionPanel = () => {
+const QuestionPanel = (props: QuestionPanelProps) => {
+  const { questionData } = props;
+  if (!questionData) {
+    return <>Question Data not Found</>;
+  }
+  const { meta, question } = questionData;
   return (
-    <div className="h-full bg-background text-foreground overflow-auto">
+    <div className="h-[90vh] bg-background text-foreground overflow-auto">
       <Card className="rounded-none border-0 border-b">
         <div className="p-2 flex items-center justify-between">
           <Tabs defaultValue="description" className="flex-1">
@@ -34,27 +41,20 @@ const QuestionPanel = () => {
                 <Book className="h-4 w-4" />
                 Description
               </TabsTrigger>
-              <TabsTrigger
-                value="editorial"
-                className="flex gap-2 data-[state=active]:bg-transparent"
-              >
-                <BeakerIcon className="h-4 w-4" />
-                Editorial
-              </TabsTrigger>
-              <TabsTrigger
+              {/* <TabsTrigger
                 value="solutions"
                 className="flex gap-2 data-[state=active]:bg-transparent"
               >
                 <BeakerIcon className="h-4 w-4" />
                 Solutions
-              </TabsTrigger>
-              <TabsTrigger
+              </TabsTrigger> */}
+              {/* <TabsTrigger
                 value="submissions"
                 className="flex gap-2 data-[state=active]:bg-transparent"
               >
                 <BeakerIcon className="h-4 w-4" />
                 Submissions
-              </TabsTrigger>
+              </TabsTrigger> */}
             </TabsList>
           </Tabs>
           <div className="flex gap-2">
@@ -74,71 +74,48 @@ const QuestionPanel = () => {
 
       <div className="p-8 max-w-4xl mx-auto">
         <div className="flex justify-between items-start mb-6">
-          <h1 className="text-3xl font-bold">
-            122. Best Time to Buy and Sell Stock II
-          </h1>
-          <Badge variant="outline" className="bg-green-500/10 text-green-500">
+          <h1 className="text-3xl font-bold">{meta?.name}</h1>
+          {/* <Badge variant="outline" className="bg-green-500/10 text-green-500">
             Solved
-          </Badge>
+          </Badge> */}
         </div>
 
-        <div className="flex gap-4 mb-8">
+        <div className="flex flex-wrap gap-4 mb-8">
           <Badge
             variant="secondary"
             className="bg-yellow-500/10 text-yellow-500"
           >
-            Medium
+            {meta?.difficulty}
           </Badge>
-          <Button variant="secondary" size="sm" className="flex gap-2">
-            <Book className="h-4 w-4" />
-            Topics
-          </Button>
-          <Button variant="secondary" size="sm" className="flex gap-2">
-            <Building2 className="h-4 w-4" />
-            Companies
-          </Button>
+          {Array.isArray(meta?.tags) &&
+            meta?.tags?.map((tag, index) => (
+              <Button
+                key={index}
+                variant="secondary"
+                size="xs"
+                className="flex gap-2"
+              >
+                <Book className="h-4 w-4" />
+                {tag}
+              </Button>
+            ))}
+
+          {Array.isArray(meta?.company) &&
+            meta?.company?.map((company, index) => (
+              <Button
+                variant="secondary"
+                size="xs"
+                className="flex gap-2"
+                key={index}
+              >
+                <Building2 className="h-4 w-4" />
+                {company}
+              </Button>
+            ))}
         </div>
 
-        <div className="space-y-6 text-lg">
-          <p>
-            You are given an integer array{' '}
-            <code className="bg-muted px-1.5 py-0.5 rounded-md">prices</code>{' '}
-            where{' '}
-            <code className="bg-muted px-1.5 py-0.5 rounded-md">prices[i]</code>{' '}
-            is the price of a given stock on the{' '}
-            <code className="bg-muted px-1.5 py-0.5 rounded-md">
-              i<sup>th</sup>
-            </code>{' '}
-            day.
-          </p>
-
-          <p>
-            On each day, you may decide to buy and/or sell the stock. You can
-            only hold <strong>at most one share</strong> of the stock at any
-            time. However, you can buy it then immediately sell it on the{' '}
-            <strong>same day</strong>.
-          </p>
-
-          <p>
-            Find and return <em>the maximum profit you can achieve</em>.
-          </p>
-
-          <div className="mt-8">
-            <h2 className="text-xl font-bold mb-4">Example 1:</h2>
-            <div className="bg-muted p-4 rounded-lg font-mono">
-              <p>Input: prices = [7,1,5,3,6,4]</p>
-              <p>Output: 7</p>
-              <p className="text-muted-foreground">
-                Explanation: Buy on day 2 (price = 1) and sell on day 3 (price =
-                5), profit = 5-1 = 4.
-                <br />
-                Then buy on day 4 (price = 3) and sell on day 5 (price = 6),
-                profit = 6-3 = 3.
-                <br />
-                Total profit is 4 + 3 = 7.
-              </p>
-            </div>
-          </div>
+        <div className="space-y-6">
+          <MarkdownRenderer content={question ?? ''} />
         </div>
 
         <div className="flex items-center gap-4 mt-8 pt-4 border-t">

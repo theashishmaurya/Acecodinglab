@@ -1,6 +1,21 @@
+'use client';
 import { MDXComponents } from 'mdx/types';
-import { MDXRemote, MDXRemoteProps } from 'next-mdx-remote';
+import {
+  MDXRemote,
+  MDXRemoteProps,
+  MDXRemoteSerializeResult,
+} from 'next-mdx-remote';
 import Image from 'next/image';
+import { serialize } from 'next-mdx-remote/serialize';
+import remarkGfm from 'remark-gfm';
+import { useEffect, useState } from 'react';
+import rehypeHighlight from 'rehype-highlight';
+
+interface MDFileState {
+  isMdFile: boolean;
+  content: string;
+  mdxSource: MDXRemoteSerializeResult | null;
+}
 
 type HeadingProps = React.DetailedHTMLProps<
   React.HTMLAttributes<HTMLHeadingElement>,
@@ -148,10 +163,41 @@ const components: MDXComponents = {
   },
 };
 
-const MarkdownRenderer = (props: MDXRemoteProps) => {
+const MarkdownRenderer = ({ content }: { content: string }) => {
+  const [mdFile, setMdFile] = useState<MDFileState>({
+    isMdFile: false,
+    content: '',
+    mdxSource: null,
+  });
+
+  useEffect(() => {
+    const updateMdFile = async () => {
+      const mdxSource = await serialize(content, {
+        mdxOptions: {
+          remarkPlugins: [remarkGfm],
+          rehypePlugins: [rehypeHighlight],
+        },
+      });
+      setMdFile({
+        isMdFile: true,
+        content: content,
+        mdxSource,
+      });
+    };
+
+    updateMdFile();
+  }, [content]);
+
   return (
     <div className="prose max-w-none">
-      <MDXRemote {...props} components={components} />
+      {mdFile.isMdFile && (
+        <MDXRemote
+          components={components}
+          compiledSource={mdFile?.mdxSource?.compiledSource || ''}
+          scope={undefined}
+          frontmatter={undefined}
+        />
+      )}
     </div>
   );
 };
