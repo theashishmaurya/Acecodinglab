@@ -15,7 +15,6 @@ export default function RootLayout({
   return (
     <TooltipProvider>
       <div className="grid h-screen w-full ">
-        <SideNavBar />
         <div className="flex flex-col flex-1 overflow-hidden  sm:pl-14">
           <main className="flex-1 overflow-auto">{children}</main>
         </div>

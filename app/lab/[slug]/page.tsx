@@ -6,6 +6,9 @@ import { practiceSessionsAPI } from '@/db/practiceSession/practiceSession.client
 import { getHelloWorld } from './action';
 import { CodeEditorMode } from '@/components/codeEditor/types';
 import { readFromFolder } from '@/lib/readFromFolder';
+import LabSideNavBar from '@/components/labSideNav';
+import { SideNavProvider } from './sideNav.provider';
+import { LoadingScreen } from '@/components/ui/loading-screen';
 
 export type QuestionData = {
   question: string;
@@ -51,7 +54,7 @@ export default function Page(props: { params: Promise<{ slug: string }> }) {
   }, [params.slug]);
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return <LoadingScreen />;
   }
 
   if (error) {
@@ -60,12 +63,15 @@ export default function Page(props: { params: Promise<{ slug: string }> }) {
 
   return (
     <div>
-      <CodeEditor
-        files={content}
-        isSample={isSample}
-        questionData={questionData}
-        mode={CodeEditorMode.PRACTICE}
-      />
+      <SideNavProvider>
+        <LabSideNavBar />
+        <CodeEditor
+          files={content}
+          isSample={isSample}
+          questionData={questionData}
+          mode={CodeEditorMode.PRACTICE}
+        />
+      </SideNavProvider>
     </div>
   );
 }

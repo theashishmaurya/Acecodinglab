@@ -15,6 +15,7 @@ import {
 import Editor from './editor';
 import { SandpackFileExplorer } from 'sandpack-file-explorer';
 import { QuestionData } from '@/app/lab/[slug]/page';
+import { useSideNav } from '@/app/lab/[slug]/sideNav.provider';
 
 interface CodeEditorProps {
   files: SandpackFiles;
@@ -29,6 +30,7 @@ export default function CodeEditor({
   questionData,
   mode = CodeEditorMode.PRACTICE,
 }: CodeEditorProps) {
+  const { isFileExplorerOpen, isQuestionPanelOpen } = useSideNav();
   return (
     <SandpackProvider
       template="react"
@@ -49,14 +51,21 @@ export default function CodeEditor({
         <CodeEditorNavbar />
       </div>
       <div className="flex h-full w-full">
-        <div className="w-[250px] h-full">
-          <SandpackFileExplorer />
-        </div>
+        {isFileExplorerOpen && (
+          <div className="w-[250px] h-full">
+            <SandpackFileExplorer />
+          </div>
+        )}
         <ResizablePanelGroup direction="horizontal">
-          <ResizablePanel>
+          <ResizablePanel
+            style={{
+              flexGrow: isQuestionPanelOpen ? 0 : 33,
+            }}
+          >
             <QuestionPanel questionData={questionData} />
           </ResizablePanel>
           <ResizableHandle />
+
           <ResizablePanel>
             <Editor isSample={isSample} />
           </ResizablePanel>
