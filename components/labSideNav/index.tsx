@@ -1,19 +1,7 @@
 'use client';
 import React from 'react';
 import Link from 'next/link';
-import {
-  Book,
-  Bot,
-  Code2,
-  LifeBuoy,
-  Settings2,
-  SquareTerminal,
-  SquareUser,
-  Triangle,
-  LucideIcon,
-  Files,
-  BookCheck,
-} from 'lucide-react';
+import { Triangle, LucideIcon, Files, BookCheck } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
   Tooltip,
@@ -24,6 +12,7 @@ import { usePathname } from 'next/navigation';
 import { Card } from '@/components/ui/card';
 import { useSideNav } from '@/app/lab/[slug]/sideNav.provider';
 
+import UserNav from '@/components/ui/nav-user';
 interface NavItemProps {
   href: string;
   icon: LucideIcon;
@@ -94,9 +83,7 @@ export const LabSideNavBar = () => {
         />
       </nav>
       <nav className="mt-auto grid gap-1 p-2">
-        <NavItem href="/dashboard/settings" icon={Settings2} label="Settings" />
-        <NavItem href="/dashboard/help" icon={LifeBuoy} label="Help" />
-        <NavItem href="/dashboard/account" icon={SquareUser} label="Account" />
+        <UserNav />
       </nav>
     </Card>
   );

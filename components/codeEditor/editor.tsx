@@ -220,12 +220,6 @@ function Editor({ isSample }: { isSample: boolean }) {
     };
   }, []);
 
-  const handleSubmit = () => {
-    setIsSubmitting(true);
-    setToggleTestPanel(true);
-    // The actual submission will be triggered after tests complete in handleTestComplete
-  };
-
   const handleTestComplete = (specs: Record<string, Spec>) => {
     setTestResults(specs);
 
@@ -272,7 +266,7 @@ function Editor({ isSample }: { isSample: boolean }) {
     <div className="flex flex-col w-full">
       <SandpackLayout
         style={{
-          height: '90vh',
+          height: '88vh',
         }}
       >
         {/* {showFile ? <SandpackFileExplorer style={{ height: '100%' }} /> : null} */}

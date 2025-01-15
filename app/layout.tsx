@@ -7,6 +7,7 @@ import { SpeedInsights } from '@vercel/speed-insights/next';
 import { cn } from '@/lib/utils';
 import { metadata } from './meta';
 import { CSPostHogProvider } from './provider';
+import { SidebarProvider } from '@/components/ui/sidebar';
 
 const fontSans = FontSans({
   subsets: ['latin'],
@@ -34,13 +35,9 @@ export default function RootLayout({
           fontSans.variable,
         )}
       >
-        <CSPostHogProvider> {children}</CSPostHogProvider>
-        {isProduction && (
-          <>
-            <Analytics />
-            <SpeedInsights />
-          </>
-        )}
+        <CSPostHogProvider>
+          <SidebarProvider>{children}</SidebarProvider>
+        </CSPostHogProvider>
       </body>
     </html>
   );

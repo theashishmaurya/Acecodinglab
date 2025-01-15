@@ -29,7 +29,7 @@ const QuestionPanel = (props: QuestionPanelProps) => {
   }
   const { meta, question } = questionData;
   return (
-    <div className="h-[90vh] bg-background text-foreground overflow-auto">
+    <div className="h-[88vh] bg-background text-foreground overflow-auto">
       <Card className="rounded-none border-0 border-b">
         <div className="p-2 flex items-center justify-between">
           <Tabs defaultValue="description" className="flex-1">
