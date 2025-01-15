@@ -1,8 +1,23 @@
-import { Captions, FlaskConical, HardDriveUpload } from 'lucide-react';
+import { FlaskConical, HardDriveUpload } from 'lucide-react';
 import { Button } from '../ui/button';
 import CountDown from '../ui/countdown';
+import { useSideNav } from '@/app/lab/[slug]/sideNav.provider';
 
 const CodeEditorNavbar = () => {
+  const { setToggleTestPanel, toggleTestPanel, setIsSubmitting } = useSideNav();
+
+  const handleSubmit = () => {
+    setIsSubmitting(true);
+    /** If Test Panel open close it wait for a sec open it again. */
+    if (toggleTestPanel) {
+      setToggleTestPanel(false);
+      setTimeout(() => {
+        setToggleTestPanel(true);
+      }, 100);
+    } else {
+      setToggleTestPanel(true);
+    }
+  };
   return (
     <div className="flex justify-end items-center my-4">
       <div className="mx-2">
@@ -21,7 +36,7 @@ const CodeEditorNavbar = () => {
           <Button
             className="flex items-center"
             // Dark theme button
-            // onClick={() => setTestVisibility(true)}
+            onClick={() => setToggleTestPanel(!toggleTestPanel)}
             size={'xs'}
           >
             <FlaskConical size={'18'} className="mr-1" />
@@ -29,15 +44,16 @@ const CodeEditorNavbar = () => {
           </Button>
         </div>
         <div className="mx-2">
-          <Button
+          {/* <Button
             className="bg-green-700 text-white-foreground hover:bg-green/90 flex items-center"
             size="xs"
-            //   onClick={handleSubmit} disabled={isSubmitting}
+            onClick={handleSubmit}
+            // disabled={isSubmitting}
           >
             <HardDriveUpload size={18} className="mr-1.5" />
-            {/* {isSubmitting ? 'Submitting...' : 'Submit'} */}
+            {isSubmitting ? 'Submitting...' : 'Submit'}
             Submit
-          </Button>
+          </Button> */}
         </div>
       </div>
     </div>
