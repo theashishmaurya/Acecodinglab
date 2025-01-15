@@ -1,5 +1,11 @@
 import { Spec } from '@codesandbox/sandpack-react/components/Tests/Specs';
-import React, { createContext, useContext, useState, ReactNode } from 'react';
+import React, {
+  createContext,
+  useContext,
+  useState,
+  ReactNode,
+  useMemo,
+} from 'react';
 
 interface SideNavContextProps {
   isFileExplorerOpen: boolean;
@@ -13,7 +19,11 @@ interface SideNavContextProps {
   setIsSubmitting: React.Dispatch<React.SetStateAction<boolean>>;
 
   onTestComplete: (specs: Record<string, Spec>) => void;
-  handleSubmit: (spec: Record<string, Spec>) => void;
+
+  showTestResult: boolean;
+  setShowTestResult: React.Dispatch<React.SetStateAction<boolean>>;
+  testResult: Spec | undefined;
+  setTestResult: React.Dispatch<React.SetStateAction<Spec | undefined>>;
 }
 
 const SideNavContext = createContext<SideNavContextProps | undefined>(
@@ -25,18 +35,25 @@ export const SideNavProvider: React.FC<{ children: ReactNode }> = ({
 }) => {
   const [isFileExplorerOpen, setIsFileExplorerOpen] = useState(true);
   const [isQuestionPanelOpen, setIsQuestionPanelOpen] = useState(false);
-  const [toggleTestPanel, setToggleTestPanel] = useState(false);
-
+  const [toggleTestPanel, setToggleTestPanel] = useState(true);
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+  const [showTestResult, setShowTestResult] = useState<boolean>(false);
+  const [testResult, setTestResult] = useState<Spec>();
 
   const onTestComplete = (specs: Record<string, Spec>) => {
     if (isSubmitting) {
-      handleSubmit(specs);
+      triggerTestResultModal(specs);
     }
   };
 
-  const handleSubmit = (spec: Record<string, Spec>) => {
+  const triggerTestResultModal = (spec: Record<string, Spec>) => {
     /** Submit Logic Here */
+    const key = Object.keys(spec)[0];
+
+    // Access the value using the key
+    const testObject = spec[key];
+    setTestResult(testObject);
+    setShowTestResult(true);
     setIsSubmitting(false);
   };
 
@@ -53,7 +70,12 @@ export const SideNavProvider: React.FC<{ children: ReactNode }> = ({
     setToggleTestPanel,
 
     onTestComplete,
-    handleSubmit,
+
+    showTestResult,
+    setShowTestResult,
+
+    testResult,
+    setTestResult,
   };
 
   return (

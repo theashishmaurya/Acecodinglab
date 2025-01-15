@@ -16,6 +16,7 @@ import Editor from './editor';
 import { SandpackFileExplorer } from 'sandpack-file-explorer';
 import { QuestionData } from '@/app/lab/[slug]/page';
 import { useSideNav } from '@/app/lab/[slug]/sideNav.provider';
+import { TestResultsModal } from '../testResultModal/testResultModal';
 
 interface CodeEditorProps {
   files: SandpackFiles;
@@ -30,7 +31,15 @@ export default function CodeEditor({
   questionData,
   mode = CodeEditorMode.PRACTICE,
 }: CodeEditorProps) {
-  const { isFileExplorerOpen, isQuestionPanelOpen } = useSideNav();
+  const {
+    isFileExplorerOpen,
+    isQuestionPanelOpen,
+    showTestResult,
+    setShowTestResult,
+    testResult,
+    setIsSubmitting,
+  } = useSideNav();
+
   return (
     <SandpackProvider
       template="react"
@@ -49,6 +58,18 @@ export default function CodeEditor({
     >
       <div className="flex justify-center h-[9vh] w-full">
         <CodeEditorNavbar />
+        <TestResultsModal
+          isOpen={showTestResult}
+          onClose={() => {
+            setShowTestResult(false);
+            setIsSubmitting(false);
+          }}
+          onSubmit={() => {
+            setShowTestResult(false);
+            setIsSubmitting(false);
+          }}
+          testResults={testResult}
+        />
       </div>
       <div className="flex h-full w-full">
         {isFileExplorerOpen && (

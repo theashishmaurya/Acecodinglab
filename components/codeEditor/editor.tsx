@@ -322,35 +322,6 @@ function Editor({ isSample }: { isSample: boolean }) {
           />
         </RightColumn>
       </SandpackLayout>
-      {/* <div className="flex justify-between items-end w-full my-4">
-        <div className="mx-2">
-          <CountDown
-            hr={0}
-            min={0}
-            second={10}
-            onCounterEnd={() => {
-              console.log('counter Ended');
-            }}
-            autoStart={false}
-          />
-        </div>
-        <div className="flex justify-end items-end">
-          <div className="mx-2">
-            <Button
-              // Dark theme button
-              onClick={() => setTestVisibility(true)}
-              size={'sm'}
-            >
-              Test
-            </Button>
-          </div>
-          <div className="mx-2">
-            <Button size="sm" onClick={handleSubmit} disabled={isSubmitting}>
-              {isSubmitting ? 'Submitting...' : 'Submit'}
-            </Button>
-          </div>
-        </div>
-      </div> */}
     </div>
   );
 }
@@ -362,11 +333,6 @@ const ConsoleCounterButton: React.FC<{
   return (
     <RoundedButton className="relative min-w-[12px]" onClick={onClick}>
       <ConsoleIcon />
-      {/* {counter > 0 && (
-        <strong className=" min-w-12 h-12 px-2 rounded-full text-xs leading-4 absolute top-0  right-0 font-normal p-10">
-          {counter}
-        </strong>
-      )} */}
     </RoundedButton>
   );
 };

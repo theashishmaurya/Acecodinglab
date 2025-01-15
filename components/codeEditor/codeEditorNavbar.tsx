@@ -1,10 +1,11 @@
-import { FlaskConical, HardDriveUpload } from 'lucide-react';
+import { FlaskConical, HardDriveUpload, Loader2 } from 'lucide-react';
 import { Button } from '../ui/button';
 import CountDown from '../ui/countdown';
 import { useSideNav } from '@/app/lab/[slug]/sideNav.provider';
 
 const CodeEditorNavbar = () => {
-  const { setToggleTestPanel, toggleTestPanel, setIsSubmitting } = useSideNav();
+  const { setToggleTestPanel, toggleTestPanel, setIsSubmitting, isSubmitting } =
+    useSideNav();
 
   const handleSubmit = () => {
     setIsSubmitting(true);
@@ -44,16 +45,19 @@ const CodeEditorNavbar = () => {
           </Button>
         </div>
         <div className="mx-2">
-          {/* <Button
+          <Button
             className="bg-green-700 text-white-foreground hover:bg-green/90 flex items-center"
             size="xs"
             onClick={handleSubmit}
-            // disabled={isSubmitting}
+            disabled={isSubmitting}
           >
-            <HardDriveUpload size={18} className="mr-1.5" />
-            {isSubmitting ? 'Submitting...' : 'Submit'}
+            {isSubmitting ? (
+              <Loader2 className="animate-spin mx-4" />
+            ) : (
+              <HardDriveUpload size={18} className="mr-1.5" />
+            )}
             Submit
-          </Button> */}
+          </Button>
         </div>
       </div>
     </div>

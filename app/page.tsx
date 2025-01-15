@@ -79,9 +79,9 @@ const Navbar = ({ user }: { user: User | null }) => (
 
 const HeroSection = () => (
   <section className="container mx-auto py-10 sm:py-20 text-center min-h-screen flex items-center justify-center">
-    <div className="relative overflow-hidden py-12 sm:py-24 w-full">
-      <div className="max-w-2xl text-center mx-auto">
-        <h1 className="scroll-m-20 text-3xl sm:text-4xl font-extrabold tracking-tight lg:text-5xl">
+    <div className="relative overflow-hidden py-12 sm:py-4 w-full">
+      <div className="max-w-4xl text-center mx-auto">
+        <h1 className="scroll-m-20 text-3xl sm:text-4xl font-extrabold tracking-tight lg:text-6xl">
           Ace Frontend Challenges
         </h1>
         <p className="mt-3 text-lg sm:text-xl text-muted-foreground mb-6 sm:mb-10">
@@ -98,7 +98,7 @@ const HeroSection = () => (
           Learn More
         </Button>
       </div>
-      <div className="mt-10 sm:mt-20 relative max-w-5xl mx-auto">
+      <div className="mt-2 sm:mt-6 relative mx-auto">
         <ThreeDHeroCard />
         <div className="absolute bottom-12 -start-20 -z-[1] w-24 h-24 sm:w-48 sm:h-48 bg-gradient-to-b from-primary-foreground via-primary-foreground to-background p-px rounded-lg">
           <div className="w-full h-full rounded-lg bg-background/10" />

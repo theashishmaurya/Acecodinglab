@@ -35,9 +35,7 @@ export default function RootLayout({
           fontSans.variable,
         )}
       >
-        <CSPostHogProvider>
-          <SidebarProvider>{children}</SidebarProvider>
-        </CSPostHogProvider>
+        <CSPostHogProvider>{children}</CSPostHogProvider>
       </body>
     </html>
   );
