@@ -15,7 +15,7 @@ import {
 import Editor from './editor';
 import { SandpackFileExplorer } from 'sandpack-file-explorer';
 import { QuestionData } from '@/app/lab/[slug]/page';
-import { useSideNav } from '@/app/lab/[slug]/sideNav.provider';
+import { useSideNav } from '@/app/lab/sideNav.provider';
 import { TestResultsModal } from '../testResultModal/testResultModal';
 
 interface CodeEditorProps {
@@ -38,6 +38,7 @@ export default function CodeEditor({
     setShowTestResult,
     testResult,
     setIsSubmitting,
+    isSubmitting,
   } = useSideNav();
 
   return (

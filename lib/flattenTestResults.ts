@@ -6,7 +6,7 @@ interface TestResult {
     errors?: Array<{ message: string }>;
   }
   
-  interface FlattenedTestResult extends TestResult {
+  export interface FlattenedTestResult extends TestResult {
     path: string[];
   }
   

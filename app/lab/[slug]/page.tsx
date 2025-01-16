@@ -7,7 +7,7 @@ import { getHelloWorld } from './action';
 import { CodeEditorMode } from '@/components/codeEditor/types';
 import { readFromFolder } from '@/lib/readFromFolder';
 import LabSideNavBar from '@/components/labSideNav';
-import { SideNavProvider } from './sideNav.provider';
+import { SideNavProvider } from '../sideNav.provider';
 import { LoadingScreen } from '@/components/ui/loading-screen';
 
 export type QuestionData = {

@@ -10,7 +10,7 @@ import {
 } from '@/components/ui/tooltip';
 import { usePathname } from 'next/navigation';
 import { Card } from '@/components/ui/card';
-import { useSideNav } from '@/app/lab/[slug]/sideNav.provider';
+import { useSideNav } from '@/app/lab/sideNav.provider';
 
 import UserNav from '@/components/ui/nav-user';
 interface NavItemProps {

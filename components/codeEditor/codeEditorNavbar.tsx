@@ -1,7 +1,8 @@
 import { FlaskConical, HardDriveUpload, Loader2 } from 'lucide-react';
 import { Button } from '../ui/button';
 import CountDown from '../ui/countdown';
-import { useSideNav } from '@/app/lab/[slug]/sideNav.provider';
+import { useSideNav } from '@/app/lab/sideNav.provider';
+import { useCallback, useRef } from 'react';
 
 const CodeEditorNavbar = () => {
   const { setToggleTestPanel, toggleTestPanel, setIsSubmitting, isSubmitting } =
@@ -10,11 +11,11 @@ const CodeEditorNavbar = () => {
   const handleSubmit = () => {
     setIsSubmitting(true);
     /** If Test Panel open close it wait for a sec open it again. */
-    if (toggleTestPanel) {
+    if (toggleTestPanel === true) {
       setToggleTestPanel(false);
       setTimeout(() => {
         setToggleTestPanel(true);
-      }, 100);
+      }, 1);
     } else {
       setToggleTestPanel(true);
     }

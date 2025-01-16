@@ -11,73 +11,63 @@ import {
   SandpackTests,
   useSandpack,
 } from '@codesandbox/sandpack-react';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { memo, useEffect, useState } from 'react';
 import classNames from 'classnames';
-import { isMDFile } from '@/lib/isMDFile';
-import { MDXRemote, MDXRemoteSerializeResult } from 'next-mdx-remote';
-import { serialize } from 'next-mdx-remote/serialize';
-import remarkGfm from 'remark-gfm';
-import rehypeHighlight from 'rehype-highlight';
-import 'highlight.js/styles/github-dark.css';
-import { MDXComponents } from 'mdx/types';
+
 import { practiceSessionsAPI } from '@/db/practiceSession/practiceSession.client';
 import { useParams } from 'next/navigation';
 import { useDebouncedCallback } from 'use-debounce';
 import { Spec } from '@codesandbox/sandpack-react/components/Tests/Specs';
-import Image from 'next/image';
-import { useSideNav } from '@/app/lab/[slug]/sideNav.provider';
+import { useSideNav } from '@/app/lab/sideNav.provider';
 
 interface CustomBottomPanel {
   consoleVisibility: boolean;
   verticalSize: number;
-  testVisibility: boolean;
-  onTestComplete: (specs: Record<string, Spec>) => void;
 }
 
-const CustomBottomPanel = (props: CustomBottomPanel) => {
-  const { consoleVisibility, verticalSize, testVisibility, onTestComplete } =
-    props;
-  const [isBottomPanelVisible, setIsBottomPanelVisible] =
-    useState<boolean>(true);
+const CustomBottomPanel = memo((props: CustomBottomPanel) => {
+  const { consoleVisibility, verticalSize } = props;
+  const { toggleTestPanel, onTestComplete } = useSideNav();
 
   return (
     <>
-      {isBottomPanelVisible && (
-        <div
-          className="console-wrapper w-full overflow-hidden"
-          style={{
-            flexGrow: consoleVisibility ? 100 - verticalSize : 0,
-            flexShrink: consoleVisibility ? 100 - verticalSize : 0,
-            flexBasis: 0,
-            width: '100%',
-            maxHeight: consoleVisibility
-              ? `calc(${100 - verticalSize}% - 1px)`
-              : 0,
-          }}
-        >
-          {!testVisibility && (
-            <SandpackConsole
-              className={classNames('overflow-y', [
-                // Displaty the console when the consoleVisibility is true
-                consoleVisibility ? 'block' : 'hidden',
-              ])}
-              // onLogsChange={(logs) => { // causing rerender
-              //   setCouter(logs.length);
-              // }}
-              showHeader={false}
-            />
-          )}
-          {testVisibility ? (
-            <SandpackTests
-              className="h-full min-h-full block"
-              onComplete={onTestComplete}
-            />
-          ) : null}
-        </div>
-      )}
+      <div
+        className="console-wrapper w-full overflow-hidden"
+        style={{
+          flexGrow: consoleVisibility ? 100 - verticalSize : 0,
+          flexShrink: consoleVisibility ? 100 - verticalSize : 0,
+          flexBasis: 0,
+          width: '100%',
+          maxHeight: consoleVisibility
+            ? `calc(${100 - verticalSize}% - 1px)`
+            : 0,
+        }}
+      >
+        {!toggleTestPanel && (
+          <SandpackConsole
+            className={classNames('overflow-y', [
+              // Displaty the console when the consoleVisibility is true
+              consoleVisibility ? 'block' : 'hidden',
+            ])}
+            // onLogsChange={(logs) => { // causing rerender
+            //   setCouter(logs.length);
+            // }}
+            showHeader={false}
+          />
+        )}
+        {toggleTestPanel ? (
+          <SandpackTests
+            className="h-full min-h-full block"
+            onComplete={test => {
+              onTestComplete(test);
+            }}
+          />
+        ) : null}
+      </div>
     </>
   );
-};
+});
+CustomBottomPanel.displayName = 'CustomBottomPanel';
 
 interface ICustomPreview {
   style?: React.CSSProperties;
@@ -317,8 +307,6 @@ function Editor({ isSample }: { isSample: boolean }) {
           <CustomBottomPanel
             consoleVisibility={consoleVisibility}
             verticalSize={verticalSize}
-            testVisibility={toggleTestPanel}
-            onTestComplete={onTestComplete}
           />
         </RightColumn>
       </SandpackLayout>

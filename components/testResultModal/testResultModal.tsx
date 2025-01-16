@@ -7,14 +7,17 @@ import {
   DialogFooter,
 } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
-import { flattenTestResults } from '@/lib/flattenTestResults';
+import {
+  FlattenedTestResult,
+  flattenTestResults,
+} from '@/lib/flattenTestResults';
 import { TestResultItem } from './testResultItem';
 
 interface TestResultsModalProps {
   isOpen: boolean;
   onClose: () => void;
   onSubmit: () => void;
-  testResults: any;
+  testResults: FlattenedTestResult[] | null;
 }
 
 export function TestResultsModal({
@@ -28,10 +31,8 @@ export function TestResultsModal({
   >([]);
 
   useEffect(() => {
-    console.log(testResults, isOpen, 'TestResults');
     if (testResults) {
-      setFlattenedResults(flattenTestResults(testResults));
-      console.log(flattenTestResults(testResults), 'Data from the test');
+      setFlattenedResults(testResults);
     }
   }, [testResults]);
 
