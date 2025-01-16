@@ -1,5 +1,5 @@
 'use client';
-import React from 'react';
+import React, { useState } from 'react';
 import { cn } from '@/lib/utils';
 import Image from 'next/image';
 import createGlobe from 'cobe';
@@ -16,14 +16,14 @@ export function FeaturesSection() {
         'Access a curated collection of frontend coding challenges, designed to enhance your problem-solving abilities and help you prepare for any interview.',
       skeleton: <SkeletonOne />,
       className:
-        'col-span-1 lg:col-span-4 border-b lg:border-r dark:border-neutral-800',
+        'col-span-1 lg:col-span-4 border-b lg:border-r dark:border-neutral-500',
     },
     {
       title: 'Automated Code Evaluation',
       description:
         'Receive immediate, automated feedback on code quality, performance, and efficiency to improve with every practice session.',
       skeleton: <SkeletonTwo />,
-      className: 'border-b col-span-1 lg:col-span-2 dark:border-neutral-800',
+      className: 'border-b col-span-1 lg:col-span-2 dark:border-neutral-500',
     },
     {
       title: 'Watch A Practice Session on Youtube',
@@ -31,7 +31,7 @@ export function FeaturesSection() {
         'Whether its you or Tyler Durden, you can get to know about our product on YouTube',
       skeleton: <SkeletonThree />,
       className:
-        'col-span-1 lg:col-span-3 lg:border-r  dark:border-neutral-800',
+        'col-span-1 lg:col-span-3 lg:border-r  dark:border-neutral-500',
     },
     {
       title: 'Empowering Developers Globally',
@@ -86,10 +86,11 @@ Ready to code smarter, faster, and better? Sign up now and take the first step t
 #CodeLikeAPro #TechInterviewPrep #InstantFeedback #CodingExcellence
    */
   return (
-    <div className="relative z-20 py-10 lg:py-40 max-w-7xl mx-auto">
+    <div className="relative z-20 max-w-7xl mx-auto">
       <div className="px-8">
         <h4 className="text-3xl lg:text-5xl lg:leading-tight max-w-5xl mx-auto text-center tracking-tight font-medium text-black dark:text-white">
-          Level Up Your Coding Skills: Practice and Interview Like a Pro
+          Level Up Your <span className="text-yellow-300">Coding Skills</span>:
+          Practice and Interview Like a Pro
         </h4>
 
         <p className="text-sm lg:text-base  max-w-2xl  my-4 mx-auto text-neutral-500 text-center font-normal dark:text-neutral-300">
@@ -100,12 +101,12 @@ Ready to code smarter, faster, and better? Sign up now and take the first step t
       </div>
 
       <div className="relative ">
-        <div className="grid grid-cols-1 lg:grid-cols-6 mt-12 xl:border rounded-md dark:border-neutral-800">
+        <div className="grid grid-cols-1 lg:grid-cols-6 mt-12 xl:border rounded-md dark:border-neutral-600">
           {features.map(feature => (
             <FeatureCard key={feature.title} className={feature.className}>
               <FeatureTitle>{feature.title}</FeatureTitle>
               <FeatureDescription>{feature.description}</FeatureDescription>
-              <div className=" h-full w-full">{feature.skeleton}</div>
+              <div className="h-full w-full">{feature.skeleton}</div>
             </FeatureCard>
           ))}
         </div>
@@ -155,13 +156,12 @@ export const SkeletonOne = () => {
     <div className="relative flex py-8 px-2 gap-10 h-full">
       <div className="w-full  p-5  mx-auto bg-white dark:bg-neutral-900 shadow-2xl group h-full">
         <div className="flex flex-1 w-full h-full flex-col space-y-2  ">
-          {/* TODO */}
           <Image
-            src="/assets/heroArea.svg"
+            src="/assets/hero.webp"
             alt="header"
             width={800}
             height={800}
-            className="h-full w-full aspect-square object-cover object-left-top rounded-sm"
+            className="aspect-video object-cover object-right-top rounded-sm"
           />
         </div>
       </div>
@@ -188,34 +188,40 @@ export const SkeletonThree = () => {
             alt="header"
             width={800}
             height={800}
-            className="h-full w-full aspect-square object-cover object-center rounded-sm blur-none group-hover/image:blur-md transition-all duration-200"
+            className="h-full w-full aspect-video object-cover object-center rounded-sm blur-none group-hover/image:blur-md transition-all duration-200"
           />
         </div>
       </div>
     </Link>
   );
 };
+const images = [
+  '/assets/automated-test/2.png',
+  '/assets/automated-test/1.png',
+  '/assets/automated-test/4.png',
+  '/assets/automated-test/3.png',
+];
+
+const imageVariants = {
+  whileHover: {
+    scale: 1.1,
+    rotate: 0,
+    zIndex: 100,
+  },
+  whileTap: {
+    scale: 1.1,
+    rotate: 0,
+    zIndex: 100,
+  },
+};
 
 export const SkeletonTwo = () => {
-  const images = [
-    '/assets/automated-test/2.png',
-    '/assets/automated-test/1.png',
-    '/assets/automated-test/4.png',
-    '/assets/automated-test/3.png',
-  ];
+  const [rotations, setRotations] = useState<number[]>([]);
 
-  const imageVariants = {
-    whileHover: {
-      scale: 1.1,
-      rotate: 0,
-      zIndex: 100,
-    },
-    whileTap: {
-      scale: 1.1,
-      rotate: 0,
-      zIndex: 100,
-    },
-  };
+  useEffect(() => {
+    // Generate random rotations after the component mounts
+    setRotations(images.map(() => Math.random() * 20 - 10));
+  }, []);
   return (
     <div className="relative flex flex-col items-start p-8 gap-10 h-full overflow-hidden">
       {/* TODO */}
@@ -225,7 +231,7 @@ export const SkeletonTwo = () => {
             variants={imageVariants}
             key={'images-first' + idx}
             style={{
-              rotate: Math.random() * 20 - 10,
+              rotate: rotations[idx] || 0, // Apply rotation from state
             }}
             whileHover="whileHover"
             whileTap="whileTap"
@@ -246,7 +252,7 @@ export const SkeletonTwo = () => {
           <motion.div
             key={'images-second' + idx}
             style={{
-              rotate: Math.random() * 20 - 10,
+              rotate: rotations[idx] || 0, // Apply rotation from state
             }}
             variants={imageVariants}
             whileHover="whileHover"

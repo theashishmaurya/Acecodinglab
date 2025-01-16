@@ -79,10 +79,11 @@ const Navbar = ({ user }: { user: User | null }) => (
 
 const HeroSection = () => (
   <section className="container mx-auto py-10 sm:py-20 text-center min-h-screen flex items-center justify-center">
-    <div className="relative overflow-hidden py-12 sm:py-4 w-full">
-      <div className="max-w-4xl text-center mx-auto">
-        <h1 className="scroll-m-20 text-3xl sm:text-4xl font-extrabold tracking-tight lg:text-6xl">
-          Ace Frontend Challenges
+    <div className="relative overflow-hidden py-12 sm:py-2 w-full">
+      <div className="max-w-5xl text-center mx-auto">
+        <h1 className="scroll-m-20 text-3xl sm:text-4xl font-extrabold tracking-tight lg:text-8xl">
+          Ace <span className="text-yellow-300">Frontend</span>
+          <span className="text-blue-400"> Interview</span> Challenges
         </h1>
         <p className="mt-3 text-lg sm:text-xl text-muted-foreground mb-6 sm:mb-10">
           Your go-to platform for mastering frontend coding and system design,
@@ -90,7 +91,10 @@ const HeroSection = () => (
           success.
         </p>
         <Link href="/signup">
-          <Button size="lg" className="mr-4 mb-2 sm:mb-0">
+          <Button
+            size="lg"
+            className="mr-4 mb-2 font-bold sm:mb-0 hover:bg-green-500 hover:text-white"
+          >
             Get Started
           </Button>
         </Link>
@@ -184,7 +188,7 @@ export default async function Page() {
       <Navbar user={user.data.user} />
       <main className="flex-grow">
         <HeroSection />
-        <section id="features" className="py-10 sm:py-20">
+        <section id="features" className="py-5 sm:py-5">
           <FeaturesSection />
         </section>
         <section className="container mx-auto py-10 sm:py-20">

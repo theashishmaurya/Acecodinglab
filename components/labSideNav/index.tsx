@@ -1,7 +1,7 @@
 'use client';
 import React from 'react';
 import Link from 'next/link';
-import { Triangle, LucideIcon, Files, BookCheck } from 'lucide-react';
+import { Triangle, LucideIcon, Files, BookCheck, Book } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
   Tooltip,
@@ -65,6 +65,7 @@ export const LabSideNavBar = () => {
         </Link>
       </div>
       <nav className="grid gap-1 p-2">
+        <NavItem href="/dashboard/practice" icon={Book} label="Question Bank" />
         <NavItem
           href="#"
           icon={Files}
