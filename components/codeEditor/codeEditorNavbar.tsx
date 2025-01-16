@@ -2,24 +2,11 @@ import { FlaskConical, HardDriveUpload, Loader2 } from 'lucide-react';
 import { Button } from '../ui/button';
 import CountDown from '../ui/countdown';
 import { useSideNav } from '@/app/lab/sideNav.provider';
-import { useCallback, useRef } from 'react';
 
 const CodeEditorNavbar = () => {
-  const { setToggleTestPanel, toggleTestPanel, setIsSubmitting, isSubmitting } =
+  const { setToggleTestPanel, toggleTestPanel, isSubmitting, preSubmitTask } =
     useSideNav();
 
-  const handleSubmit = () => {
-    setIsSubmitting(true);
-    /** If Test Panel open close it wait for a sec open it again. */
-    if (toggleTestPanel === true) {
-      setToggleTestPanel(false);
-      setTimeout(() => {
-        setToggleTestPanel(true);
-      }, 1);
-    } else {
-      setToggleTestPanel(true);
-    }
-  };
   return (
     <div className="flex justify-end items-center my-4">
       <div className="mx-2">
@@ -49,7 +36,7 @@ const CodeEditorNavbar = () => {
           <Button
             className="bg-green-700 text-white-foreground hover:bg-green/90 flex items-center"
             size="xs"
-            onClick={handleSubmit}
+            onClick={preSubmitTask}
             disabled={isSubmitting}
           >
             {isSubmitting ? (

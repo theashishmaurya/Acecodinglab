@@ -19,14 +19,12 @@ import { useSideNav } from '@/app/lab/sideNav.provider';
 import { TestResultsModal } from '../testResultModal/testResultModal';
 
 interface CodeEditorProps {
-  files: SandpackFiles;
   mode: CodeEditorMode;
   isSample: boolean;
   questionData?: QuestionData;
 }
 
 export default function CodeEditor({
-  files,
   isSample,
   questionData,
   mode = CodeEditorMode.PRACTICE,
@@ -34,41 +32,20 @@ export default function CodeEditor({
   const {
     isFileExplorerOpen,
     isQuestionPanelOpen,
-    showTestResult,
-    setShowTestResult,
+    showTestResultModal,
     testResult,
-    setIsSubmitting,
-    isSubmitting,
+    handleCloseModal,
+    handleSubmit,
   } = useSideNav();
 
   return (
-    <SandpackProvider
-      template="react"
-      theme="dark"
-      files={files}
-      options={{
-        autorun: true,
-      }}
-      customSetup={{
-        //Jest and react-testing-library
-        dependencies: {
-          '@testing-library/jest-dom': '5.11.4',
-          '@testing-library/react': '11.2.7',
-        },
-      }}
-    >
+    <>
       <div className="flex justify-center h-[9vh] w-full">
         <CodeEditorNavbar />
         <TestResultsModal
-          isOpen={showTestResult}
-          onClose={() => {
-            setShowTestResult(false);
-            setIsSubmitting(false);
-          }}
-          onSubmit={() => {
-            setShowTestResult(false);
-            setIsSubmitting(false);
-          }}
+          isOpen={showTestResultModal}
+          onClose={handleCloseModal}
+          onSubmit={handleSubmit}
           testResults={testResult}
         />
       </div>
@@ -93,6 +70,6 @@ export default function CodeEditor({
           </ResizablePanel>
         </ResizablePanelGroup>
       </div>
-    </SandpackProvider>
+    </>
   );
 }

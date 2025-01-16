@@ -9,6 +9,7 @@ import { readFromFolder } from '@/lib/readFromFolder';
 import LabSideNavBar from '@/components/labSideNav';
 import { SideNavProvider } from '../sideNav.provider';
 import { LoadingScreen } from '@/components/ui/loading-screen';
+import { SandpackProvider } from '@codesandbox/sandpack-react';
 
 export type QuestionData = {
   question: string;
@@ -63,15 +64,30 @@ export default function Page(props: { params: Promise<{ slug: string }> }) {
 
   return (
     <div>
-      <SideNavProvider>
-        <LabSideNavBar />
-        <CodeEditor
-          files={content}
-          isSample={isSample}
-          questionData={questionData}
-          mode={CodeEditorMode.PRACTICE}
-        />
-      </SideNavProvider>
+      <SandpackProvider
+        template="react"
+        theme="dark"
+        files={content}
+        options={{
+          autorun: true,
+        }}
+        customSetup={{
+          //Jest and react-testing-library
+          dependencies: {
+            '@testing-library/jest-dom': '5.11.4',
+            '@testing-library/react': '11.2.7',
+          },
+        }}
+      >
+        <SideNavProvider>
+          <LabSideNavBar />
+          <CodeEditor
+            isSample={isSample}
+            questionData={questionData}
+            mode={CodeEditorMode.PRACTICE}
+          />
+        </SideNavProvider>
+      </SandpackProvider>
     </div>
   );
 }

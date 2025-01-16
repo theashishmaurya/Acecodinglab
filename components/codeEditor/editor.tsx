@@ -4,7 +4,6 @@ import {
   RoundedButton,
   SandpackCodeEditor,
   SandpackConsole,
-  SandpackFileExplorer,
   SandpackLayout,
   SandpackPreview,
   SandpackStack,
@@ -25,7 +24,7 @@ interface CustomBottomPanel {
   verticalSize: number;
 }
 
-const CustomBottomPanel = memo((props: CustomBottomPanel) => {
+const CustomBottomPanel = (props: CustomBottomPanel) => {
   const { consoleVisibility, verticalSize } = props;
   const { toggleTestPanel, onTestComplete } = useSideNav();
 
@@ -66,8 +65,7 @@ const CustomBottomPanel = memo((props: CustomBottomPanel) => {
       </div>
     </>
   );
-});
-CustomBottomPanel.displayName = 'CustomBottomPanel';
+};
 
 interface ICustomPreview {
   style?: React.CSSProperties;
@@ -219,30 +217,12 @@ function Editor({ isSample }: { isSample: boolean }) {
       );
 
       if (allTestsPassed) {
-        submitToBackend();
         console.log(specs, 'Submitted to backend');
       } else {
         setIsSubmitting(false);
         // Optionally, show a message that not all tests passed
       }
     }
-  };
-
-  const submitToBackend = () => {
-    // Actual submission logic here
-    practiceSessionsAPI
-      .completeSession(slug)
-      .then(() => {
-        console.log('Submission successful');
-        // Handle successful submission (e.g., show a success message)
-      })
-      .catch(error => {
-        console.error('Failed to submit session:', error);
-        // Handle submission error (e.g., show an error message)
-      })
-      .finally(() => {
-        setIsSubmitting(false);
-      });
   };
 
   const EditorStyle = {
@@ -284,10 +264,7 @@ function Editor({ isSample }: { isSample: boolean }) {
             showRefreshButton={true}
             showSandpackErrorOverlay={true}
           />
-          {/* <CustomPreview
-            style={topRowStyle}
-            actionsChildren={actionsChildren}
-          /> */}
+
           <div
             className={classNames('resize-handler', [
               // dragHandler({ direction: "vertical" }),
