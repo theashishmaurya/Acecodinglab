@@ -1,17 +1,7 @@
 'use client';
 import React from 'react';
 import Link from 'next/link';
-import {
-  Book,
-  Bot,
-  Code2,
-  LifeBuoy,
-  Settings2,
-  SquareTerminal,
-  SquareUser,
-  Triangle,
-  LucideIcon,
-} from 'lucide-react';
+import { Book, SquareTerminal, LucideIcon } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
   Tooltip,
@@ -21,6 +11,7 @@ import {
 import { usePathname } from 'next/navigation';
 import { Card } from './card';
 import UserNav from './nav-user';
+import Image from 'next/image';
 
 interface NavItemProps {
   href: string;
@@ -57,9 +48,14 @@ export const SideNavBar = () => {
   return (
     <Card className="inset-y fixed left-0 z-20 flex h-full flex-col border-r">
       <div className="border-b p-2 ">
-        <Link href="/dashboard">
+        <Link href="#">
           <Button variant="ghost" size="icon" aria-label="Home">
-            <Triangle className="size-5 fill-foreground" />
+            <Image
+              src="/logo.svg"
+              alt="ace coding lab logo "
+              width={32}
+              height={32}
+            />
           </Button>
         </Link>
       </div>
