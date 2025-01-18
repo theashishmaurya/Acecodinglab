@@ -1,3 +1,4 @@
+import { Hourglass } from 'lucide-react';
 import React, { useState, useEffect, useCallback } from 'react';
 
 interface CountDownProps {
@@ -15,7 +16,7 @@ export default function CountDown({
   second = 0,
   autoStart = true,
   onCounterEnd,
-  onStart
+  onStart,
 }: CountDownProps) {
   const [time, setTime] = useState<number>(hr * 3600 + min * 60 + second);
   const [isRunning, setIsRunning] = useState<boolean>(autoStart);
@@ -32,7 +33,7 @@ export default function CountDown({
 
     if (isRunning && time > 0) {
       intervalId = setInterval(() => {
-        setTime((prevTime) => {
+        setTime(prevTime => {
           if (prevTime === 1) {
             clearInterval(intervalId);
             setIsRunning(false);
@@ -63,6 +64,9 @@ export default function CountDown({
   };
 
   return (
-    <div className="text-4xl font-bold leading-none">{formatTime(time)}</div>
+    <div className="text-xl font-bold leading-none flex items-center border border-gray-300 rounded-md px-2 py-1">
+      <Hourglass size={20} className="mx-2" />
+      {formatTime(time)}
+    </div>
   );
 }

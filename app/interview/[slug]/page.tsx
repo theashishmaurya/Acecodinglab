@@ -2,6 +2,7 @@
 import CodeEditor from '@/components/codeEditor';
 import { useCodeEditor } from '@/components/codeEditor/codeEditor.context';
 import { CodeEditorMode } from '@/components/codeEditor/types';
+import { SandpackProvider } from '@codesandbox/sandpack-react';
 import { useEffect, useState } from 'react';
 
 const Page = () => {
@@ -24,11 +25,23 @@ const Page = () => {
   };
 
   return (
-    <CodeEditor
+    <SandpackProvider
+      template="react"
+      theme="dark"
       files={files}
-      mode={CodeEditorMode.INTERVIEW}
-      isSample={false}
-    />
+      options={{
+        autorun: true,
+      }}
+      customSetup={{
+        //Jest and react-testing-library
+        dependencies: {
+          '@testing-library/jest-dom': '5.11.4',
+          '@testing-library/react': '11.2.7',
+        },
+      }}
+    >
+      <CodeEditor mode={CodeEditorMode.INTERVIEW} isSample={false} />
+    </SandpackProvider>
   );
 };
 

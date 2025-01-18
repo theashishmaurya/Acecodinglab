@@ -5,13 +5,23 @@ import CodeEditor from '@/components/codeEditor';
 import { practiceSessionsAPI } from '@/db/practiceSession/practiceSession.client';
 import { getHelloWorld } from './action';
 import { CodeEditorMode } from '@/components/codeEditor/types';
+import { readFromFolder } from '@/lib/readFromFolder';
+import LabSideNavBar from '@/components/labSideNav';
+import { SideNavProvider } from '../sideNav.provider';
+import { LoadingScreen } from '@/components/ui/loading-screen';
+import { SandpackProvider } from '@codesandbox/sandpack-react';
 
+export type QuestionData = {
+  question: string;
+  meta: Record<string, string>;
+};
 export default function Page(props: { params: Promise<{ slug: string }> }) {
   const params = use(props.params);
   const [content, setContent] = useState<any>({});
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [isSample, setIsSample] = useState(false);
+  const [questionData, setQuestionData] = useState<QuestionData>();
 
   useEffect(() => {
     const fetchSessionData = async () => {
@@ -25,6 +35,11 @@ export default function Page(props: { params: Promise<{ slug: string }> }) {
           setIsSample(true);
         } else {
           const sessionData = await practiceSessionsAPI.getSession(params.slug);
+          const data = await readFromFolder(sessionData.question_id, true);
+          setQuestionData({
+            question: (data.template as Record<string, string>)['question.mdx'],
+            meta: data.metaInfo,
+          });
           setContent(JSON.parse(sessionData.current_code));
           setIsSample(false);
         }
@@ -40,7 +55,7 @@ export default function Page(props: { params: Promise<{ slug: string }> }) {
   }, [params.slug]);
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return <LoadingScreen />;
   }
 
   if (error) {
@@ -49,11 +64,30 @@ export default function Page(props: { params: Promise<{ slug: string }> }) {
 
   return (
     <div>
-      <CodeEditor
+      <SandpackProvider
+        template="react"
+        theme="dark"
         files={content}
-        isSample={isSample}
-        mode={CodeEditorMode.PRACTICE}
-      />
+        options={{
+          autorun: true,
+        }}
+        customSetup={{
+          //Jest and react-testing-library
+          dependencies: {
+            '@testing-library/jest-dom': '5.11.4',
+            '@testing-library/react': '11.2.7',
+          },
+        }}
+      >
+        <SideNavProvider>
+          <LabSideNavBar />
+          <CodeEditor
+            isSample={isSample}
+            questionData={questionData}
+            mode={CodeEditorMode.PRACTICE}
+          />
+        </SideNavProvider>
+      </SandpackProvider>
     </div>
   );
 }

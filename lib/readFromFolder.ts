@@ -1,3 +1,4 @@
+"use server"
 import { join } from "path";
 import fs from "fs";
 
@@ -77,8 +78,7 @@ const solution = () => {};
 /**
  * @description Read all files from a question folder
  */
-export const readFromFolder = async (slug: string) => {
-  console.log(slug,"slug")
+export const readFromFolder = async (slug: string,getMetaData?:boolean) => {
   //Read all files from a question folder and see if the folder exists
   try {
     const files = await ReadFolder(DIR);
@@ -88,7 +88,18 @@ export const readFromFolder = async (slug: string) => {
     });
 
     if (file) {
-      return await getTemplate(slugFolder);
+      const template = await getTemplate(slugFolder);
+      if(getMetaData){
+        try {
+        const metaInfo = await getMetaInfo(slugFolder)
+
+        return {template,metaInfo: JSON.parse(metaInfo as string)}
+        }
+        catch(err){
+          throw err
+        }
+      }
+      return {template};
     } else {
       throw new Error("Folder not found");
     }

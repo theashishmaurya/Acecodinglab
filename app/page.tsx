@@ -1,5 +1,6 @@
 import React from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import { FeaturesSection } from '@/components/featureSection';
 import { HowItWorks } from '@/components/howItWorks';
@@ -7,28 +8,42 @@ import { ThreeDHeroCard } from '@/components/heroCard/heroCard';
 import createClient from '@/lib/supabase/supabaseServer';
 import { User } from '@supabase/supabase-js';
 import { Menu } from 'lucide-react';
+import { HoverBorderGradient } from '@/components/ui/hover-border-gradient';
+import { LampContainer, LampDemo } from '@/components/ui/lamp';
+import { motion } from 'framer-motion';
 
 const Navbar = ({ user }: { user: User | null }) => (
   <nav className="container mx-auto p-4">
     <div className="flex items-center justify-between">
-      <Link href="/" className="text-2xl font-bold">
-        AceCodingLab
-      </Link>
+      <div className="flex gap-4 items-center">
+        <Image
+          src="/logo.svg"
+          alt="ace coding lab logo "
+          width={50}
+          height={50}
+        />
+        <Link href="/" className="text-2xl font-bold">
+          AceCodingLab
+        </Link>
+      </div>
       <div className="hidden md:flex items-center space-x-4">
-        <Link href="#features" className="hover:text-primary">
+        <Link href="#features" className="hover:text-primary font-bold">
           Features
         </Link>
-        <Link href="#about" className="hover:text-primary">
+        <Link href="#about" className="hover:text-primary font-bold">
           About
         </Link>
         <Link
           href="https://blog.acecodinglab.com/"
-          className="hover:text-primary"
+          className="hover:text-primary font-bold"
         >
           Blog
         </Link>
         {/* <Link href="#pricing" className="hover:text-primary">Pricing</Link> */}
 
+        <Link href="/login" className="hover:text-primary font-bold">
+          Login
+        </Link>
         {user ? (
           <Link href="/dashboard/practice">
             <Button variant="default">Dashboard</Button>
@@ -45,21 +60,21 @@ const Navbar = ({ user }: { user: User | null }) => (
     </div>
     <input type="checkbox" id="menu-toggle" className="hidden" />
     <div className="hidden mt-4 flex-col space-y-2 md:hidden" id="mobile-menu">
-      <Link href="#features" className="hover:text-primary">
+      <Link href="#features" className="hover:text-primary font-bold">
         Features
       </Link>
-      <Link href="#about" className="hover:text-primary">
+      <Link href="#about" className="hover:text-primary font-bold">
         About
       </Link>
       <Link
         href="https://blog.acecodinglab.com/"
-        className="hover:text-primary"
+        className="hover:text-primary font-bold"
       >
         Blog
       </Link>
-      {/* <Link href="#pricing" className="hover:text-primary">
-        Pricing
-      </Link> */}
+      <Link href="/login" className="hover:text-primary font-bold">
+        Login
+      </Link>
       {user ? (
         <Link href="/dashboard/practice">
           <Button variant="default" className="w-full">
@@ -78,11 +93,22 @@ const Navbar = ({ user }: { user: User | null }) => (
 );
 
 const HeroSection = () => (
-  <section className="container mx-auto py-10 sm:py-20 text-center min-h-screen flex items-center justify-center">
-    <div className="relative overflow-hidden py-12 sm:py-24 w-full">
-      <div className="max-w-2xl text-center mx-auto">
-        <h1 className="scroll-m-20 text-3xl sm:text-4xl font-extrabold tracking-tight lg:text-5xl">
-          Ace Frontend Challenges
+  <section className="container mx-auto py-5 sm:py-8 text-center min-h-screen flex items-center justify-center">
+    <div className="relative overflow-hidden py-4 sm:py-2 w-full">
+      <div className="flex justify-center mb-6">
+        <Link href="/signup">
+          <HoverBorderGradient
+            as="button"
+            className="dark:bg-[--foreground] bg-white text-black dark:text-white flex items-center space-x-2"
+          >
+            Now Available in Public Beta
+          </HoverBorderGradient>
+        </Link>
+      </div>
+      <div className="max-w-5xl text-center mx-auto">
+        <h1 className="scroll-m-20 text-3xl sm:text-4xl font-extrabold tracking-tight lg:text-8xl">
+          Ace <span className="text-yellow-300">Frontend</span>
+          <span className="text-blue-400"> Interview</span> Challenges
         </h1>
         <p className="mt-3 text-lg sm:text-xl text-muted-foreground mb-6 sm:mb-10">
           Your go-to platform for mastering frontend coding and system design,
@@ -90,7 +116,10 @@ const HeroSection = () => (
           success.
         </p>
         <Link href="/signup">
-          <Button size="lg" className="mr-4 mb-2 sm:mb-0">
+          <Button
+            size="lg"
+            className="mr-4 mb-2 font-bold sm:mb-0 hover:bg-green-500 hover:text-white"
+          >
             Get Started
           </Button>
         </Link>
@@ -98,7 +127,7 @@ const HeroSection = () => (
           Learn More
         </Button>
       </div>
-      <div className="mt-10 sm:mt-20 relative max-w-5xl mx-auto">
+      <div className="mt-2 sm:mt-6 relative mx-auto">
         <ThreeDHeroCard />
         <div className="absolute bottom-12 -start-20 -z-[1] w-24 h-24 sm:w-48 sm:h-48 bg-gradient-to-b from-primary-foreground via-primary-foreground to-background p-px rounded-lg">
           <div className="w-full h-full rounded-lg bg-background/10" />
@@ -137,20 +166,8 @@ const AboutSection = () => (
 );
 
 const CTASection = () => (
-  <section className="bg-primary text-primary-foreground py-10 sm:py-20">
-    <div className="container mx-auto text-center px-4 sm:px-0">
-      <h2 className="text-2xl sm:text-3xl font-bold mb-4 sm:mb-6">
-        Ready to elevate your frontend skills?
-      </h2>
-      <p className="text-lg sm:text-xl mb-6 sm:mb-8">
-        Join FrontendPro today and take your career to the next level.
-      </p>
-      <Link href="/signup">
-        <Button size="lg" variant="secondary">
-          Sign Up Now
-        </Button>
-      </Link>
-    </div>
+  <section className="bg-background text-foreground py-6 sm:py-8">
+    <LampDemo />
   </section>
 );
 
@@ -184,7 +201,7 @@ export default async function Page() {
       <Navbar user={user.data.user} />
       <main className="flex-grow">
         <HeroSection />
-        <section id="features" className="py-10 sm:py-20">
+        <section id="features" className="py-5 sm:py-5">
           <FeaturesSection />
         </section>
         <section className="container mx-auto py-10 sm:py-20">
