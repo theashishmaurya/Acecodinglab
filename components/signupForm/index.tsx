@@ -6,6 +6,7 @@ import { useActionState } from 'react';
 import { Button } from '../ui/button';
 import { Github, Loader2 } from 'lucide-react';
 import { signInWithGithub } from '@/app/login/action';
+import { Separator } from '../ui/separator';
 
 const initialState = {
   message: '',
@@ -69,8 +70,9 @@ const SignUpForm = () => {
         </p>
         <Button className="w-full" type="submit">
           {pending && <Loader2 className="animate-spin mx-4" />}
-          Singup
+          Sign Up
         </Button>
+        <Separator />
         <Button
           variant="outline"
           className="w-full"
@@ -78,7 +80,7 @@ const SignUpForm = () => {
           type="button" // Ensure it doesn't trigger form submission
         >
           <Github className="mx-4" />
-          Login with GitHub
+          Signup with GitHub
         </Button>
       </div>
     </form>

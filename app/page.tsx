@@ -181,12 +181,18 @@ const Footer = () => (
         <Link href="/terms" className="hover:text-primary mb-2 sm:mb-0">
           Terms of Service
         </Link>
-        <Link href="#" className="hover:text-primary mb-2 sm:mb-0">
+        <Link
+          href="/privacy-policy"
+          className="hover:text-primary mb-2 sm:mb-0"
+        >
           Privacy Policy
         </Link>
-        <Link href="#" className="hover:text-primary">
-          Contact Us
+        <Link href="/refund-policy" className="hover:text-primary mb-2 sm:mb-0">
+          Refund Policy
         </Link>
+        {/* <Link href="#" className="hover:text-primary">
+          Contact Us
+        </Link> */}
       </div>
     </div>
   </footer>

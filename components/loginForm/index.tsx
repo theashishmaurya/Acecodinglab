@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { Button } from '../ui/button';
 import { useActionState } from 'react';
 import { Github, Loader2 } from 'lucide-react';
+import { Separator } from '../ui/separator';
 
 const initialState = {
   message: '',
@@ -56,6 +57,7 @@ const LoginForm = () => {
         {pending && <Loader2 className="animate-spin mx-4" />}
         Login
       </Button>
+      <Separator />
       <Button
         variant="outline"
         className="w-full"
