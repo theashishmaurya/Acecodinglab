@@ -22,6 +22,19 @@ function Page() {
         </div>
         <SignUpForm />
         <div className="mt-4 text-center text-sm">
+          <p>
+            By signing up, you agree to our{' '}
+            <Link href="/terms" className="underline">
+              Terms and Conditions
+            </Link>{' '}
+            and{' '}
+            <Link href="/privacy-policy" className="underline">
+              Privacy Policy
+            </Link>
+            .
+          </p>
+        </div>
+        <div className="mt-4 text-center text-sm">
           Already have an account?{' '}
           <Link href="/login" className="underline">
             Log in

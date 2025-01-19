@@ -1,17 +1,29 @@
 'use client';
-import { login } from '@/app/login/action';
+import { login, signInWithGithub } from '@/app/login/action';
 import { Label } from '../ui/label';
 import { Input } from '../ui/input';
 import Link from 'next/link';
 import { Button } from '../ui/button';
 import { useActionState } from 'react';
-import { Loader2 } from 'lucide-react';
+import { Github, Loader2 } from 'lucide-react';
+import { Separator } from '../ui/separator';
 
 const initialState = {
   message: '',
 };
 const LoginForm = () => {
   const [state, formAction, pending] = useActionState(login, initialState);
+
+  const handleGithubLogin = async () => {
+    try {
+      const response = await signInWithGithub();
+      if (response?.message) {
+        alert(response.message); // Handle error messages from GitHub login
+      }
+    } catch (error) {
+      console.error('GitHub login failed:', error);
+    }
+  };
 
   return (
     <form className="grid gap-4" action={formAction}>
@@ -45,9 +57,16 @@ const LoginForm = () => {
         {pending && <Loader2 className="animate-spin mx-4" />}
         Login
       </Button>
-      {/* <Button variant="outline" className="w-full">
-              Login with Github
-            </Button> */}
+      <Separator />
+      <Button
+        variant="outline"
+        className="w-full"
+        onClick={handleGithubLogin}
+        type="button" // Ensure it doesn't trigger form submission
+      >
+        <Github className="mx-4" />
+        Login with GitHub
+      </Button>
     </form>
   );
 };

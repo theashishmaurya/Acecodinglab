@@ -48,7 +48,7 @@ export const SideNavProvider: React.FC<{ children: ReactNode }> = ({
 }) => {
   const [isFileExplorerOpen, setIsFileExplorerOpen] = useState(true);
   const [isQuestionPanelOpen, setIsQuestionPanelOpen] = useState(false);
-  const [toggleTestPanel, setToggleTestPanel] = useState(true);
+  const [toggleTestPanel, setToggleTestPanel] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const [showTestResultModal, setShowTestResultModal] =
     useState<boolean>(false);

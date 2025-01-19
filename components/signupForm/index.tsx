@@ -4,7 +4,9 @@ import { Input } from '../ui/input';
 import { Label } from '../ui/label';
 import { useActionState } from 'react';
 import { Button } from '../ui/button';
-import { Loader2 } from 'lucide-react';
+import { Github, Loader2 } from 'lucide-react';
+import { signInWithGithub } from '@/app/login/action';
+import { Separator } from '../ui/separator';
 
 const initialState = {
   message: '',
@@ -12,6 +14,17 @@ const initialState = {
 
 const SignUpForm = () => {
   const [state, formAction, pending] = useActionState(signUp, initialState);
+
+  const handleGithubLogin = async () => {
+    try {
+      const response = await signInWithGithub();
+      if (response?.message) {
+        alert(response.message); // Handle error messages from GitHub login
+      }
+    } catch (error) {
+      console.error('GitHub login failed:', error);
+    }
+  };
 
   return (
     <form className="mx-auto grid w-[350px] gap-6" action={formAction}>
@@ -57,11 +70,18 @@ const SignUpForm = () => {
         </p>
         <Button className="w-full" type="submit">
           {pending && <Loader2 className="animate-spin mx-4" />}
-          Singup
+          Sign Up
         </Button>
-        {/* <Button variant="outline" className="w-full">
-              Sign Up with Google
-            </Button> */}
+        <Separator />
+        <Button
+          variant="outline"
+          className="w-full"
+          onClick={handleGithubLogin}
+          type="button" // Ensure it doesn't trigger form submission
+        >
+          <Github className="mx-4" />
+          Signup with GitHub
+        </Button>
       </div>
     </form>
   );
