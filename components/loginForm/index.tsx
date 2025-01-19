@@ -1,5 +1,5 @@
 'use client';
-import { login, signInWithGithub } from '@/app/login/action';
+import { login, signInWith } from '@/app/login/action';
 import { Label } from '../ui/label';
 import { Input } from '../ui/input';
 import Link from 'next/link';
@@ -7,6 +7,7 @@ import { Button } from '../ui/button';
 import { useActionState } from 'react';
 import { Github, Loader2 } from 'lucide-react';
 import { Separator } from '../ui/separator';
+import Image from 'next/image';
 
 const initialState = {
   message: '',
@@ -16,12 +17,23 @@ const LoginForm = () => {
 
   const handleGithubLogin = async () => {
     try {
-      const response = await signInWithGithub();
+      const response = await signInWith('github');
       if (response?.message) {
         alert(response.message); // Handle error messages from GitHub login
       }
     } catch (error) {
       console.error('GitHub login failed:', error);
+    }
+  };
+
+  const handleGoogleLogin = async () => {
+    try {
+      const response = await signInWith('google');
+      if (response?.message) {
+        alert(response.message); // Handle error messages from GitHub login
+      }
+    } catch (error) {
+      console.error('google login failed:', error);
     }
   };
 
@@ -58,6 +70,21 @@ const LoginForm = () => {
         Login
       </Button>
       <Separator />
+      <Button
+        variant="outline"
+        className="w-full"
+        onClick={handleGoogleLogin}
+        type="button" // Ensure it doesn't trigger form submission
+      >
+        <Image
+          src="/google.svg"
+          alt="google logo"
+          width={24}
+          height={24}
+          className="mx-4"
+        />
+        Login with Google
+      </Button>
       <Button
         variant="outline"
         className="w-full"

@@ -5,8 +5,9 @@ import { Label } from '../ui/label';
 import { useActionState } from 'react';
 import { Button } from '../ui/button';
 import { Github, Loader2 } from 'lucide-react';
-import { signInWithGithub } from '@/app/login/action';
+import { signInWith } from '@/app/login/action';
 import { Separator } from '../ui/separator';
+import Image from 'next/image';
 
 const initialState = {
   message: '',
@@ -17,12 +18,22 @@ const SignUpForm = () => {
 
   const handleGithubLogin = async () => {
     try {
-      const response = await signInWithGithub();
+      const response = await signInWith('github');
       if (response?.message) {
         alert(response.message); // Handle error messages from GitHub login
       }
     } catch (error) {
       console.error('GitHub login failed:', error);
+    }
+  };
+  const handleGoogleLogin = async () => {
+    try {
+      const response = await signInWith('google');
+      if (response?.message) {
+        alert(response.message); // Handle error messages from GitHub login
+      }
+    } catch (error) {
+      console.error('Google login failed:', error);
     }
   };
 
@@ -73,6 +84,21 @@ const SignUpForm = () => {
           Sign Up
         </Button>
         <Separator />
+        <Button
+          variant="outline"
+          className="w-full"
+          onClick={handleGoogleLogin}
+          type="button" // Ensure it doesn't trigger form submission
+        >
+          <Image
+            src="/google.svg"
+            alt="google logo"
+            width={24}
+            height={24}
+            className="mx-4"
+          />
+          Signup with Google
+        </Button>
         <Button
           variant="outline"
           className="w-full"

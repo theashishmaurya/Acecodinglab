@@ -22,7 +22,7 @@ export async function login(prevState: any, formData: FormData) {
   redirect('/dashboard/practice'); // or '/dashboard' if you don't require email verification
 }
 
-export async function signInWithGithub() {
+export async function signInWith(provider: 'google' | 'github') {
   const currentHeaders = await headers();
   const host = currentHeaders.get('host'); // Get the current host (e.g., localhost:3000 or domain.com)
   const protocol = host?.startsWith('localhost') ? 'http' : 'https'; // Use http for localhost, https for production
@@ -30,7 +30,7 @@ export async function signInWithGithub() {
   const supabase = createClient();
 
   const { data, error } = await supabase.auth.signInWithOAuth({
-    provider: 'github',
+    provider: provider,
     options: {
       redirectTo: redirectTo,
     },
