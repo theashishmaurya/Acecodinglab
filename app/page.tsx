@@ -9,8 +9,9 @@ import createClient from '@/lib/supabase/supabaseServer';
 import { User } from '@supabase/supabase-js';
 import { Menu } from 'lucide-react';
 import { HoverBorderGradient } from '@/components/ui/hover-border-gradient';
-import { LampContainer, LampDemo } from '@/components/ui/lamp';
-import { motion } from 'framer-motion';
+import { LampDemo } from '@/components/ui/lamp';
+
+import PaymentSection from '@/components/pricing';
 
 const Navbar = ({ user }: { user: User | null }) => (
   <nav className="container mx-auto p-4">
@@ -39,8 +40,9 @@ const Navbar = ({ user }: { user: User | null }) => (
         >
           Blog
         </Link>
-        {/* <Link href="#pricing" className="hover:text-primary">Pricing</Link> */}
-
+        <Link href="#pricing" className="hover:text-primary font-bold">
+          Pricing
+        </Link>
         <Link href="/login" className="hover:text-primary font-bold">
           Login
         </Link>
@@ -71,6 +73,9 @@ const Navbar = ({ user }: { user: User | null }) => (
         className="hover:text-primary font-bold"
       >
         Blog
+      </Link>
+      <Link href="#pricing" className="hover:text-primary font-bold">
+        Pricing
       </Link>
       <Link href="/login" className="hover:text-primary font-bold">
         Login
@@ -215,6 +220,9 @@ export default async function Page() {
             How It Works
           </h2>
           <HowItWorks />
+        </section>
+        <section className="container mx-auto py-10 sm:py-20" id="pricing">
+          <PaymentSection />
         </section>
         <AboutSection />
         <CTASection />
