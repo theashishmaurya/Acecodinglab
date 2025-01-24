@@ -22,6 +22,7 @@ import {
 import { Tabs, TabsContent } from '@/components/ui/tabs';
 import QuestionTable, { IQuestions } from '@/components/practiceTable';
 import { getListOfQuestion, readFromFolder } from '@/lib/readFromFolder';
+import { UserTracker } from '@/components/userTracker';
 
 export default async function Page(props: any) {
   const searchParams = await props.searchParams;
@@ -55,6 +56,7 @@ export default async function Page(props: any) {
 
   return (
     <Tabs defaultValue={activeTab}>
+      <UserTracker />
       <div className="flex items-center">
         {/* <TabsList>
         <TabsTrigger value="all" asChild>

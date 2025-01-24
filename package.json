@@ -61,6 +61,7 @@
     "npx": "^10.2.2",
     "postcss": "8.4.26",
     "posthog-js": "^1.205.0",
+    "posthog-node": "^4.4.1",
     "re-resizable": "^6.9.9",
     "react": "19.0.0",
     "react-dom": "19.0.0",

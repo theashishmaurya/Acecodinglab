@@ -12,6 +12,7 @@ import {
 import SupportModal from '@/components/ui/support-modal';
 import { createClient } from '@/lib/supabase/supabaseClient';
 import { redirect } from 'next/navigation';
+import posthog from 'posthog-js';
 
 const supabase = createClient();
 
@@ -21,8 +22,7 @@ const UserNav = () => {
     if (error) {
       console.error('Error logging out:', error.message);
     } else {
-      console.log('User logged out successfully');
-
+      posthog.reset();
       redirect('/');
     }
   };
