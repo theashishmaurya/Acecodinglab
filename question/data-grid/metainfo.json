@@ -4,6 +4,7 @@
   "difficulty": "advanced",
   "tags": ["table", "sorting", "filtering", "pagination"],
   "companies": ["Microsoft", "Salesforce", "Oracle", "SAP"],
+  "author": "Ashish Maurya",
   "testCases": 12,
   "score": 100
 }

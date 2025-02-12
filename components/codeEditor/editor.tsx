@@ -82,7 +82,7 @@ function Editor({ isSample }: { isSample: boolean }) {
   const params = useParams();
   const slug = params.slug as string;
 
-  const { toggleTestPanel, setToggleTestPanel, onTestComplete } = useSideNav();
+  const { toggleTestPanel, setToggleTestPanel } = useSideNav();
 
   const debouncedUpdateCode = useDebouncedCallback(
     (code: string) => {
@@ -124,12 +124,12 @@ function Editor({ isSample }: { isSample: boolean }) {
   };
 
   return (
-    <ResizablePanelGroup direction="horizontal" className=" rounded-lg border ">
-      <SandpackLayout
-        style={{
-          height: '88vh',
-        }}
-      >
+    <SandpackLayout
+      style={{
+        height: '88vh',
+      }}
+    >
+      <ResizablePanelGroup direction="horizontal" className="h-full ">
         <ResizablePanel defaultSize={50}>
           <CustomEditor style={EditorStyle} />
         </ResizablePanel>
@@ -153,8 +153,8 @@ function Editor({ isSample }: { isSample: boolean }) {
             </ResizablePanel>
           </ResizablePanelGroup>
         </ResizablePanel>
-      </SandpackLayout>
-    </ResizablePanelGroup>
+      </ResizablePanelGroup>
+    </SandpackLayout>
   );
 }
 
