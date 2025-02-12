@@ -15,7 +15,6 @@ import classNames from 'classnames';
 import { practiceSessionsAPI } from '@/db/practiceSession/practiceSession.client';
 import { useParams } from 'next/navigation';
 import { useDebouncedCallback } from 'use-debounce';
-import { Spec } from '@codesandbox/sandpack-react/components/Tests/Specs';
 import { useSideNav } from '@/app/lab/sideNav.provider';
 import {
   ResizableHandle,
@@ -142,7 +141,8 @@ function Editor({ isSample }: { isSample: boolean }) {
                 actionsChildren={actionsChildren}
                 style={topRowStyle}
                 showNavigator={true}
-                showOpenInCodeSandbox={false}
+                // Only show in the development environment
+                showOpenInCodeSandbox={process.env.NODE_ENV === 'development'}
                 showRefreshButton={true}
                 showSandpackErrorOverlay={true}
               />

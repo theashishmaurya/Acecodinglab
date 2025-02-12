@@ -1,7 +1,7 @@
 import questions from './data';
 import './styles.css';
 
-const Accordion = () => {
+export const Accordion = () => {
   //TODO: Implement the solution here
   return (
     <>

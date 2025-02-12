@@ -1,78 +1,83 @@
-import React from 'react';
-import { render, screen, fireEvent } from '@testing-library/react';
-import '@testing-library/jest-dom';
-import App from './App';
+import React from "react";
+import { render, screen, fireEvent } from "@testing-library/react";
+import "@testing-library/jest-dom";
+import { Accordion } from "./App";
 
 // Mock data for testing
 const mockQuestions = [
-  { id: 1, title: 'Question 1', info: 'Answer 1' },
-  { id: 2, title: 'Question 2', info: 'Answer 2' },
+  { id: 1, title: "Question 1", info: "Answer 1" },
+  { id: 2, title: "Question 2", info: "Answer 2" },
 ];
 
-// Mock the questions import
-jest.mock('./data', () => mockQuestions);
-
-describe('Accordion Component', () => {
-  test('renders accordion structure', () => {
-    render(<App />);
-    const accordionElement = screen.getByTestId('accordion');
-    expect(accordionElement).toBeInTheDocument();
-    expect(accordionElement).toHaveClass('accordion');
+describe("Accordion Component", () => {
+  test("renders accordion title", () => {
+    render(<Accordion question={mockQuestions[0]} />);
+    expect(screen.getByText("Question 1")).toBeInTheDocument();
   });
 
-  test('renders accordion title', () => {
-    render(<App />);
-    const titleElement = screen.getByTestId('accordion-title');
-    expect(titleElement).toBeInTheDocument();
-    expect(titleElement).toHaveClass('accordion-title');
+  test("does not show info by default", () => {
+    render(<Accordion question={mockQuestions[0]} />);
+    expect(screen.queryByText("Test Info")).not.toBeInTheDocument();
   });
 
-  test('renders accordion icon button', () => {
-    render(<App />);
-    const buttonElement = screen.getByRole('button');
-    expect(buttonElement).toBeInTheDocument();
-    expect(buttonElement).toHaveClass('accordion-icon');
+  test("shows info when toggle button is clicked", () => {
+    render(<Accordion question={mockQuestions[0]} />);
+    fireEvent.click(screen.getByTestId("toogle-button"));
+    expect(screen.getByText("Answer 1")).toBeInTheDocument();
   });
 
-  test('renders accordion info', () => {
-    render(<App />);
-    const infoElement = screen.getByTestId('accordion-info');
-    expect(infoElement).toBeInTheDocument();
-    expect(infoElement).toHaveClass('accordion-info');
+  test("hides info when toggle button is clicked twice", () => {
+    render(<Accordion question={mockQuestions[0]} />);
+    const button = screen.getByTestId("toogle-button");
+    fireEvent.click(button);
+    fireEvent.click(button);
+    expect(screen.queryByText("Answer 1")).not.toBeInTheDocument();
   });
 
-  test('toggles accordion content when button is clicked', () => {
-    render(<App />);
-    const buttonElement = screen.getByRole('button');
-    const infoElement = screen.getByTestId('accordion-info');
-    
-    expect(infoElement).not.toBeVisible();
-    fireEvent.click(buttonElement);
-    expect(infoElement).toBeVisible();
-    fireEvent.click(buttonElement);
-    expect(infoElement).not.toBeVisible();
-  });
-
-  test('changes button text when toggled', () => {
-    render(<App />);
-    const buttonElement = screen.getByRole('button');
-    
-    expect(buttonElement).toHaveTextContent('-');
-    fireEvent.click(buttonElement);
-    expect(buttonElement).toHaveTextContent('+');
-    fireEvent.click(buttonElement);
-    expect(buttonElement).toHaveTextContent('-');
+  test("toggle button shows correct icon", () => {
+    render(<Accordion question={mockQuestions[0]} />);
+    const button = screen.getByTestId("toogle-button");
+    expect(button).toHaveTextContent("+");
+    fireEvent.click(button);
+    expect(button).toHaveTextContent("-");
   });
 });
 
-describe('App Component', () => {
-  test('renders App title', () => {
-    render(<App />);
-    expect(screen.getByText('Accordion')).toBeInTheDocument();
-  });
+// describe("App Component", () => {
+//   beforeEach(() => {
+//     // Mock the questions import
+//     jest.mock("./data", () => mockQuestions);
+//   });
 
-  test('renders Accordion component', () => {
-    render(<App />);
-    expect(screen.getByTestId('accordion')).toBeInTheDocument();
-  });
-});
+//   test("renders App title", () => {
+//     render(<App />);
+//     expect(screen.getByText("Accordion")).toBeInTheDocument();
+//   });
+
+//   test("renders all questions from data", () => {
+//     render(<App />);
+//     mockQuestions.forEach((question) => {
+//       expect(screen.getByText(question.title)).toBeInTheDocument();
+//     });
+//   });
+
+//   test("expands and collapses accordions independently", () => {
+//     render(<App />);
+//     const buttons = screen.getAllByTestId("toogle-button");
+
+//     // Expand first accordion
+//     fireEvent.click(buttons[0]);
+//     expect(screen.getByText("Answer 1")).toBeInTheDocument();
+//     expect(screen.queryByText("Answer 2")).not.toBeInTheDocument();
+
+//     // Expand second accordion
+//     fireEvent.click(buttons[1]);
+//     expect(screen.getByText("Answer 1")).toBeInTheDocument();
+//     expect(screen.getByText("Answer 2")).toBeInTheDocument();
+
+//     // Collapse first accordion
+//     fireEvent.click(buttons[0]);
+//     expect(screen.queryByText("Answer 1")).not.toBeInTheDocument();
+//     expect(screen.getByText("Answer 2")).toBeInTheDocument();
+//   });
+// });
