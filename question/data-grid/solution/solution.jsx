@@ -1,87 +1,205 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useMemo } from "react";
+import "./styles.css";
 
-const ITEMS_PER_PAGE = 10;
+const INITIAL_DATA = [
+  { id: 1, name: "John Doe", age: 25, city: "New York", role: "Developer" },
+  {
+    id: 2,
+    name: "Jane Smith",
+    age: 32,
+    city: "San Francisco",
+    role: "Designer",
+  },
+  { id: 3, name: "Bob Johnson", age: 45, city: "Chicago", role: "Manager" },
+  {
+    id: 4,
+    name: "Alice Brown",
+    age: 29,
+    city: "Los Angeles",
+    role: "Product Manager",
+  },
+  {
+    id: 5,
+    name: "Charlie Wilson",
+    age: 38,
+    city: "Seattle",
+    role: "Data Scientist",
+  },
+  { id: 6, name: "David Martinez", age: 41, city: "Boston", role: "CTO" },
+  { id: 7, name: "Eve Adams", age: 27, city: "Austin", role: "UX Designer" },
+  { id: 8, name: "Frank Clark", age: 50, city: "Denver", role: "CEO" },
+  {
+    id: 9,
+    name: "Grace Hall",
+    age: 35,
+    city: "Miami",
+    role: "Marketing Director",
+  },
+  {
+    id: 10,
+    name: "Hank White",
+    age: 30,
+    city: "Houston",
+    role: "Backend Engineer",
+  },
+  {
+    id: 11,
+    name: "Ivy Green",
+    age: 28,
+    city: "San Diego",
+    role: "Frontend Engineer",
+  },
+  {
+    id: 12,
+    name: "Jack King",
+    age: 47,
+    city: "Philadelphia",
+    role: "HR Manager",
+  },
+  {
+    id: 13,
+    name: "Kara Scott",
+    age: 33,
+    city: "Portland",
+    role: "DevOps Engineer",
+  },
+  {
+    id: 14,
+    name: "Leo Turner",
+    age: 26,
+    city: "Atlanta",
+    role: "Cybersecurity Analyst",
+  },
+  {
+    id: 15,
+    name: "Mia Lopez",
+    age: 36,
+    city: "Las Vegas",
+    role: "Project Manager",
+  },
+  {
+    id: 16,
+    name: "Mias Lopez",
+    age: 36,
+    city: "Las Vegas",
+    role: "Project Manager",
+  },
+];
 
-const DataGrid = ({ initialData }) => {
-  const [data, setData] = useState(initialData);
-  const [sortConfig, setSortConfig] = useState({ key: null, direction: 'asc' });
-  const [searchTerm, setSearchTerm] = useState('');
-  const [currentPage, setCurrentPage] = useState(1);
-  const [columnWidths, setColumnWidths] = useState({
-    name: 200,
-    age: 100,
-    city: 150,
-    role: 150
+const getData = (skip, limit) => {
+  return INITIAL_DATA.slice(skip, skip + limit);
+};
+
+const App = () => {
+  const [sortConfig, setSortConfig] = useState({}); // Stores sort state for each column
+
+  const [paginationConfig, setPaginationConfig] = useState({
+    rowsPerPage: 5,
+    totalRows: INITIAL_DATA.length,
+    limit: 5,
+    skip: 0,
   });
-
-  // Sorting Logic
-  const sortData = useCallback((items, sortConfig) => {
-    if (!sortConfig.key) return items;
-
-    return [...items].sort((a, b) => {
-      if (a[sortConfig.key] < b[sortConfig.key]) {
-        return sortConfig.direction === 'asc' ? -1 : 1;
-      }
-      if (a[sortConfig.key] > b[sortConfig.key]) {
-        return sortConfig.direction === 'asc' ? 1 : -1;
-      }
-      return 0;
-    });
-  }, []);
-
-  // Filtering Logic
-  const filterData = useCallback((items, searchTerm) => {
-    if (!searchTerm) return items;
-
-    return items.filter(item =>
-      Object.values(item).some(value =>
-        String(value).toLowerCase().includes(searchTerm.toLowerCase())
-      )
-    );
-  }, []);
-
-  // Column Resizing Logic
-  const handleColumnResize = (column, width) => {
-    setColumnWidths(prev => ({
-      ...prev,
-      [column]: width
-    }));
-  };
-
-  // Request Sort
-  const requestSort = (key) => {
-    let direction = 'asc';
-    if (sortConfig.key === key && sortConfig.direction === 'asc') {
-      direction = 'desc';
-    }
-    setSortConfig({ key, direction });
-  };
-
-  // Pagination Logic
-  const totalPages = Math.ceil(data.length / ITEMS_PER_PAGE);
-  const paginatedData = data.slice(
-    (currentPage - 1) * ITEMS_PER_PAGE,
-    currentPage * ITEMS_PER_PAGE
+  const [data, setData] = useState(
+    getData(paginationConfig.skip, paginationConfig.limit)
   );
 
-  // Process Data
-  useEffect(() => {
-    let processedData = [...initialData];
-    processedData = filterData(processedData, searchTerm);
-    processedData = sortData(processedData, sortConfig);
-    setData(processedData);
-  }, [initialData, searchTerm, sortConfig, filterData, sortData]);
+  const sortColumn = (columnName) => {
+    const currentOrder = sortConfig[columnName] || "unsorted";
 
+    // Determine the next order state
+    const nextOrder =
+      currentOrder === "unsorted"
+        ? "asc"
+        : currentOrder === "asc"
+        ? "dsc"
+        : "unsorted";
+
+    let sortedData;
+
+    if (nextOrder === "asc") {
+      sortedData = [...data].sort((a, b) =>
+        a[columnName] > b[columnName] ? 1 : -1
+      );
+    } else if (nextOrder === "dsc") {
+      sortedData = [...data].sort((a, b) =>
+        a[columnName] < b[columnName] ? 1 : -1
+      );
+    } else {
+      sortedData = [...INITIAL_DATA]; // Reset to initial data
+    }
+
+    // Update state
+    setData(sortedData);
+    setSortConfig({ ...sortConfig, [columnName]: nextOrder });
+  };
+
+  const onSearch = (e) => {
+    const searchQuery = e.target.value.toLowerCase();
+
+    let arr = Object.keys(INITIAL_DATA[0]);
+    // Removing the id
+    arr = arr.slice(1, arr.length);
+
+    const newData = [...INITIAL_DATA].filter((row) => {
+      for (let i = 0; i < arr.length; i++) {
+        if (
+          String(row[arr[i]] ?? "")
+            .toLowerCase()
+            .includes(searchQuery)
+        ) {
+          return true;
+        }
+      }
+    });
+    setData(newData);
+  };
+
+  handlePageChange = (type) => {
+    const currentSkip = paginationConfig.skip;
+    const currentLimit = paginationConfig.limit;
+
+    if (type === "next") {
+      const newSkip = currentSkip + currentLimit;
+      const newData = getData(newSkip, currentLimit);
+      setData(newData);
+      const newPaginationConfig = {
+        rowsPerPage: 5,
+        totalRows: INITIAL_DATA.length,
+        limit: 5,
+        skip: newSkip,
+      };
+      setPaginationConfig(newPaginationConfig);
+    }
+    if (type === "prev") {
+      const newSkip = currentSkip - currentLimit;
+      const newData = getData(newSkip, currentLimit);
+      setData(newData);
+      const newPaginationConfig = {
+        rowsPerPage: 5,
+        totalRows: INITIAL_DATA.length,
+        limit: 5,
+        skip: newSkip,
+      };
+      setPaginationConfig(newPaginationConfig);
+    }
+  };
+
+  const CalculateIfNextIsDisabled = () => {
+    const currentPage = paginationConfig.skip / paginationConfig.rowsPerPage;
+    const totalPages =
+      paginationConfig.totalRows / paginationConfig.rowsPerPage;
+
+    return currentPage + 1 >= totalPages;
+  };
   return (
     <div className="data-grid-container" data-testid="data-grid-container">
       <div className="grid-header" data-testid="grid-header">
         <div className="grid-title">Data Grid</div>
         <div className="grid-actions">
           <input
+            onChange={onSearch}
             type="text"
             placeholder="Search..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
             data-testid="search-input"
           />
         </div>
@@ -91,93 +209,65 @@ const DataGrid = ({ initialData }) => {
         <table>
           <thead>
             <tr>
-              {Object.keys(columnWidths).map(column => (
-                <th
-                  key={column}
-                  onClick={() => requestSort(column)}
-                  className={
-                    sortConfig.key === column
-                      ? `sorted-${sortConfig.direction}`
-                      : ''
-                  }
-                  style={{ width: `${columnWidths[column]}px` }}
-                  data-testid={`column-${column}`}
-                >
-                  {column.charAt(0).toUpperCase() + column.slice(1)}
-                  <div
-                    className="resizer"
-                    data-testid={`resizer-${column}`}
-                    onMouseDown={e => {
-                      const startX = e.pageX;
-                      const startWidth = columnWidths[column];
-
-                      const handleMouseMove = (e) => {
-                        const width = startWidth + (e.pageX - startX);
-                        handleColumnResize(column, Math.max(50, width));
-                      };
-
-                      const handleMouseUp = () => {
-                        document.removeEventListener('mousemove', handleMouseMove);
-                        document.removeEventListener('mouseup', handleMouseUp);
-                      };
-
-                      document.addEventListener('mousemove', handleMouseMove);
-                      document.addEventListener('mouseup', handleMouseUp);
-                    }}
-                  />
-                </th>
-              ))}
+              {Object.keys(INITIAL_DATA[0])
+                .splice(1, Object.keys(INITIAL_DATA[0]).length)
+                .map((col) => (
+                  <th
+                    key={col}
+                    onClick={() => sortColumn(col)}
+                    data-testid={`column-${col}`}
+                  >
+                    {col.charAt(0).toUpperCase() + col.slice(1)}{" "}
+                    {sortConfig[col] === "asc"
+                      ? "▲"
+                      : sortConfig[col] === "dsc"
+                      ? "▼"
+                      : "⏺"}
+                  </th>
+                ))}
             </tr>
           </thead>
           <tbody>
-            {paginatedData.map((item) => (
-              <tr key={item.id} data-testid={`row-${item.id}`}>
-                {Object.keys(columnWidths).map(column => (
-                  <td
-                    key={`${item.id}-${column}`}
-                    data-testid={`cell-${column}-${item.id}`}
-                  >
-                    {item[column]}
-                  </td>
-                ))}
-              </tr>
-            ))}
+            {data.map((row) => {
+              return (
+                <tr key={row.id} data-testid={`row-${row.id}`}>
+                  <td data-testid={`cell-name-${row.id}`}>{row.name}</td>
+                  <td data-testid={`cell-age-${row.id}`}>{row.age}</td>
+                  <td data-testid={`cell-city-${row.id}`}>{row.city}</td>
+                  <td data-testid={`cell-role-${row.id}`}>{row.role}</td>
+                </tr>
+              );
+            })}
           </tbody>
         </table>
       </div>
 
       <div className="grid-pagination" data-testid="grid-pagination">
+        {/* TODO: Implement pagination */}
         <div className="pagination-info" data-testid="page-info">
-          Page {currentPage} of {totalPages}
+          Page{" "}
+          {Math.floor(paginationConfig.skip / paginationConfig.rowsPerPage) + 1}
         </div>
         <div className="pagination-controls">
           <button
-            onClick={() => setCurrentPage(1)}
-            disabled={currentPage === 1}
-            data-testid="first-page"
-          >
-            First
-          </button>
-          <button
-            onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
-            disabled={currentPage === 1}
+            className="active"
+            onClick={() => {
+              handlePageChange("prev");
+            }}
             data-testid="prev-page"
+            disabled={paginationConfig.skip == 0}
           >
-            Previous
+            Prev
           </button>
           <button
-            onClick={() => setCurrentPage(prev => Math.min(totalPages, prev + 1))}
-            disabled={currentPage === totalPages}
+            className="active"
+            onClick={() => {
+              handlePageChange("next");
+            }}
             data-testid="next-page"
+            disabled={CalculateIfNextIsDisabled()}
           >
-            Next
-          </button>
-          <button
-            onClick={() => setCurrentPage(totalPages)}
-            disabled={currentPage === totalPages}
-            data-testid="last-page"
-          >
-            Last
+            Next{" "}
           </button>
         </div>
       </div>
@@ -185,4 +275,4 @@ const DataGrid = ({ initialData }) => {
   );
 };
 
-export default DataGrid;
+export default App;

@@ -1,67 +1,100 @@
-# Data Grid Implementation
+# Data Grid Implementation Challenge
+
+## Problem Statement
+
+You are given a template for a React data grid component. Your task is to implement the core functionality required to render tabular data with sorting, filtering, and pagination capabilities. The implementation should pass all the test cases provided.
+
+## Function Signature
+
+You'll be implementing various features in the `App.js` file. The sample data and basic component structure are provided.
+
+```javascript
+// Basic structure (already implemented in the template)
+const App = () => {
+  // Your implementation here
+  
+  return (
+    // JSX structure
+  );
+};
+```
 
 ## Requirements
 
-Create a data grid component with advanced features including sorting, filtering, pagination, and column resizing.
+Implement the following features for the data grid component:
 
-### Core Features
+1. **Data Display**
+   - Render the provided data in a table format
+   - Display columns for name, age, city, and role
+   - Each row should have a `data-testid="row-{id}"` attribute
+   - Each cell should have a `data-testid="cell-{columnName}-{id}"` attribute (e.g., `cell-name-1`)
 
-1. Data Display
-   - Display tabular data with multiple columns
-   - Support different data types (text, numbers, dates)
-   - Responsive design
+2. **Sorting**
+   - Implement column sorting when a user clicks on a column header
+   - Each column header should have a `data-testid="column-{columnName}"` attribute
+   - Clicking a column header should sort data alphabetically
+   - Clicking already sorted column should reverse the order
+   - Add visual indicators for the sort direction
 
-2. Sorting
-   - Click column headers to sort
-   - Support ascending and descending order
-   - Multi-column sorting (optional)
+3. **Filtering**
+   - Implement a search function that filters data across all columns
+   - The search input should have a `data-testid="search-input"` attribute
+   - The filter should update the table data as the user types
+   - Match substrings (case-insensitive) in any column
 
-3. Filtering
-   - Global search across all columns
-   - Column-specific filters (optional)
-   - Support multiple filter conditions
+4. **Pagination**
+   - Implement pagination with "Prev" and "Next" buttons
+   - Display 5 items per page
+   - The pagination info should have a `data-testid="page-info"` attribute showing the current page
+   - The pagination buttons should have `data-testid="prev-page"` and `data-testid="next-page"` attributes
+   - Disable the "Prev" button on the first page
+   - Disable the "Next" button on the last page
 
-4. Pagination
-   - Items per page selection
-   - Page navigation
-   - Display total items and current page info
+## Input
 
-5. Column Management
-   - Resizable columns
-   - Column reordering (optional)
-   - Column visibility toggle (optional)
+A constant array `INITIAL_DATA` containing objects with the following properties:
+- `id`: Unique identifier
+- `name`: Person's name
+- `age`: Person's age
+- `city`: Person's city
+- `role`: Person's job role
 
-### Technical Requirements
+## Expected Output
 
-1. Performance
-   - Efficient sorting and filtering algorithms
-   - Optimize for large datasets
-   - Minimize re-renders
+A fully functional data grid component that:
+1. Displays the data in tabular format
+2. Allows sorting by clicking column headers
+3. Filters data when typing in the search input
+4. Shows 5 items per page with pagination controls
 
-2. State Management
-   - Track sort state
-   - Track filter conditions
-   - Track pagination state
-   - Track column widths
+## Constraints
 
-3. Accessibility
-   - Keyboard navigation
-   - ARIA labels
-   - Focus management
+- You must use the provided `data-testid` attributes for the tests to pass
+- Do not modify the sample data
+- Maintain the general structure of the component
 
-### Testing Requirements
+## Example
 
-- Test sorting functionality
-- Test filtering mechanism
-- Test pagination controls
-- Test column resizing
-- Test keyboard navigation
-- Test with large datasets
+For the given data:
+```javascript
+[
+  { id: 1, name: 'John Doe', age: 25, city: 'New York', role: 'Developer' },
+  { id: 2, name: 'Jane Smith', age: 32, city: 'San Francisco', role: 'Designer' },
+  // more data...
+]
+```
 
+- Clicking the "name" column header should sort by name (e.g., "Alice Brown" first)
+- Typing "John" in the search input should filter to show only rows with "John" in any field
+- Clicking "Next" should display the next page of 5 items and update the page info to "Page 2"
 
-### Bonus Features
-- Column pinning
-- Row selection
-- Export to CSV/Excel
-- Custom cell renderers
-- Row grouping
+## Test Cases
+
+Your implementation will be tested against the following tests:
+
+1. **Rendering Test**: Verifies that all grid elements render correctly
+2. **Sorting Test**: Verifies that clicking column headers sorts the data
+3. **Filtering Test**: Verifies that typing in the search input filters the data
+4. **Pagination Test**: Verifies that pagination controls work as expected
+
+Good luck!
