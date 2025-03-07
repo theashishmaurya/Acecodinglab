@@ -85,6 +85,11 @@ export default function QuestionTable({
     getCompletedSession();
   }, []);
 
+  // Update filtered questions when activeTab changes
+  useEffect(() => {
+    updateFilteredQuestions(inProgressSessionIndex, completedSessionIndex);
+  }, [activeTab, questions]);
+
   const handleCreateSession = async (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
     question: IQuestions,
@@ -133,7 +138,7 @@ export default function QuestionTable({
         </TableRow>
       </TableHeader>
       <TableBody>
-        {questions.map((question, index) => (
+        {filteredQuestions.map((question, index) => (
           <TableRow key={question.key}>
             {/* <TableCell className="hidden sm:table-cell">
               <Image
@@ -209,6 +214,16 @@ export default function QuestionTable({
             </TableCell>
           </TableRow>
         ))}
+        {filteredQuestions.length === 0 && !isLoading && (
+          <TableRow>
+            <TableCell
+              colSpan={5}
+              className="text-center py-6 text-muted-foreground"
+            >
+              No questions found for the selected filters.
+            </TableCell>
+          </TableRow>
+        )}
       </TableBody>
     </Table>
   );

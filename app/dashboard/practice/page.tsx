@@ -1,6 +1,3 @@
-import { ListFilter } from 'lucide-react';
-
-import { Button } from '@/components/ui/button';
 import {
   Card,
   CardContent,
@@ -10,24 +7,18 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 
-import {
-  DropdownMenu,
-  DropdownMenuCheckboxItem,
-  DropdownMenuContent,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
-
 import { Tabs, TabsContent } from '@/components/ui/tabs';
 import QuestionTable, { IQuestions } from '@/components/practiceTable';
 import { getListOfQuestion, readFromFolder } from '@/lib/readFromFolder';
 import { UserTracker } from '@/components/userTracker';
+import { TabsNavigation } from '@/components/TabsNavigation';
+import { DifficultyFilter } from '@/components/DifficultyFilter';
 
 export default async function Page(props: any) {
   const searchParams = await props.searchParams;
 
   const activeTab = searchParams.tab || 'all';
+  const difficulty = searchParams.difficulty || 'all';
 
   let questions: IQuestions[] = [];
 
@@ -49,6 +40,13 @@ export default async function Page(props: any) {
 
     // Filter out any null results (failed questions)
     questions = questions.filter(q => q !== null);
+
+    // Filter by difficulty if specified
+    if (difficulty !== 'all') {
+      questions = questions.filter(
+        q => q.difficulty.toLowerCase() === difficulty.toLowerCase(),
+      );
+    }
   } catch (e) {
     console.error(`Error fetching questions: ${(e as any).message}`);
     return <>Error Happened</>; // Re-throw the error for the component to handle
@@ -58,37 +56,8 @@ export default async function Page(props: any) {
     <Tabs defaultValue={activeTab}>
       <UserTracker />
       <div className="flex items-center">
-        {/* <TabsList>
-        <TabsTrigger value="all" asChild>
-          <Link href="?tab=all">All</Link>
-        </TabsTrigger>
-        <TabsTrigger value="active" asChild>
-          <Link href="?tab=active">In Progress</Link>
-        </TabsTrigger>
-        <TabsTrigger value="completed" asChild>
-          <Link href="?tab=completed">Completed</Link>
-        </TabsTrigger>
-      </TabsList> */}
-        <div className="ml-auto flex items-center gap-2">
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="outline" size="sm" className="h-8 gap-1">
-                <ListFilter className="h-3.5 w-3.5" />
-                <span className="sr-only sm:not-sr-only sm:whitespace-nowrap">
-                  Filter
-                </span>
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              <DropdownMenuLabel>Filter by</DropdownMenuLabel>
-              <DropdownMenuSeparator />
-              <DropdownMenuCheckboxItem checked>
-                In Progress
-              </DropdownMenuCheckboxItem>
-              <DropdownMenuCheckboxItem>Completed</DropdownMenuCheckboxItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-        </div>
+        <TabsNavigation activeTab={activeTab} difficulty={difficulty} />
+        <DifficultyFilter activeTab={activeTab} difficulty={difficulty} />
       </div>
       {['all', 'active', 'completed'].map(tab => (
         <TabsContent key={tab} value={tab} className="sm:py-10 py-10">
@@ -96,6 +65,9 @@ export default async function Page(props: any) {
             <CardHeader>
               <CardTitle>Questions</CardTitle>
               <CardDescription>
+                {difficulty !== 'all'
+                  ? `${difficulty.charAt(0).toUpperCase() + difficulty.slice(1)} difficulty - `
+                  : ''}
                 Click on a question to get started
               </CardDescription>
             </CardHeader>
