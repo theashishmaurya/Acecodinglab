@@ -76,6 +76,7 @@ export default function Page(props: { params: Promise<{ slug: string }> }) {
           dependencies: {
             '@testing-library/jest-dom': '5.11.4',
             '@testing-library/react': '11.2.7',
+            '@testing-library/user-event': '14.6.1',
           },
         }}
       >
