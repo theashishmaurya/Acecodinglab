@@ -1,5 +1,6 @@
 import { SideNavBar } from '@/components/ui/sideNav';
 import { TooltipProvider } from '@/components/ui/tooltip';
+import Link from 'next/link';
 
 import DynamicBreadcrumb from '@/components/dynamicBreadCrump';
 

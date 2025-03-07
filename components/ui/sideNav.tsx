@@ -1,7 +1,7 @@
 'use client';
 import React from 'react';
 import Link from 'next/link';
-import { Book, SquareTerminal, LucideIcon } from 'lucide-react';
+import { Book, SquareTerminal, LucideIcon, FileText } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
   Tooltip,
@@ -62,6 +62,7 @@ export const SideNavBar = () => {
       <nav className="grid gap-1 p-2">
         <NavItem href="/dashboard/practice" icon={Book} label="Question Bank" />
         <NavItem href="/lab" icon={SquareTerminal} label="CodeLabs" />
+        <NavItem href="/dashboard/template" icon={FileText} label="Templates" />
         {/* <NavItem href="/dashboard/models" icon={Bot} label="Models" /> */}
         {/* <NavItem href="/dashboard/codelab" icon={Code2} label="CodeLabs" /> */}
       </nav>
