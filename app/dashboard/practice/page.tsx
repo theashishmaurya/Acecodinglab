@@ -56,7 +56,7 @@ export default async function Page(props: any) {
     <Tabs defaultValue={activeTab}>
       <UserTracker />
       <div className="flex items-center">
-        <TabsNavigation activeTab={activeTab} difficulty={difficulty} />
+          {/* <TabsNavigation activeTab={activeTab} difficulty={difficulty} /> */}
         <DifficultyFilter activeTab={activeTab} difficulty={difficulty} />
       </div>
       {['all', 'active', 'completed'].map(tab => (
