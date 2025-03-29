@@ -1,0 +1,131 @@
+# Advanced File Explorer Tree Implementation
+
+## Requirements
+
+Create an interactive file explorer component that displays a hierarchical tree structure of files and folders with full CRUD (Create, Read, Update, Delete) operations.
+
+### Core Features
+
+1. File Tree Display
+   - Display a hierarchical file/folder structure
+   - Show folders with expand/collapse functionality
+   - Display files as leaf nodes
+   - Visual distinction between files and folders using icons
+   - Folder icons should change when expanded/collapsed
+     - Use &#128194; for open folders
+     - Use &#128193; for closed folders
+
+2. Basic Interaction
+   - Click on folders to expand/collapse them
+   - Files should be displayed as leaf nodes
+   - Maintain expand/collapse state for each folder independently
+
+3. Advanced File Operations
+   - Create new files and folders
+     - Add a "New Folder" button in the explorer header
+     - New items should be added at the current level
+     - Prompt for name when creating new items
+   
+   - Rename files and folders
+     - Right-click on any item to show context menu
+     - Context menu should include "Rename" option
+     - Show input field for renaming
+     - Preserve file/folder type during rename
+   
+   - Delete files and folders
+     - Right-click context menu should include "Delete" option
+     - Folders deletion should remove all nested contents
+     - Confirm before deleting
+
+### Technical Requirements
+
+1. Component Structure
+   - Use recursive components for rendering the tree structure
+   - Implement proper state management for folder expand/collapse
+   - Handle the provided initial file structure data
+   - Implement context menu for file operations
+   - Add input handling for rename operations
+
+2. Data Structure
+   Each node in the file structure follows this format:
+   ```javascript
+   {
+     id: string,
+     name: string,
+     type: 'file' | 'folder',
+     children?: Array // only for folders
+   }
+   ```
+
+3. UI Requirements
+   - Add a "New Folder" button in the explorer header
+   - Implement right-click context menu with options:
+     - Rename
+     - Delete
+   - Add input field component for rename operations
+   - Show appropriate confirmation dialogs for destructive operations
+
+### Testing Requirements
+1. Basic Functionality
+   - Test initial file structure rendering
+   - Test folder expand/collapse functionality
+   - Verify correct display of all files and folders
+   - Ensure proper nesting of items
+
+2. CRUD Operations
+   - Test creating new folders
+   - Test renaming files and folders
+   - Test deleting files and folders
+   - Verify state updates after each operation
+
+### Example Structure
+```javascript
+{
+  id: 'root',
+  name: 'Root',
+  type: 'folder',
+  children: [
+    {
+      id: '1',
+      name: 'Documents',
+      type: 'folder',
+      children: [
+        {
+          id: '2',
+          name: 'document1.txt',
+          type: 'file',
+        }
+      ]
+    },
+    {
+      id: '3',
+      name: 'config.json',
+      type: 'file',
+    }
+  ]
+}
+```
+
+### Success Criteria
+1. Basic Features
+   - Files and folders are properly displayed in a tree structure
+   - Folders can be expanded and collapsed by clicking
+   - Folder icons change based on their expanded/collapsed state
+   - File structure maintains proper hierarchy
+
+2. Advanced Features
+   - New folders can be created with custom names
+   - Files and folders can be renamed through context menu
+   - Files and folders can be deleted through context menu
+   - All operations maintain data structure integrity
+   - All test cases pass successfully
+
+### Implementation Notes
+1. Use React state management for handling the file structure
+2. Implement context menu using native onContextMenu event
+3. Add data-testid attributes for testing:
+   - "file-explorer" for main container
+   - "explorer-header" for the header section
+   - "explorer-tree" for the tree container
+   - "new-folder-btn" for new folder button
+   - "rename-input" for rename input field

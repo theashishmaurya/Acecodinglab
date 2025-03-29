@@ -1,7 +1,12 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './styles.css';
 
-const INITIAL_FILES = {
+/**
+ * Folder open Icon : &#128194;
+ * Folder close Icon : &#128193;
+ */
+
+export const INITIAL_FILES = {
   id: 'root',
   name: 'Root',
   type: 'folder',
@@ -46,26 +51,15 @@ const INITIAL_FILES = {
 const App = () => {
   // TODO: Implement state management for:
   // - File tree structure
-  // - Selected items
-  // - Expanded folders
-  // - Context menu
+  // - Open/Close folder
 
   return (
     <div className="file-explorer" data-testid="file-explorer">
       <div className="explorer-header" data-testid="explorer-header">
         <h2>File Explorer</h2>
-        <div className="actions">
-          <button data-testid="new-folder-btn">New Folder</button>
-          <button data-testid="new-file-btn">New File</button>
-        </div>
       </div>
-
       <div className="explorer-tree" data-testid="explorer-tree">
-        {/* TODO: Implement file tree */}
-      </div>
-
-      <div className="context-menu" data-testid="context-menu">
-        {/* TODO: Implement context menu */}
+        {/* Todo: Implement the file explorer tree */}
       </div>
     </div>
   );

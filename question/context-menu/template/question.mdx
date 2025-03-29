@@ -1,0 +1,46 @@
+# Context Menu Implementation
+
+Create a reusable context menu component that appears when a user right-clicks on a designated area. The context menu should be customizable and support various menu items with icons and actions.
+
+## Requirements
+
+1. The context menu should appear at the cursor position when right-clicking on the designated area
+2. The menu should close when:
+   - Clicking anywhere outside the menu
+   - Clicking on a menu item
+   - Pressing the Escape key
+3. Menu items should support:
+   - Icons
+   - Labels
+   - Click actions
+4. The menu should stay within viewport bounds (don't go off-screen)
+5. Add hover effects for menu items
+6. Implement smooth animations for menu appearance/disappearance
+
+## Bonus Points
+
+- Support for nested submenus
+- Support for keyboard navigation
+- Add dividers between menu item groups
+- Support for disabled menu items
+- Custom styling options
+
+## Getting Started
+
+1. The template provides basic setup with:
+   - Sample menu items in `data.js`
+   - Basic styling in `styles.css`
+   - A demo area in `App.js`
+
+2. Your task is to:
+   - Implement the context menu component
+   - Handle all required interactions
+   - Ensure the menu stays within viewport bounds
+   - Add proper styling and animations
+
+## Tips
+
+- Use React's `useEffect` for handling click outside and keyboard events
+- Consider using CSS transforms for animations
+- Use event bubbling for efficient event handling
+- Remember to clean up event listeners 

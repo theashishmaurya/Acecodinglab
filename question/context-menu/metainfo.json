@@ -1,0 +1,8 @@
+{
+  "name": "Context Menu",
+  "key": "context-menu",
+  "tags": ["test", "intermediate"],
+  "difficulty": "medium",
+  "author": "Ashish Maurya",
+  "company": ["flipkart", "Google"]
+}

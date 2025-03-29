@@ -1,9 +1,10 @@
 {
-  "name": "File Explorer",
-  "key": "file-explorer",
-  "difficulty": "advanced",
+  "name": "File Explorer 1",
+  "key": "file-explorer-1",
+  "difficulty": "medium",
   "tags": ["tree", "recursion", "file-system", "navigation"],
   "companies": ["Dropbox", "Google", "Microsoft", "Apple"],
+  "author": "Ashish Maurya",
   "testCases": 15,
   "score": 100
 }

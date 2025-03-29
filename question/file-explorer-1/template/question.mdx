@@ -1,0 +1,81 @@
+# Basic File Explorer Tree Implementation
+
+## Requirements
+
+Create a simple file explorer component that displays a hierarchical tree structure of files and folders.
+
+### Core Features
+
+1. File Tree Display
+   - Display a hierarchical file/folder structure
+   - Show folders with expand/collapse functionality
+   - Display files as leaf nodes
+   - Visual distinction between files and folders using icons
+   - Folder icons should change when expanded/collapsed
+     - Use &#128194; for open folders
+     - Use &#128193; for closed folders
+
+2. Interaction
+   - Click on folders to expand/collapse them
+   - Files should be displayed but don't need any interaction
+   - Maintain expand/collapse state for each folder independently
+
+### Technical Requirements
+
+1. Component Structure
+   - Use recursive components for rendering the tree structure
+   - Implement proper state management for folder expand/collapse
+   - Handle the provided initial file structure data
+
+2. Data Structure
+   Each node in the file structure follows this format:
+   ```javascript
+   {
+     id: string,
+     name: string,
+     type: 'file' | 'folder',
+     children?: Array // only for folders
+   }
+   ```
+
+### Testing Requirements
+- Test initial file structure rendering
+- Test folder expand/collapse functionality
+- Verify correct display of all files and folders
+- Ensure proper nesting of items
+
+### Example Structure
+The component should handle a file structure like this:
+```javascript
+{
+  id: 'root',
+  name: 'Root',
+  type: 'folder',
+  children: [
+    {
+      id: '1',
+      name: 'Documents',
+      type: 'folder',
+      children: [
+        {
+          id: '2',
+          name: 'document1.txt',
+          type: 'file',
+        }
+      ]
+    },
+    {
+      id: '3',
+      name: 'config.json',
+      type: 'file',
+    }
+  ]
+}
+```
+
+### Success Criteria
+1. Files and folders are properly displayed in a tree structure
+2. Folders can be expanded and collapsed by clicking
+3. Folder icons change based on their expanded/collapsed state
+4. File structure maintains proper hierarchy
+5. All test cases pass successfully
