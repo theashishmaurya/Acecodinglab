@@ -1,0 +1,66 @@
+# Autocomplete/Typeahead Component
+
+## Task Description
+
+Implement an autocomplete/typeahead component that provides suggestion completions as the user types. This is a common interview question that tests API integration, state management, and accessibility.
+
+## Requirements
+
+### Core Functionality
+1. **Input Field**: Text input that triggers search on user typing
+2. **Debounced API Calls**: Wait 300ms after user stops typing before making API call
+3. **Suggestion List**: Display matching suggestions below the input
+4. **Highlight Match**: Bold the matching portion of each suggestion
+
+### Loading States
+- Show loading spinner while fetching
+- Show "No results found" when API returns empty
+- Show "Type to search..." when input is empty
+
+### Keyboard Navigation
+- `Arrow Down` - Move focus to next suggestion
+- `Arrow Up` - Move focus to previous suggestion
+- `Enter` - Select focused suggestion
+- `Escape` - Close suggestion list
+- `Tab` - Close suggestion list (default behavior)
+
+### Accessibility
+- `role="combobox"` on the input
+- `role="listbox"` on the suggestions container
+- `role="option"` on each suggestion
+- `aria-expanded` state
+- `aria-activedescendant` for focused suggestion
+- `aria-autocomplete="list"`
+
+## API Endpoint
+
+Use this mock API for fetching suggestions:
+```javascript
+// Simulates API call with 500ms delay
+const fetchSuggestions = async (query) => {
+  const response = await fetch(`/api/suggestions?q=${query}`);
+  return response.json();
+};
+```
+
+A mock API is provided in the starter code.
+
+## Files Provided
+- `App.js` - Starter template with mock API
+- `styles.css` - Basic styling
+
+## Evaluation Criteria
+- Correct autocomplete behavior
+- Proper debouncing (300ms)
+- Keyboard navigation works
+- Accessibility attributes present
+- Loading and empty states handled
+- High-lighting matching text
+- Code clarity and organization
+
+## Bonus
+- Cache previous API responses
+- Support for selecting multiple items (tags)
+- Custom debounce time via prop
+
+Good luck!

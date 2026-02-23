@@ -1,0 +1,46 @@
+# Tabs Component Implementation
+
+## Task Description
+
+Implement an accessible tabs component following the WAI-ARIA Tabs Pattern. The component should support full keyboard navigation and proper ARIA attributes.
+
+## Requirements
+
+### Core Functionality
+1. **Tab List**: A horizontal list of clickable tabs
+2. **Tab Panels**: Associated content panels that show/hide based on active tab
+3. **Controlled/Uncontrolled**: Support both controlled (via props) and uncontrolled (internal state) modes
+
+### Keyboard Navigation
+- `Tab` - Moves focus to the active tab panel
+- `Arrow Left/Right` - Navigate between tabs (activate on focus or manual)
+- `Home` - Move focus to first tab
+- `End` - Move focus to last tab
+- `Enter/Space` - Activate the focused tab (if manual activation)
+
+### ARIA Attributes
+- `role="tablist"` on the tab list container
+- `role="tab"` on each tab button
+- `role="tabpanel"` on each panel
+- `aria-selected` on tabs (true/false)
+- `aria-controls` on tabs (pointing to panel id)
+- `aria-labelledby` on panels (pointing to tab id)
+- `tabindex` management for focus
+
+## Files Provided
+- `App.js` - Starter template with basic structure
+- `styles.css` - Basic styling for tabs
+
+## Evaluation Criteria
+- Correct tab switching functionality
+- Proper keyboard navigation (arrow keys, home, end)
+- ARIA attributes correctly applied
+- Focus management works correctly
+- Code clarity and organization
+- Passing all provided test cases
+
+## Reference
+- [WAI-ARIA Tabs Pattern](https://www.w3.org/WAI/ARIA/apg/patterns/tabpanel/)
+- [Radix UI Tabs](https://www.radix-ui.com/docs/primitives/components/tabs)
+
+Good luck!

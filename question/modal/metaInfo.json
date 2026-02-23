@@ -1,0 +1,8 @@
+{
+  "name": "Modal/Dialog",
+  "key": "modal",
+  "tags": ["accessibility", "keyboard-nav", "intermediate"],
+  "difficulty": "medium",
+  "author": "Ashish Maurya",
+  "company": ["Google", "Meta", "Amazon", "Stripe"]
+}

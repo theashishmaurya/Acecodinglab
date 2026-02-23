@@ -1,0 +1,52 @@
+# Modal/Dialog Component Implementation
+
+## Task Description
+
+You are tasked with implementing an accessible modal/dialog component using React. The modal should follow WAI-ARIA best practices and provide full keyboard support.
+
+## Requirements
+
+### Core Functionality
+1. **Open/Close**: The modal should open when triggered and close when:
+   - The close button is clicked
+   - The Escape key is pressed
+   - The backdrop (area outside modal) is clicked
+
+2. **Focus Management**:
+   - When the modal opens, focus should move to the modal
+   - Focus should be trapped within the modal while open
+   - When the modal closes, focus should return to the element that triggered it
+
+3. **Accessibility (ARIA)**:
+   - Proper `role="dialog"` and `aria-modal="true"`
+   - `aria-labelledby` pointing to the modal title
+   - `aria-describedby` pointing to the modal description (if provided)
+
+4. **Scroll Lock**:
+   - Body scroll should be locked when modal is open
+   - Scroll should be restored when modal closes
+
+### Keyboard Navigation
+- `Escape` - Close the modal
+- `Tab` - Move focus to next focusable element within modal
+- `Shift + Tab` - Move focus to previous focusable element within modal
+
+## Files Provided
+- `App.js` - Starter template with trigger button and modal structure
+- `styles.css` - Basic styling for the modal
+
+## Evaluation Criteria
+- Correct open/close functionality
+- Proper focus trap implementation
+- Escape key and backdrop click to close
+- ARIA attributes correctly applied
+- Body scroll lock when modal open
+- Code clarity and organization
+- Passing all provided test cases
+
+## Tips
+- Consider using `document.activeElement` to track focus
+- Use `inert` attribute or manual focus management for focus trap
+- Test with a screen reader for accessibility verification
+
+Good luck!

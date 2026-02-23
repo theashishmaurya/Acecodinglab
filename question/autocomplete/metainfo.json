@@ -1,0 +1,8 @@
+{
+  "name": "Autocomplete/Typeahead",
+  "key": "autocomplete",
+  "tags": ["api-calls", "keyboard-nav", "accessibility", "intermediate"],
+  "difficulty": "medium",
+  "author": "Ashish Maurya",
+  "company": ["Google", "Meta", "Uber", "Airbnb"]
+}
