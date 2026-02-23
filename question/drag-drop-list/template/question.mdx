@@ -1,0 +1,67 @@
+# Drag and Drop List Component
+
+## Task Description
+
+Implement a reorderable drag-and-drop list component. This is a challenging interview question that tests DOM manipulation, event handling, and animation skills.
+
+## Requirements
+
+### Core Functionality
+1. **Drag Handle**: Each item has a visible drag handle
+2. **Reorder via Drag**: Items can be reordered by dragging
+3. **Smooth Animations**: Items animate smoothly when reordering
+4. **Visual Feedback**: 
+   - Dragging item is elevated/scaled
+   - Drop position is indicated (line or placeholder)
+   - Other items shift to make room
+
+### Drag Phases
+1. **Drag Start**: 
+   - Show dragging state on active item
+   - Reduce opacity of original position
+   
+2. **Dragging**:
+   - Track mouse position
+   - Calculate drop position
+   - Animate other items out of the way
+   
+3. **Drop**:
+   - Move item to new position
+   - Animate into place
+   - Callback with new order
+
+### Keyboard Support (Bonus)
+- `Space/Enter` - Pick up item
+- `Arrow Up/Down` - Move item
+- `Space/Enter` - Drop item
+- `Escape` - Cancel
+
+## Files Provided
+- `App.js` - Starter template with basic list structure
+- `styles.css` - Basic styling
+
+## Evaluation Criteria
+- Items can be reordered via drag
+- Animations are smooth (60fps)
+- Visual feedback is clear
+- Works with mouse interactions
+- Handles edge cases (first/last item)
+- Code clarity and organization
+
+## Bonus
+- Keyboard reordering support
+- Touch device support
+- Multiple lists (move between lists)
+- Group items by category
+
+## Tips
+- Use `pointer-events` CSS property carefully
+- Consider using `transform` for better performance
+- Use `will-change` for animation hints
+- Test with many items (50+) for performance
+
+## Reference
+- [dnd-kit](https://dndkit.com/)
+- [react-beautiful-dnd](https://github.com/atlassian/react-beautiful-dnd)
+
+Good luck!

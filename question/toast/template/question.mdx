@@ -1,0 +1,76 @@
+# Toast/Notification System
+
+## Task Description
+
+Implement a toast notification system that displays temporary messages to users. This is a common interview question that tests state management, animations, and component design patterns.
+
+## Requirements
+
+### Core Functionality
+1. **Toast Types**: Support success, error, warning, and info toasts
+2. **Auto-dismiss**: Toasts should disappear after a configurable duration
+3. **Progress Bar**: Visual indicator showing time until dismissal
+4. **Manual Dismiss**: Close button to dismiss toast early
+5. **Toast Stacking**: Multiple toasts should stack vertically
+
+### Position Support
+- Top-right (default)
+- Top-left
+- Bottom-right
+- Bottom-left
+- Top-center
+- Bottom-center
+
+### Additional Features
+- Pause on hover (auto-dismiss timer pauses)
+- Smooth entry/exit animations
+- Unique ID for each toast
+- Programmatic control via toast function
+
+## API Design
+
+```javascript
+// Basic usage
+toast.success('Operation completed!')
+toast.error('Something went wrong')
+toast.warning('Please check your input')
+toast.info('Did you know?')
+
+// With options
+toast.success('Saved!', { 
+  duration: 5000,
+  position: 'bottom-right'
+})
+
+// Programmatic dismiss
+const id = toast.success('Processing...')
+toast.dismiss(id)
+
+// Dismiss all toasts
+toast.dismissAll()
+```
+
+## Files Provided
+- `App.js` - Starter template with toast function structure
+- `styles.css` - Basic styling for toasts
+
+## Evaluation Criteria
+- Correct toast creation and dismissal
+- Auto-dismiss with progress bar
+- Pause on hover functionality
+- Multiple toast stacking
+- Smooth animations
+- Type-based styling (success, error, etc.)
+- Code clarity and organization
+
+## Bonus
+- Action buttons on toasts (e.g., "Undo")
+- Rich content support (React nodes)
+- Limit max visible toasts
+- Queue toasts when limit reached
+
+## Reference
+- [react-hot-toast](https://react-hot-toast.com/)
+- [sonner](https://sonner.emilkowal.ski/)
+
+Good luck!
