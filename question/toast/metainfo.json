@@ -1,0 +1,8 @@
+{
+  "name": "Toast/Notification System",
+  "key": "toast",
+  "tags": ["state-management", "animation", "intermediate"],
+  "difficulty": "medium",
+  "author": "Ashish Maurya",
+  "company": ["Google", "Meta", "Stripe", "Airbnb"]
+}

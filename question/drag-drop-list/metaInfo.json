@@ -1,0 +1,8 @@
+{
+  "name": "Drag and Drop List",
+  "key": "drag-drop-list",
+  "tags": ["drag-drop", "animation", "advanced"],
+  "difficulty": "hard",
+  "author": "Ashish Maurya",
+  "company": ["Google", "Meta", "Atlassian", "Figma"]
+}

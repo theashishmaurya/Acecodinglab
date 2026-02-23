@@ -1,0 +1,8 @@
+{
+  "name": "Tabs Component",
+  "key": "tabs",
+  "tags": ["accessibility", "keyboard-nav", "intermediate"],
+  "difficulty": "medium",
+  "author": "Ashish Maurya",
+  "company": ["Google", "Microsoft", "Netflix", "Spotify"]
+}
