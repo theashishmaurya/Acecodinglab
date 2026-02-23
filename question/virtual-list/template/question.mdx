@@ -1,0 +1,83 @@
+# Virtual List Component
+
+## Task Description
+
+Implement a virtualized list that efficiently renders large datasets by only rendering items visible in the viewport. This is an advanced interview question that tests performance optimization, DOM manipulation, and math skills.
+
+## The Problem
+
+When rendering large lists (10,000+ items), the browser struggles with:
+- Creating thousands of DOM elements
+- Memory consumption
+- Scroll performance degradation
+- Initial render time
+
+Virtual scrolling solves this by only rendering visible items.
+
+## Requirements
+
+### Core Functionality
+1. **Viewport Rendering**: Only render items visible in the viewport
+2. **Fixed Item Height**: Assume all items have the same height (50px)
+3. **Smooth Scrolling**: Maintain smooth scroll behavior
+4. **Accurate Scrollbar**: Scrollbar should represent actual content size
+
+### Technical Implementation
+1. **Scroll Container**: An element with overflow-y: auto
+2. **Spacer Elements**: Padding elements to create full scroll height
+3. **Visible Range**: Calculate which items are visible based on scroll position
+4. **Render Window**: Render extra items above/below viewport (overscan)
+
+### Performance Requirements
+- Must handle 10,000 items smoothly
+- Scroll should feel native (60fps)
+- No jank or stuttering during scroll
+- Memory should stay constant regardless of list size
+
+### Bonus Features
+- **Variable Height**: Support items with different heights
+- **Dynamic Loading**: Load more items as user scrolls (infinite scroll)
+- **Sticky Headers**: Section headers that stick during scroll
+- **Scroll to Index**: Programmatic scroll to specific item
+
+## API Design
+
+```jsx
+<VirtualList
+  itemCount={10000}           // Total number of items
+  itemHeight={50}             // Height of each item
+  height={400}                // Height of container
+  width="100%"                // Width of container
+  overscan={3}                // Extra items to render above/below
+  renderItem={({ index, style }) => (
+    <div style={style}>Item {index}</div>
+  )}
+/>
+```
+
+## Files Provided
+- `App.js` - Starter template with structure
+- `styles.css` - Basic styling
+- `large-dataset.json` - Test data with 10,000 items
+
+## Evaluation Criteria
+- Only visible items are rendered in DOM
+- Scrollbar accurately represents content
+- Smooth scroll performance (no jank)
+- Correct overscan implementation
+- Memory stays constant
+- Works with 10,000+ items
+
+## Tips
+- Use `transform` for positioning (GPU accelerated)
+- Use `position: absolute` for items
+- Cache calculations between renders
+- Use `requestAnimationFrame` for scroll handlers
+- Consider `IntersectionObserver` for advanced features
+
+## Reference
+- [react-window](https://github.com/bvaughn/react-window)
+- [react-virtualized](https://github.com/bvaughn/react-virtualized)
+- [TanStack Virtual](https://tanstack.com/virtual)
+
+Good luck!
