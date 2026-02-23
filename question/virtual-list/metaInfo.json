@@ -1,0 +1,8 @@
+{
+  "name": "Virtual List",
+  "key": "virtual-list",
+  "tags": ["performance", "advanced", "rendering"],
+  "difficulty": "hard",
+  "author": "Ashish Maurya",
+  "company": ["Meta", "Google", "Netflix", "Uber"]
+}
