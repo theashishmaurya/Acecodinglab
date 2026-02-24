@@ -1,3 +1,3 @@
-// Re-export everything
 export * from './types';
-export { AntiCheatSystem, useAntiCheat } from './anti-cheat';
+export * from './schemas';
+export * from './anti-cheat';
